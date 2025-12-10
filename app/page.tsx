@@ -21,7 +21,7 @@
  * - @/lib/utils/tour-sort: sortTours 함수
  */
 
-import { TourList } from "@/components/tour-list";
+import { TourMapLayout } from "@/components/tour-map-layout";
 import { TourFilters } from "@/components/tour-filters";
 import { TourSearch } from "@/components/tour-search";
 import { Error } from "@/components/ui/error";
@@ -101,8 +101,8 @@ export default async function HomePage({
           <TourFilters />
         </div>
 
-        {/* 관광지 목록 */}
-        <TourList tours={sortedTours} searchKeyword={keyword} />
+        {/* 관광지 목록 및 지도 */}
+        <TourMapLayout tours={sortedTours} searchKeyword={keyword} />
       </main>
     );
   } catch (error) {

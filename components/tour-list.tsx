@@ -29,6 +29,12 @@ interface TourListProps {
   isLoading?: boolean;
   /** 검색 키워드 (검색 결과 없음 메시지 개선용) */
   searchKeyword?: string;
+  /** 선택된 관광지 ID (지도 연동용) */
+  selectedContentId?: string | null;
+  /** 관광지 선택 핸들러 (지도 연동용) */
+  onTourSelect?: (contentId: string) => void;
+  /** 관광지 호버 핸들러 (지도 연동용) */
+  onTourHover?: (contentId: string | null) => void;
   /** 추가 클래스명 */
   className?: string;
 }
@@ -76,6 +82,9 @@ export function TourList({
   tours,
   isLoading = false,
   searchKeyword,
+  selectedContentId,
+  onTourSelect,
+  onTourHover,
   className,
 }: TourListProps) {
   // 로딩 상태
@@ -112,7 +121,13 @@ export function TourList({
       )}
     >
       {tours.map((tour) => (
-        <TourCard key={tour.contentid} tour={tour} />
+        <TourCard
+          key={tour.contentid}
+          tour={tour}
+          isSelected={selectedContentId === tour.contentid}
+          onSelect={onTourSelect}
+          onHover={onTourHover}
+        />
       ))}
     </div>
   );

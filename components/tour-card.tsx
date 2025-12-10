@@ -25,6 +25,12 @@ import { cn } from "@/lib/utils";
 interface TourCardProps {
   /** 관광지 정보 */
   tour: TourItem;
+  /** 선택된 상태 (지도 연동용) */
+  isSelected?: boolean;
+  /** 관광지 선택 핸들러 (지도 연동용) */
+  onSelect?: (contentId: string) => void;
+  /** 관광지 호버 핸들러 (지도 연동용) */
+  onHover?: (contentId: string | null) => void;
   /** 추가 클래스명 */
   className?: string;
 }
@@ -36,16 +42,48 @@ interface TourCardProps {
 const DEFAULT_IMAGE =
   "https://via.placeholder.com/400x300?text=No+Image";
 
-export function TourCard({ tour, className }: TourCardProps) {
+export function TourCard({
+  tour,
+  isSelected = false,
+  onSelect,
+  onHover,
+  className,
+}: TourCardProps) {
   const imageUrl = tour.firstimage || DEFAULT_IMAGE;
   const contentTypeName = getContentTypeName(tour.contenttypeid);
   const address = tour.addr2 ? `${tour.addr1} ${tour.addr2}` : tour.addr1;
 
+  const handleClick = (e: React.MouseEvent) => {
+    // 지도 연동: 카드 클릭 시 지도로 이동
+    if (onSelect) {
+      e.preventDefault();
+      onSelect(tour.contentid);
+    }
+  };
+
+  const handleMouseEnter = () => {
+    // 지도 연동: 카드 호버 시 마커 강조
+    if (onHover) {
+      onHover(tour.contentid);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    // 지도 연동: 카드 호버 해제 시 마커 강조 해제
+    if (onHover) {
+      onHover(null);
+    }
+  };
+
   return (
     <Link
       href={`/places/${tour.contentid}`}
+      onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className={cn(
         "group block rounded-lg border bg-card text-card-foreground shadow-sm transition-all hover:scale-[1.02] hover:shadow-md",
+        isSelected && "ring-2 ring-primary ring-offset-2",
         className
       )}
     >

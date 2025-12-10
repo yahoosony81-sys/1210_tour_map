@@ -3,12 +3,25 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
-      { hostname: "img.clerk.com" },
+      {
+        protocol: "https",
+        hostname: "img.clerk.com",
+      },
       // 한국관광공사 API 이미지 도메인
-      { hostname: "tong.visitkorea.or.kr" },
-      { hostname: "api.visitkorea.or.kr" },
+      {
+        protocol: "https",
+        hostname: "tong.visitkorea.or.kr",
+      },
+      {
+        protocol: "https",
+        hostname: "api.visitkorea.or.kr",
+      },
       // placeholder 이미지 서비스
-      { hostname: "via.placeholder.com" },
+      {
+        protocol: "https",
+        hostname: "via.placeholder.com",
+        pathname: "/**",
+      },
     ],
   },
 };
