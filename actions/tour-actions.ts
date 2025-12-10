@@ -171,11 +171,32 @@ export async function loadMoreTours(
     };
   } catch (error) {
     console.error("loadMoreTours 에러:", error);
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : "관광지 정보를 불러오는 중 오류가 발생했습니다."
-    );
+    
+    // 사용자 친화적 에러 메시지로 변환
+    let errorMessage = "관광지 정보를 불러오는 중 오류가 발생했습니다.";
+    
+    if (error instanceof Error) {
+      const message = error.message;
+      
+      // API 키 관련 에러
+      if (message.includes("API 키") || message.includes("NEXT_PUBLIC_TOUR_API_KEY") || message.includes("TOUR_API_KEY")) {
+        errorMessage = "API 키가 설정되지 않았습니다.";
+      }
+      // 네트워크 에러
+      else if (message.includes("네트워크") || message.includes("fetch") || message.includes("Failed to fetch")) {
+        errorMessage = "네트워크 연결을 확인해주세요.";
+      }
+      // API 응답 에러
+      else if (message.includes("API") || message.includes("요청 실패")) {
+        errorMessage = "관광지 정보를 가져오는 중 문제가 발생했습니다.";
+      }
+      // 기타 에러
+      else {
+        errorMessage = message;
+      }
+    }
+    
+    throw new Error(errorMessage);
   }
 }
 

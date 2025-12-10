@@ -68,6 +68,7 @@ export function TourFilters() {
   const searchParams = useSearchParams();
   const [areaCodes, setAreaCodes] = useState<AreaCode[]>([]);
   const [isLoadingAreas, setIsLoadingAreas] = useState(true);
+  const [areaLoadError, setAreaLoadError] = useState<string | null>(null);
 
   // 현재 필터 값
   const currentAreaCode = searchParams.get("areaCode") || "";
@@ -81,10 +82,18 @@ export function TourFilters() {
     async function loadAreaCodes() {
       try {
         setIsLoadingAreas(true);
+        setAreaLoadError(null);
         const codes = await getAreaCode();
         setAreaCodes(codes);
       } catch (error) {
         console.error("지역 코드 로드 실패:", error);
+        setAreaLoadError(
+          error instanceof Error
+            ? error.message
+            : "지역 목록을 불러오는 중 오류가 발생했습니다."
+        );
+        // 기본 지역 목록 제공 (에러 발생 시에도 필터는 사용 가능하도록)
+        setAreaCodes([]);
       } finally {
         setIsLoadingAreas(false);
       }
@@ -174,18 +183,34 @@ export function TourFilters() {
   };
 
   return (
-    <div className="space-y-6 rounded-lg border bg-card p-6">
+    <div className="space-y-4 rounded-lg border bg-card p-4 md:space-y-6 md:p-6">
       {/* 지역 필터 */}
       <div>
         <label className="mb-2 block text-sm font-medium">지역</label>
         {isLoadingAreas ? (
           <div className="text-sm text-muted-foreground">로딩 중...</div>
+        ) : areaLoadError ? (
+          <div className="space-y-2">
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant={currentAreaCode === "" ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleAreaChange("")}
+              >
+                전체
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              지역 목록을 불러올 수 없습니다. 전체 옵션만 사용 가능합니다.
+            </p>
+          </div>
         ) : (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 overflow-x-auto pb-2 md:overflow-x-visible md:pb-0">
             <Button
               variant={currentAreaCode === "" ? "default" : "outline"}
               size="sm"
               onClick={() => handleAreaChange("")}
+              className="min-h-[44px] min-w-[44px]"
             >
               전체
             </Button>
@@ -195,6 +220,7 @@ export function TourFilters() {
                 variant={currentAreaCode === area.code ? "default" : "outline"}
                 size="sm"
                 onClick={() => handleAreaChange(area.code)}
+                className="min-h-[44px]"
               >
                 {area.name}
               </Button>
@@ -218,7 +244,7 @@ export function TourFilters() {
             </Button>
           )}
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 overflow-x-auto pb-2 md:overflow-x-visible md:pb-0">
           {CONTENT_TYPE_OPTIONS.map((option) => {
             const isSelected = currentContentTypeIds.includes(option.id);
             return (
@@ -227,6 +253,7 @@ export function TourFilters() {
                 variant={isSelected ? "default" : "outline"}
                 size="sm"
                 onClick={() => handleContentTypeToggle(option.id)}
+                className="min-h-[44px]"
               >
                 {option.name}
               </Button>
@@ -261,6 +288,7 @@ export function TourFilters() {
                   variant={currentPetSize === "" ? "default" : "outline"}
                   size="sm"
                   onClick={() => handlePetSizeChange("")}
+                  className="min-h-[44px] min-w-[44px]"
                 >
                   전체
                 </Button>
@@ -270,6 +298,7 @@ export function TourFilters() {
                     variant={currentPetSize === option.value ? "default" : "outline"}
                     size="sm"
                     onClick={() => handlePetSizeChange(option.value)}
+                    className="min-h-[44px]"
                   >
                     {option.label}
                   </Button>
@@ -290,6 +319,7 @@ export function TourFilters() {
               variant={currentSort === option.value ? "default" : "outline"}
               size="sm"
               onClick={() => handleSortChange(option.value as "latest" | "name")}
+              className="min-h-[44px] flex-1 md:flex-initial"
             >
               {option.label}
             </Button>

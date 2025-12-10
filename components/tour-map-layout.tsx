@@ -132,6 +132,8 @@ export function TourMapLayout({
       console.error("추가 데이터 로드 실패:", error);
       // 에러 발생 시 hasMore를 false로 설정하여 더 이상 시도하지 않음
       setHasMore(false);
+      // 사용자에게 에러 알림 (선택 사항 - 토스트 메시지 등)
+      // 현재는 콘솔 로그만 남김
     } finally {
       setIsLoadingMore(false);
     }
@@ -157,7 +159,7 @@ export function TourMapLayout({
           variant={viewMode === "list" ? "default" : "outline"}
           size="sm"
           onClick={() => setViewMode("list")}
-          className="flex-1"
+          className="flex-1 min-h-[44px]"
         >
           <List className="mr-2 h-4 w-4" />
           목록
@@ -166,7 +168,7 @@ export function TourMapLayout({
           variant={viewMode === "map" ? "default" : "outline"}
           size="sm"
           onClick={() => setViewMode("map")}
-          className="flex-1"
+          className="flex-1 min-h-[44px]"
         >
           <MapIcon className="mr-2 h-4 w-4" />
           지도

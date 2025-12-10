@@ -115,8 +115,8 @@ export function TourSearch({ className, placeholder = "관광지명, 주소, 설
   };
 
   return (
-    <div className={cn("relative", className)}>
-      <div className="relative flex gap-2">
+    <div className={cn("relative w-full", className)}>
+      <div className="relative flex gap-2 w-full">
         {/* 검색 아이콘 (왼쪽) */}
         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
           {isSearching ? (
@@ -134,7 +134,7 @@ export function TourSearch({ className, placeholder = "관광지명, 주소, 설
           onChange={(e) => setKeyword(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className="pl-9 pr-9"
+          className="pl-9 pr-9 flex-1 min-w-0"
           disabled={isSearching}
           aria-label="검색어 입력"
         />
@@ -155,7 +155,7 @@ export function TourSearch({ className, placeholder = "관광지명, 주소, 설
         <Button
           onClick={handleSearch}
           disabled={isSearching}
-          className="shrink-0"
+          className="shrink-0 min-h-[44px] min-w-[44px]"
           aria-label="검색 실행"
         >
           {isSearching ? (

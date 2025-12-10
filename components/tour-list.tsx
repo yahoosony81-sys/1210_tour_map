@@ -141,15 +141,20 @@ export function TourList({
 
       {/* 추가 데이터 로딩 인디케이터 */}
       {isLoadingMore && (
-        <div className="mt-8 flex justify-center">
+        <div className="mt-8 flex flex-col items-center justify-center gap-2">
           <Loading size="medium" text="더 많은 관광지를 불러오는 중..." />
+          <p className="text-xs text-muted-foreground">
+            잠시만 기다려주세요...
+          </p>
         </div>
       )}
 
       {/* 더 이상 불러올 데이터가 없을 때 */}
-      {!hasMore && tours.length > 0 && (
-        <div className="mt-8 text-center text-sm text-muted-foreground">
-          모든 관광지를 불러왔습니다.
+      {!hasMore && tours.length > 0 && !isLoadingMore && (
+        <div className="mt-8 text-center">
+          <p className="text-sm text-muted-foreground">
+            모든 관광지를 불러왔습니다. ({tours.length}개)
+          </p>
         </div>
       )}
     </>

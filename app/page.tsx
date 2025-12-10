@@ -25,6 +25,7 @@ import { TourMapLayout } from "@/components/tour-map-layout";
 import { TourFilters } from "@/components/tour-filters";
 import { TourSearch } from "@/components/tour-search";
 import { Error } from "@/components/ui/error";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { ApiResponse } from "@/lib/api/tour-api";
 import { getAreaBasedList, searchKeyword } from "@/lib/api/tour-api";
 import { sortTours } from "@/lib/utils/tour-sort";
@@ -139,22 +140,22 @@ export default async function HomePage({
     const sortedTours = sortTours(tours, sort);
 
     return (
-      <main className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">전국 관광지</h1>
-          <p className="mt-2 text-muted-foreground">
+      <main className="container mx-auto px-4 py-4 md:px-4 md:py-8">
+        <div className="mb-4 md:mb-8">
+          <h1 className="text-2xl md:text-3xl font-bold">전국 관광지</h1>
+          <p className="mt-2 text-sm md:text-base text-muted-foreground">
             한국관광공사에서 제공하는 관광지 정보를 확인하세요
           </p>
         </div>
 
         {/* 검색 컴포넌트 */}
-        <div className="mb-6">
+        <div className="mb-4 md:mb-6">
           <TourSearch />
         </div>
 
         {/* 검색 결과 개수 표시 */}
         {keyword && (
-          <div className="mb-4 text-sm text-muted-foreground">
+          <div className="mb-3 md:mb-4 text-xs md:text-sm text-muted-foreground">
             검색 결과: <span className="font-medium text-foreground">{sortedTours.length}개</span>
             {keyword && (
               <>
@@ -166,7 +167,7 @@ export default async function HomePage({
         )}
 
         {/* 필터 컴포넌트 */}
-        <div className="mb-8">
+        <div className="mb-6 md:mb-8">
           <TourFilters />
         </div>
 
@@ -179,15 +180,40 @@ export default async function HomePage({
       </main>
     );
   } catch (error) {
-    // 에러 처리
-    const errorMessage =
-      error instanceof Error
-        ? error.message
-        : "관광지 정보를 불러오는 중 오류가 발생했습니다.";
+    // 에러 처리 - 사용자 친화적 메시지로 변환
+    let errorMessage = "관광지 정보를 불러오는 중 오류가 발생했습니다.";
+    let showRetry = false;
+
+    if (error instanceof Error) {
+      const message = error.message;
+
+      // API 키 관련 에러
+      if (message.includes("API 키") || message.includes("NEXT_PUBLIC_TOUR_API_KEY") || message.includes("TOUR_API_KEY")) {
+        errorMessage = "API 키가 설정되지 않았습니다. 환경변수를 확인해주세요.";
+      }
+      // 네트워크 에러
+      else if (message.includes("네트워크") || message.includes("fetch") || message.includes("Failed to fetch")) {
+        errorMessage = "네트워크 연결을 확인해주세요. 인터넷 연결이 불안정할 수 있습니다.";
+        showRetry = true;
+      }
+      // API 응답 에러
+      else if (message.includes("API") || message.includes("요청 실패")) {
+        errorMessage = "관광지 정보를 가져오는 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.";
+        showRetry = true;
+      }
+      // 기타 에러
+      else {
+        errorMessage = message;
+      }
+    }
 
     return (
       <main className="container mx-auto px-4 py-8">
-        <Error message={errorMessage} />
+        <Error 
+          message={errorMessage} 
+          onRetry={showRetry ? () => window.location.reload() : undefined}
+          retryText="다시 시도"
+        />
       </main>
     );
   }

@@ -123,6 +123,32 @@ export function NaverMap({
       return;
     }
 
+    // 스크립트가 이미 로드 중인지 확인
+    const existingScript = document.querySelector(
+      `script[src*="oapi.map.naver.com"]`
+    );
+    if (existingScript) {
+      // 스크립트가 이미 있으면 로드 완료를 기다림
+      const checkInterval = setInterval(() => {
+        if (window.naver && window.naver.maps) {
+          setIsScriptLoaded(true);
+          setIsLoading(false);
+          clearInterval(checkInterval);
+        }
+      }, 100);
+
+      // 최대 5초 대기
+      setTimeout(() => {
+        clearInterval(checkInterval);
+        if (!window.naver || !window.naver.maps) {
+          console.error("네이버 지도 API 스크립트 로드 시간 초과");
+          setIsLoading(false);
+        }
+      }, 5000);
+
+      return () => clearInterval(checkInterval);
+    }
+
     // 스크립트 동적 로드
     const script = document.createElement("script");
     script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${clientId}`;
@@ -406,12 +432,19 @@ export function NaverMap({
     return (
       <div
         className={cn(
-          "flex items-center justify-center bg-muted rounded-lg text-muted-foreground",
+          "flex flex-col items-center justify-center gap-2 bg-muted rounded-lg text-muted-foreground p-8",
           "h-[400px] md:h-[600px]",
           className
         )}
       >
-        <p>지도를 불러올 수 없습니다.</p>
+        <p className="text-center">
+          {!process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID
+            ? "지도 API 키가 설정되지 않았습니다."
+            : "지도를 불러올 수 없습니다."}
+        </p>
+        <p className="text-xs text-center">
+          지도 기능을 사용하려면 네이버 지도 API 키가 필요합니다.
+        </p>
       </div>
     );
   }
@@ -419,16 +452,16 @@ export function NaverMap({
   return (
     <div className={cn("relative w-full rounded-lg overflow-hidden", className)}>
       {/* 지도 컨트롤 버튼들 */}
-      <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
+      <div className="absolute top-2 right-2 md:top-4 md:right-4 z-10 flex flex-col gap-2">
         {/* 현재 위치 버튼 */}
         <Button
           variant="outline"
           size="sm"
           onClick={handleCurrentLocation}
-          className="bg-white/90 hover:bg-white"
+          className="bg-white/90 hover:bg-white min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0"
           title="현재 위치로 이동"
         >
-          <Navigation className="h-4 w-4" />
+          <Navigation className="h-4 w-4 md:h-4 md:w-4" />
         </Button>
 
         {/* 지도 유형 선택 버튼 */}
@@ -437,19 +470,19 @@ export function NaverMap({
             variant={mapType === "normal" ? "default" : "outline"}
             size="sm"
             onClick={() => handleMapTypeChange("normal")}
-            className="bg-white/90 hover:bg-white"
+            className="bg-white/90 hover:bg-white min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0"
             title="일반 지도"
           >
-            <MapIcon className="h-4 w-4" />
+            <MapIcon className="h-4 w-4 md:h-4 md:w-4" />
           </Button>
           <Button
             variant={mapType === "satellite" ? "default" : "outline"}
             size="sm"
             onClick={() => handleMapTypeChange("satellite")}
-            className="bg-white/90 hover:bg-white"
+            className="bg-white/90 hover:bg-white min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0"
             title="위성 지도"
           >
-            <Satellite className="h-4 w-4" />
+            <Satellite className="h-4 w-4 md:h-4 md:w-4" />
           </Button>
         </div>
       </div>
