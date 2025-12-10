@@ -742,9 +742,28 @@
       - [x] 운영 정보 섹션 다음에 배치 (이미지 갤러리 전)
       - [x] `contentId` prop 전달
       - [x] 데이터 없을 때는 스켈레톤 UI 표시하지 않고 컴포넌트 내부에서 빈 상태 처리
-- [ ] 추천 관광지 섹션 (선택 사항)
-  - [ ] 같은 지역 또는 타입의 다른 관광지 추천
-  - [ ] 카드 형태로 표시
+- [x] 추천 관광지 섹션 (선택 사항)
+  - [x] 같은 지역 또는 타입의 다른 관광지 추천
+  - [x] 카드 형태로 표시
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `components/tour-detail/detail-recommendations.tsx` 생성 (Server Component)
+      - [x] `getAreaBasedList()` API로 추천 관광지 조회
+      - [x] 같은 지역(`areaCode`) + 같은 타입(`contentTypeId`)으로 조회
+      - [x] 현재 관광지(`contentId`) 제외 필터링
+      - [x] 결과가 6개 미만이면 같은 지역만으로 조회 (타입 필터 제거)
+      - [x] 여전히 부족하면 같은 타입만으로 조회 (지역 필터 제거)
+      - [x] 최대 6개 추천 관광지 표시
+      - [x] `TourCard` 컴포넌트 재사용
+      - [x] 로딩 상태 처리 (Skeleton UI)
+      - [x] 에러 처리 (Error 컴포넌트)
+      - [x] 빈 상태 처리 (추천 관광지 없을 때 메시지)
+      - [x] 반응형 그리드 레이아웃 (모바일 1열, 태블릿 2열, 데스크톱 3열)
+    - [x] `app/places/[contentId]/page.tsx` 수정
+      - [x] `getAreaBasedList()` API로 현재 관광지 조회하여 `areacode` 추출
+      - [x] `DetailRecommendations` 컴포넌트 import 및 사용
+      - [x] 지도 섹션 다음에 배치 (페이지 하단)
+      - [x] `contentTypeId`가 있을 때만 표시 (조건부 렌더링, `areaCode`는 optional)
 - [ ] 최종 통합 및 스타일링
   - [ ] 모든 섹션 통합
   - [ ] 반응형 디자인 확인

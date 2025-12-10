@@ -28,9 +28,10 @@ import { DetailIntro } from "@/components/tour-detail/detail-intro";
 import { DetailPetTour } from "@/components/tour-detail/detail-pet-tour";
 import { DetailGallery } from "@/components/tour-detail/detail-gallery";
 import { DetailMap } from "@/components/tour-detail/detail-map";
+import { DetailRecommendations } from "@/components/tour-detail/detail-recommendations";
 import { ShareButton } from "@/components/tour-detail/share-button";
 import { BookmarkButton } from "@/components/bookmarks/bookmark-button";
-import { getDetailCommon } from "@/lib/api/tour-api";
+import { getDetailCommon, getAreaBasedList } from "@/lib/api/tour-api";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAbsoluteUrl, truncateText } from "@/lib/utils/url";
 import { ensureHttps } from "@/lib/utils/image";
@@ -175,8 +176,9 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
     );
   }
 
-  // contentTypeId 및 지도 데이터 획득을 위해 기본 정보 조회
+  // contentTypeId, areaCode 및 지도 데이터 획득을 위해 기본 정보 조회
   let contentTypeId: string | null = null;
+  let areaCode: string | null = null;
   let detailData: {
     title: string;
     address: string;
@@ -190,6 +192,25 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
     if (details && details.length > 0) {
       const detail = details[0];
       contentTypeId = detail.contenttypeid;
+      
+      // areaCode 추출 (추천 관광지용)
+      // TourDetail 타입에는 areacode가 없으므로 getAreaBasedList로 현재 관광지 조회
+      // 최적화: contentTypeId로 필터링하여 조회 범위 축소
+      try {
+        const currentTour = await getAreaBasedList({
+          contentTypeId: detail.contenttypeid,
+          numOfRows: 50, // 충분한 수 조회 (너무 많으면 API 응답 느려질 수 있음)
+          pageNo: 1,
+        });
+        const foundTour = currentTour.find((tour) => tour.contentid === contentId);
+        if (foundTour) {
+          areaCode = foundTour.areacode;
+        }
+      } catch (error) {
+        // areaCode 조회 실패해도 계속 진행 (추천 섹션은 선택적)
+        // areaCode가 없어도 같은 타입만으로 추천 가능
+        console.error("Failed to fetch areaCode:", error);
+      }
       
       // 지도 데이터 준비
       const address = detail.addr2
@@ -285,6 +306,15 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
           </div>
         </section>
       )}
+
+      {/* 추천 관광지 섹션 */}
+      {contentTypeId ? (
+        <DetailRecommendations
+          contentId={contentId}
+          areaCode={areaCode || undefined}
+          contentTypeId={contentTypeId}
+        />
+      ) : null}
 
       {/* 디버깅용: contentId 표시 (개발 중에만) */}
       {process.env.NODE_ENV === "development" && (
