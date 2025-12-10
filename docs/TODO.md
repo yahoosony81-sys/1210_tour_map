@@ -711,16 +711,37 @@
       - [x] 뒤로가기 버튼 옆에 북마크 버튼 배치 (공유 버튼과 함께)
       - [x] `contentId` prop 전달
       - [x] 레이아웃: 뒤로가기 버튼 (왼쪽) + 북마크 버튼 + 공유 버튼 (오른쪽)
-- [ ] 반려동물 정보 섹션 (MVP 2.5)
-  - [ ] `components/tour-detail/detail-pet-tour.tsx` 생성
-    - [ ] `getDetailPetTour()` API 연동
-    - [ ] 반려동물 동반 가능 여부 표시
-    - [ ] 반려동물 크기 제한 정보
-    - [ ] 반려동물 입장 가능 장소 (실내/실외)
-    - [ ] 반려동물 동반 추가 요금
-    - [ ] 반려동물 전용 시설 정보
-    - [ ] 아이콘 및 뱃지 디자인 (🐾)
-    - [ ] 주의사항 강조 표시
+- [x] 반려동물 정보 섹션 (MVP 2.5)
+  - [x] `components/tour-detail/detail-pet-tour.tsx` 생성
+    - [x] `getDetailPetTour()` API 연동
+    - [x] 반려동물 동반 가능 여부 표시
+    - [x] 반려동물 크기 제한 정보
+    - [x] 반려동물 입장 가능 장소 (실내/실외)
+    - [x] 반려동물 동반 추가 요금
+    - [x] 반려동물 전용 시설 정보
+    - [x] 아이콘 및 뱃지 디자인 (🐾)
+    - [x] 주의사항 강조 표시
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `components/tour-detail/detail-pet-tour.tsx` 생성 (Server Component)
+      - [x] `getDetailPetTour()` API 호출하여 반려동물 동반 정보 조회
+      - [x] 반려동물 동반 가능 여부 표시 (chkpetleash, Dog 아이콘)
+      - [x] 반려동물 크기 제한 정보 표시 (chkpetsize, PawPrint 아이콘)
+      - [x] 크기별 뱃지 디자인 구현 (소형/중형/대형/모든 크기별 색상 구분)
+      - [x] 입장 가능 장소 표시 (chkpetplace, MapPin 아이콘)
+      - [x] 반려동물 동반 추가 요금 표시 (chkpetfee, DollarSign 아이콘)
+      - [x] 주차장 정보 표시 (parking, Car 아이콘)
+      - [x] 기타 반려동물 정보 강조 표시 (petinfo, AlertCircle 아이콘, 노란색 배경)
+      - [x] HTML 태그 제거 처리 (stripHtmlTags 함수)
+      - [x] 정보 없는 항목 숨김 처리 (조건부 렌더링)
+      - [x] 에러 처리 (Error 컴포넌트 사용)
+      - [x] 데이터 없음 처리 (빈 상태 메시지)
+      - [x] 반응형 디자인 (모바일 1열, 데스크톱 2열 그리드)
+    - [x] `app/places/[contentId]/page.tsx` 수정
+      - [x] `DetailPetTour` 컴포넌트 import 및 사용
+      - [x] 운영 정보 섹션 다음에 배치 (이미지 갤러리 전)
+      - [x] `contentId` prop 전달
+      - [x] 데이터 없을 때는 스켈레톤 UI 표시하지 않고 컴포넌트 내부에서 빈 상태 처리
 - [ ] 추천 관광지 섹션 (선택 사항)
   - [ ] 같은 지역 또는 타입의 다른 관광지 추천
   - [ ] 카드 형태로 표시

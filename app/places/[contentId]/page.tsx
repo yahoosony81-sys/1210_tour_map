@@ -25,6 +25,7 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DetailInfo } from "@/components/tour-detail/detail-info";
 import { DetailIntro } from "@/components/tour-detail/detail-intro";
+import { DetailPetTour } from "@/components/tour-detail/detail-pet-tour";
 import { DetailGallery } from "@/components/tour-detail/detail-gallery";
 import { DetailMap } from "@/components/tour-detail/detail-map";
 import { ShareButton } from "@/components/tour-detail/share-button";
@@ -258,6 +259,9 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
           </div>
         </section>
       )}
+
+      {/* 반려동물 동반 정보 섹션 */}
+      <DetailPetTour contentId={contentId} />
 
       {/* 이미지 갤러리 섹션 */}
       <DetailGallery contentId={contentId} />
