@@ -21,6 +21,7 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DetailInfo } from "@/components/tour-detail/detail-info";
 import { DetailIntro } from "@/components/tour-detail/detail-intro";
+import { DetailGallery } from "@/components/tour-detail/detail-gallery";
 import { getDetailCommon } from "@/lib/api/tour-api";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -110,14 +111,7 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
       )}
 
       {/* 이미지 갤러리 섹션 */}
-      <section className="mb-8 border-b pb-8">
-        <h2 className="mb-4 text-xl font-semibold md:text-2xl">이미지 갤러리</h2>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {Array.from({ length: 4 }).map((_, index) => (
-            <Skeleton key={index} className="aspect-video w-full rounded-lg" />
-          ))}
-        </div>
-      </section>
+      <DetailGallery contentId={contentId} />
 
       {/* 지도 섹션 */}
       <section className="mb-8">

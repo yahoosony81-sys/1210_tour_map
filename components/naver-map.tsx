@@ -236,21 +236,34 @@ export function NaverMap({
 
         // 관광 타입별 마커 색상 가져오기
         const markerColor = getMarkerColor(tour.contenttypeid);
-        const markerHTML = createHTMLMarker(markerColor, tour.title);
-
-        // HTML 마커 아이콘 생성
-        const htmlIcon = new maps.HtmlIcon({
-          html: markerHTML,
-          anchor: new maps.Point(16, 16), // 마커 중심점
-        });
-
-        // 마커 생성
-        const marker = new maps.Marker({
-          position: position,
-          map: map,
-          title: tour.title,
-          icon: htmlIcon,
-        });
+        
+        let marker;
+        
+        // HtmlIcon이 사용 가능한지 확인
+        if (maps.HtmlIcon && typeof maps.HtmlIcon === 'function') {
+          // HtmlIcon이 있으면 커스텀 HTML 마커 사용
+          const markerHTML = createHTMLMarker(markerColor, tour.title);
+          
+          const htmlIcon = new maps.HtmlIcon({
+            html: markerHTML,
+            anchor: new maps.Point(16, 16), // 마커 중심점
+          });
+          
+          marker = new maps.Marker({
+            position: position,
+            map: map,
+            title: tour.title,
+            icon: htmlIcon,
+          });
+        } else {
+          // HtmlIcon이 없으면 일반 마커 사용 (기본 마커)
+          console.warn('HtmlIcon을 사용할 수 없어 기본 마커를 사용합니다.');
+          marker = new maps.Marker({
+            position: position,
+            map: map,
+            title: tour.title,
+          });
+        }
 
         // 인포윈도우 생성
         const address = tour.addr2 ? `${tour.addr1} ${tour.addr2}` : tour.addr1;

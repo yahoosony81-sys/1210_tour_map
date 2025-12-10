@@ -507,14 +507,42 @@
       - [x] `DetailIntro` 컴포넌트 import 및 사용
       - [x] 운영 정보 섹션의 스켈레톤 UI를 `DetailIntro` 컴포넌트로 교체
       - [x] `contentTypeId`가 없을 때는 스켈레톤 UI 유지 (fallback)
-- [ ] 이미지 갤러리 (MVP 2.4.3)
-  - [ ] `components/tour-detail/detail-gallery.tsx` 생성
-    - [ ] `getDetailImage()` API 연동
-    - [ ] 대표 이미지 + 서브 이미지들
-    - [ ] 이미지 슬라이드 기능 (Swiper 또는 캐러셀)
-    - [ ] 이미지 클릭 시 전체화면 모달
-    - [ ] 이미지 없으면 기본 이미지
-    - [ ] Next.js Image 컴포넌트 사용 (최적화)
+- [x] 이미지 갤러리 (MVP 2.4.3)
+  - [x] `components/tour-detail/detail-gallery.tsx` 생성
+    - [x] `getDetailImage()` API 연동
+    - [x] 대표 이미지 + 서브 이미지들
+    - [x] 이미지 슬라이드 기능 (Swiper 또는 캐러셀)
+    - [x] 이미지 클릭 시 전체화면 모달
+    - [x] 이미지 없으면 기본 이미지
+    - [x] Next.js Image 컴포넌트 사용 (최적화)
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `components/tour-detail/detail-gallery.tsx` 생성 (Server Component)
+      - [x] `getDetailImage()` API 호출하여 관광지 이미지 목록 조회
+      - [x] 이미지 데이터 파싱 및 유효성 검사 (`originimgurl` 우선, 없으면 `smallimageurl` 사용)
+      - [x] `ensureHttps()` 유틸리티로 HTTPS 변환
+      - [x] `isValidImageUrl()`로 유효한 URL만 필터링
+      - [x] 이미지 없을 때 빈 상태 메시지 표시
+      - [x] 에러 처리 (Error 컴포넌트 사용)
+      - [x] `ImageGalleryClient` Client Component로 이미지 표시 위임
+    - [x] `components/tour-detail/image-gallery-client.tsx` 생성 (Client Component)
+      - [x] 이미지 그리드 레이아웃 표시 (반응형: 모바일 2열, 태블릿 3열, 데스크톱 4열)
+      - [x] 이미지 클릭 시 전체화면 모달 열기 (`ImageModal` 컴포넌트)
+      - [x] Next.js Image 컴포넌트 사용 (최적화, lazy loading)
+      - [x] 호버 효과 (scale, cursor pointer)
+      - [x] 접근성 개선 (aria-label, focus ring)
+    - [x] `components/tour-detail/image-modal.tsx` 생성 (Client Component)
+      - [x] 전체화면 이미지 뷰어 모달 (shadcn/ui Dialog 컴포넌트 사용)
+      - [x] 이미지 슬라이드 기능 (이전/다음 버튼)
+      - [x] 키보드 네비게이션 (좌우 화살표 키, ESC 키)
+      - [x] 이미지 인덱스 표시 (예: "1 / 5")
+      - [x] 닫기 버튼 (X 버튼)
+      - [x] 첫 번째/마지막 이미지에서 버튼 비활성화
+      - [x] 모달 오버레이 클릭 시 닫기
+    - [x] `app/places/[contentId]/page.tsx` 수정
+      - [x] `DetailGallery` 컴포넌트 import 및 사용
+      - [x] 기존 스켈레톤 UI를 `DetailGallery` 컴포넌트로 교체
+      - [x] 이미지 갤러리 섹션에 컴포넌트 배치
 - [ ] 지도 섹션 (MVP 2.4.4)
   - [ ] `components/tour-detail/detail-map.tsx` 생성
     - [ ] 해당 관광지 위치 표시

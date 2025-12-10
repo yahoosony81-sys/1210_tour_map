@@ -28,6 +28,7 @@ import { Phone, ExternalLink } from "lucide-react";
 import { getDetailCommon } from "@/lib/api/tour-api";
 import type { TourDetail } from "@/lib/types/tour";
 import { getContentTypeName } from "@/lib/types/tour";
+import { ensureHttps } from "@/lib/utils/image";
 import { CopyAddressButton } from "./copy-address-button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Error } from "@/components/ui/error";
@@ -92,7 +93,8 @@ export async function DetailInfo({ contentId }: DetailInfoProps) {
   }
 
   // 데이터 파싱
-  const imageUrl = detail.firstimage || detail.firstimage2 || DEFAULT_IMAGE;
+  const rawImageUrl = detail.firstimage || detail.firstimage2 || DEFAULT_IMAGE;
+  const imageUrl = ensureHttps(rawImageUrl);
   const address = detail.addr2
     ? `${detail.addr1} ${detail.addr2}`
     : detail.addr1;

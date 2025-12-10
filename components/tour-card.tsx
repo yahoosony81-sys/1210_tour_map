@@ -21,6 +21,7 @@ import Link from "next/link";
 import type { TourItem } from "@/lib/types/tour";
 import { getContentTypeName } from "@/lib/types/tour";
 import { cn } from "@/lib/utils";
+import { ensureHttps } from "@/lib/utils/image";
 
 interface TourCardProps {
   /** 관광지 정보 */
@@ -49,7 +50,8 @@ export function TourCard({
   onHover,
   className,
 }: TourCardProps) {
-  const imageUrl = tour.firstimage || DEFAULT_IMAGE;
+  const rawImageUrl = tour.firstimage || DEFAULT_IMAGE;
+  const imageUrl = ensureHttps(rawImageUrl);
   const contentTypeName = getContentTypeName(tour.contenttypeid);
   const address = tour.addr2 ? `${tour.addr1} ${tour.addr2}` : tour.addr1;
 
