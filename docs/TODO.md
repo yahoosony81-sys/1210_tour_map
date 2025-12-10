@@ -112,18 +112,50 @@
     - [x] `getDetailIntro()` 반환 타입을 `TourIntro[]`로 변경
     - [x] `getDetailImage()` 반환 타입을 `TourImage[]`로 변경
     - [x] `getDetailPetTour()` 반환 타입을 `PetTourInfo[]`로 변경
-- [ ] 레이아웃 구조
-  - [ ] `app/layout.tsx` 업데이트
-    - [ ] 메타데이터 설정
-    - [ ] 헤더/푸터 구조 확인
-  - [ ] `components/Navbar.tsx` 업데이트
-    - [ ] 로고, 검색창, 로그인 버튼
-    - [ ] 네비게이션 링크 (홈, 통계, 북마크)
-- [ ] 공통 컴포넌트
-  - [ ] `components/ui/loading.tsx` - 로딩 스피너
-  - [ ] `components/ui/skeleton.tsx` - 스켈레톤 UI
-  - [ ] `components/ui/error.tsx` - 에러 메시지
-  - [ ] `components/ui/toast.tsx` - 토스트 알림 (shadcn/ui)
+- [x] 레이아웃 구조
+  - [x] `app/layout.tsx` 업데이트
+    - [x] 메타데이터 설정
+    - [x] 헤더/푸터 구조 확인
+  - [x] `components/Navbar.tsx` 업데이트
+    - [x] 로고, 검색창, 로그인 버튼
+    - [x] 네비게이션 링크 (홈, 통계, 북마크)
+- [x] 공통 컴포넌트
+  - [x] `components/ui/loading.tsx` - 로딩 스피너
+  - [x] `components/ui/skeleton.tsx` - 스켈레톤 UI
+  - [x] `components/ui/error.tsx` - 에러 메시지
+  - [x] `components/ui/toast.tsx` - 토스트 알림 (shadcn/ui)
+  ---
+  - [x] RootLayout 업데이트 (`app/layout.tsx`)
+    - [x] 메타데이터 설정 (title, description, Open Graph, Twitter Card, keywords)
+    - [x] `dynamic = 'force-dynamic'` 추가 (ClerkProvider 사용)
+    - [x] Footer 컴포넌트 추가
+    - [x] 레이아웃 구조 개선 (flex min-h-screen flex-col)
+  - [x] Navbar 컴포넌트 업데이트 (`components/Navbar.tsx`)
+    - [x] 로고를 "My Trip"으로 변경
+    - [x] 검색 아이콘 버튼 추가 (모바일)
+    - [x] 네비게이션 링크 추가 (홈, 통계, 북마크)
+    - [x] 활성 링크 스타일링 (usePathname 사용)
+    - [x] 반응형 디자인 구현 (데스크톱/모바일)
+    - [x] sticky 헤더 구현
+  - [x] Footer 컴포넌트 생성 (`components/Footer.tsx`)
+    - [x] 저작권 정보 표시
+    - [x] 한국관광공사 API 제공 표시
+    - [x] 반응형 디자인 구현
+  - [x] 로딩 스피너 컴포넌트 (`components/ui/loading.tsx`)
+    - [x] Loader2 아이콘 사용
+    - [x] 크기 옵션 (small, medium, large)
+    - [x] 색상 옵션 (primary, secondary, muted)
+    - [x] 텍스트 옵션 지원
+  - [x] 스켈레톤 UI 컴포넌트 (`components/ui/skeleton.tsx`)
+    - [x] shadcn/ui skeleton 컴포넌트 설치
+  - [x] 에러 메시지 컴포넌트 (`components/ui/error.tsx`)
+    - [x] AlertCircle 아이콘 사용
+    - [x] 재시도 버튼 지원
+    - [x] 크기 옵션 지원
+  - [x] 토스트 알림 컴포넌트 (`components/ui/toast.tsx`)
+    - [x] shadcn/ui sonner 설치
+    - [x] toast 함수 export
+    - [x] Toaster를 RootLayout에 추가
 
 ## Phase 2: 홈페이지 (`/`) - 관광지 목록
 
