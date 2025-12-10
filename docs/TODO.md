@@ -603,20 +603,61 @@
       - [x] 길찾기 버튼 크기: 모바일 최소 44x44px (터치 영역)
       - [x] 좌표 정보 영역: 모바일 세로 배치, 데스크톱 가로 배치
       - [x] 반응형 레이아웃 (flex-col sm:flex-row)
-- [ ] 공유 기능 (MVP 2.4.5)
-  - [ ] `components/tour-detail/share-button.tsx` 생성
-    - [ ] URL 복사 기능
-      - [ ] `navigator.clipboard.writeText()` 사용
-      - [ ] HTTPS 환경 확인
-    - [ ] 복사 완료 토스트 메시지
-    - [ ] 공유 아이콘 버튼 (Share/Link 아이콘)
-  - [ ] Open Graph 메타태그
-    - [ ] `app/places/[contentId]/page.tsx`에 Metadata 생성
-    - [ ] `og:title` - 관광지명
-    - [ ] `og:description` - 관광지 설명 (100자 이내)
-    - [ ] `og:image` - 대표 이미지 (1200x630 권장)
-    - [ ] `og:url` - 상세페이지 URL
-    - [ ] `og:type` - "website"
+- [x] 공유 기능 (MVP 2.4.5)
+  - [x] `components/tour-detail/share-button.tsx` 생성
+    - [x] URL 복사 기능
+      - [x] `navigator.clipboard.writeText()` 사용
+      - [x] HTTPS 환경 확인
+    - [x] 복사 완료 토스트 메시지
+    - [x] 공유 아이콘 버튼 (Share/Link 아이콘)
+  - [x] Open Graph 메타태그
+    - [x] `app/places/[contentId]/page.tsx`에 Metadata 생성
+    - [x] `og:title` - 관광지명
+    - [x] `og:description` - 관광지 설명 (100자 이내)
+    - [x] `og:image` - 대표 이미지 (1200x630 권장)
+    - [x] `og:url` - 상세페이지 URL
+    - [x] `og:type` - "website"
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] URL 유틸리티 함수 생성 (`lib/utils/url.ts`)
+      - [x] `getAbsoluteUrl()` 함수 구현 (상대 경로를 절대 URL로 변환)
+      - [x] 환경변수 `NEXT_PUBLIC_APP_URL` 또는 `headers()`의 `host` 사용
+      - [x] `truncateText()` 함수 구현 (텍스트 100자 이내로 자르기, HTML 태그 제거)
+    - [x] 공유 버튼 컴포넌트 생성 (`components/tour-detail/share-button.tsx`)
+      - [x] Client Component로 구현 (`"use client"`)
+      - [x] 클립보드 API 사용 (`navigator.clipboard.writeText()`)
+      - [x] HTTPS 환경 확인 및 fallback 처리 (기존 `CopyAddressButton` 패턴 참고)
+      - [x] 복사 완료 상태 표시 (Check 아이콘, "복사됨" 텍스트)
+      - [x] 복사 완료 토스트 메시지 (`toast.success`)
+      - [x] 에러 처리 (`toast.error`)
+      - [x] 2초 후 복사 상태 자동 초기화
+      - [x] Share2 아이콘 사용 (lucide-react)
+      - [x] shadcn/ui Button 컴포넌트 사용
+      - [x] 반응형 디자인 (모바일 최소 44x44px 터치 영역)
+      - [x] 접근성 개선 (aria-label)
+    - [x] Open Graph 메타태그 동적 생성 (`app/places/[contentId]/page.tsx`)
+      - [x] Next.js 15의 `generateMetadata` 함수 구현
+      - [x] `getDetailCommon()` API 호출하여 관광지 정보 조회
+      - [x] 동적 메타데이터 생성
+      - [x] `og:title` - 관광지명 (`detail.title`)
+      - [x] `og:description` - 관광지 설명 (`detail.overview`에서 100자 이내 추출, HTML 태그 제거)
+      - [x] `og:image` - 대표 이미지 (`detail.firstimage` 또는 `detail.firstimage2`, HTTPS 변환)
+      - [x] `og:url` - 상세페이지 URL (절대 URL 생성)
+      - [x] `og:type` - "website"
+      - [x] `twitter:card` - "summary_large_image"
+      - [x] `twitter:title` - 관광지명
+      - [x] `twitter:description` - 관광지 설명
+      - [x] `twitter:image` - 대표 이미지
+      - [x] 에러 처리 (API 호출 실패 시 기본 메타데이터 반환)
+      - [x] 이미지 없을 때 기본 이미지 사용 (`/og-image.png`)
+      - [x] `stripHtmlTags()` 함수 사용 (HTML 태그 제거)
+      - [x] `ensureHttps()` 함수 사용 (이미지 URL HTTPS 변환)
+      - [x] `truncateText()` 함수 사용 (설명 텍스트 100자 이내로 자르기)
+    - [x] 상세페이지에 공유 버튼 추가 (`app/places/[contentId]/page.tsx`)
+      - [x] `ShareButton` 컴포넌트 import 및 사용
+      - [x] 뒤로가기 버튼 옆에 배치 (flex 레이아웃)
+      - [x] 현재 URL을 prop으로 전달 (`getAbsoluteUrl()` 함수 사용)
+      - [x] Server Component에서 `headers()` 사용하여 호스트 정보 가져오기
 - [ ] 북마크 기능 (MVP 2.4.5)
   - [ ] `components/bookmarks/bookmark-button.tsx` 생성
     - [ ] 별 아이콘 (채워짐/비어있음)
