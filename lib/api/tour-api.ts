@@ -19,9 +19,19 @@
  * @dependencies
  * - Next.js 15 (환경변수 처리)
  * - Fetch API (네이티브)
+ * - @/lib/types/tour - 관광지 타입 정의
  *
  * @see {@link /docs/PRD.md} - API 명세 및 요구사항
  */
+
+import type {
+  AreaCode,
+  TourItem,
+  TourDetail,
+  TourIntro,
+  TourImage,
+  PetTourInfo,
+} from "@/lib/types/tour";
 
 // =====================================================
 // 상수 정의
@@ -232,13 +242,13 @@ async function callApi<T>(
  * @param areaCode - 시/도 코드 (선택, 없으면 전체 지역 조회)
  * @returns 지역 코드 목록
  */
-export async function getAreaCode(areaCode?: string) {
+export async function getAreaCode(areaCode?: string): Promise<AreaCode[]> {
   const params: Record<string, string | undefined> = {};
   if (areaCode) {
     params.areaCode = areaCode;
   }
 
-  return callApi<Array<{ code: string; name: string }>>("/areaCode2", params);
+  return callApi<AreaCode[]>("/areaCode2", params);
 }
 
 /**
@@ -255,7 +265,7 @@ export async function getAreaBasedList(options: {
   contentTypeId?: string;
   numOfRows?: number;
   pageNo?: number;
-} = {}) {
+} = {}): Promise<TourItem[]> {
   const params: Record<string, string | number | undefined> = {
     areaCode: options.areaCode,
     contentTypeId: options.contentTypeId,
@@ -263,25 +273,7 @@ export async function getAreaBasedList(options: {
     pageNo: options.pageNo || DEFAULT_PAGE_NO,
   };
 
-  return callApi<
-    Array<{
-      addr1: string;
-      addr2?: string;
-      areacode: string;
-      contentid: string;
-      contenttypeid: string;
-      title: string;
-      mapx: string;
-      mapy: string;
-      firstimage?: string;
-      firstimage2?: string;
-      tel?: string;
-      cat1?: string;
-      cat2?: string;
-      cat3?: string;
-      modifiedtime: string;
-    }>
-  >("/areaBasedList2", params);
+  return callApi<TourItem[]>("/areaBasedList2", params);
 }
 
 /**
@@ -302,7 +294,7 @@ export async function searchKeyword(
     numOfRows?: number;
     pageNo?: number;
   } = {}
-) {
+): Promise<TourItem[]> {
   if (!keyword || keyword.trim().length === 0) {
     throw new TourApiError("검색 키워드를 입력해주세요.");
   }
@@ -315,25 +307,7 @@ export async function searchKeyword(
     pageNo: options.pageNo || DEFAULT_PAGE_NO,
   };
 
-  return callApi<
-    Array<{
-      addr1: string;
-      addr2?: string;
-      areacode: string;
-      contentid: string;
-      contenttypeid: string;
-      title: string;
-      mapx: string;
-      mapy: string;
-      firstimage?: string;
-      firstimage2?: string;
-      tel?: string;
-      cat1?: string;
-      cat2?: string;
-      cat3?: string;
-      modifiedtime: string;
-    }>
-  >("/searchKeyword2", params);
+  return callApi<TourItem[]>("/searchKeyword2", params);
 }
 
 /**
@@ -341,7 +315,7 @@ export async function searchKeyword(
  * @param contentId - 콘텐츠 ID (필수)
  * @returns 관광지 상세 정보
  */
-export async function getDetailCommon(contentId: string) {
+export async function getDetailCommon(contentId: string): Promise<TourDetail[]> {
   if (!contentId || contentId.trim().length === 0) {
     throw new TourApiError("콘텐츠 ID를 입력해주세요.");
   }
@@ -350,23 +324,7 @@ export async function getDetailCommon(contentId: string) {
     contentId: contentId.trim(),
   };
 
-  return callApi<
-    Array<{
-      contentid: string;
-      contenttypeid: string;
-      title: string;
-      addr1: string;
-      addr2?: string;
-      zipcode?: string;
-      tel?: string;
-      homepage?: string;
-      overview?: string;
-      firstimage?: string;
-      firstimage2?: string;
-      mapx: string;
-      mapy: string;
-    }>
-  >("/detailCommon2", params);
+  return callApi<TourDetail[]>("/detailCommon2", params);
 }
 
 /**
@@ -375,7 +333,10 @@ export async function getDetailCommon(contentId: string) {
  * @param contentTypeId - 콘텐츠 타입 ID (필수)
  * @returns 운영 정보
  */
-export async function getDetailIntro(contentId: string, contentTypeId: string) {
+export async function getDetailIntro(
+  contentId: string,
+  contentTypeId: string
+): Promise<TourIntro[]> {
   if (!contentId || contentId.trim().length === 0) {
     throw new TourApiError("콘텐츠 ID를 입력해주세요.");
   }
@@ -388,18 +349,7 @@ export async function getDetailIntro(contentId: string, contentTypeId: string) {
     contentTypeId: contentTypeId.trim(),
   };
 
-  return callApi<
-    Array<{
-      contentid: string;
-      contenttypeid: string;
-      usetime?: string;
-      restdate?: string;
-      infocenter?: string;
-      parking?: string;
-      chkpet?: string;
-      [key: string]: string | undefined;
-    }>
-  >("/detailIntro2", params);
+  return callApi<TourIntro[]>("/detailIntro2", params);
 }
 
 /**
@@ -407,7 +357,7 @@ export async function getDetailIntro(contentId: string, contentTypeId: string) {
  * @param contentId - 콘텐츠 ID (필수)
  * @returns 이미지 목록
  */
-export async function getDetailImage(contentId: string) {
+export async function getDetailImage(contentId: string): Promise<TourImage[]> {
   if (!contentId || contentId.trim().length === 0) {
     throw new TourApiError("콘텐츠 ID를 입력해주세요.");
   }
@@ -416,14 +366,7 @@ export async function getDetailImage(contentId: string) {
     contentId: contentId.trim(),
   };
 
-  return callApi<
-    Array<{
-      contentid: string;
-      originimgurl?: string;
-      serialnum?: string;
-      smallimageurl?: string;
-    }>
-  >("/detailImage2", params);
+  return callApi<TourImage[]>("/detailImage2", params);
 }
 
 /**
@@ -431,7 +374,7 @@ export async function getDetailImage(contentId: string) {
  * @param contentId - 콘텐츠 ID (필수)
  * @returns 반려동물 동반 정보
  */
-export async function getDetailPetTour(contentId: string) {
+export async function getDetailPetTour(contentId: string): Promise<PetTourInfo[]> {
   if (!contentId || contentId.trim().length === 0) {
     throw new TourApiError("콘텐츠 ID를 입력해주세요.");
   }
@@ -440,17 +383,6 @@ export async function getDetailPetTour(contentId: string) {
     contentId: contentId.trim(),
   };
 
-  return callApi<
-    Array<{
-      contentid: string;
-      contenttypeid: string;
-      chkpetleash?: string;
-      chkpetsize?: string;
-      chkpetplace?: string;
-      chkpetfee?: string;
-      petinfo?: string;
-      parking?: string;
-    }>
-  >("/detailPetTour2", params);
+  return callApi<PetTourInfo[]>("/detailPetTour2", params);
 }
 

@@ -74,17 +74,44 @@
     - [x] 모든 함수에 TypeScript 타입 정의
     - [x] 파라미터 타입 검증 (필수 파라미터 체크)
     - [x] 반환 타입 명시
-- [ ] 타입 정의
-  - [ ] `lib/types/tour.ts` 생성
-    - [ ] `TourItem` 인터페이스 (목록)
-    - [ ] `TourDetail` 인터페이스 (상세)
-    - [ ] `TourIntro` 인터페이스 (운영정보)
-    - [ ] `TourImage` 인터페이스 (이미지)
-    - [ ] `PetTourInfo` 인터페이스 (반려동물)
-  - [ ] `lib/types/stats.ts` 생성
-    - [ ] `RegionStats` 인터페이스
-    - [ ] `TypeStats` 인터페이스
-    - [ ] `StatsSummary` 인터페이스
+- [x] 타입 정의
+  - [x] `lib/types/tour.ts` 생성
+    - [x] `TourItem` 인터페이스 (목록)
+    - [x] `TourDetail` 인터페이스 (상세)
+    - [x] `TourIntro` 인터페이스 (운영정보)
+    - [x] `TourImage` 인터페이스 (이미지)
+    - [x] `PetTourInfo` 인터페이스 (반려동물)
+  - [x] `lib/types/stats.ts` 생성
+    - [x] `RegionStats` 인터페이스
+    - [x] `TypeStats` 인터페이스
+    - [x] `StatsSummary` 인터페이스
+  ---
+  - [x] 관광지 타입 정의 (`lib/types/tour.ts`)
+    - [x] `AreaCode` 인터페이스 - 지역 코드 정보
+    - [x] `TourItem` 인터페이스 - 관광지 목록 항목 (areaBasedList2, searchKeyword2)
+    - [x] `TourDetail` 인터페이스 - 관광지 상세 정보 (detailCommon2)
+    - [x] `TourIntro` 인터페이스 - 관광지 운영 정보 (detailIntro2)
+    - [x] `TourImage` 인터페이스 - 관광지 이미지 정보 (detailImage2)
+    - [x] `PetTourInfo` 인터페이스 - 반려동물 동반 정보 (detailPetTour2)
+    - [x] `CONTENT_TYPE_ID` 상수 정의 - 관광 타입 ID 상수
+    - [x] `ContentTypeId` 타입 정의
+    - [x] `CONTENT_TYPE_NAME` 매핑 객체 - 타입 ID와 이름 매핑
+    - [x] `convertKATECToWGS84()` 유틸리티 함수 - 좌표 변환
+    - [x] `getContentTypeName()` 유틸리티 함수 - 타입명 가져오기
+  - [x] 통계 타입 정의 (`lib/types/stats.ts`)
+    - [x] `RegionStats` 인터페이스 - 지역별 관광지 통계
+    - [x] `TypeStats` 인터페이스 - 타입별 관광지 통계
+    - [x] `StatsSummary` 인터페이스 - 통계 요약 정보
+    - [x] `StatsData` 인터페이스 - 통계 데이터 집계 결과
+  - [x] API 클라이언트 타입 적용
+    - [x] `lib/api/tour-api.ts`에 타입 import 추가
+    - [x] `getAreaCode()` 반환 타입을 `AreaCode[]`로 변경
+    - [x] `getAreaBasedList()` 반환 타입을 `TourItem[]`로 변경
+    - [x] `searchKeyword()` 반환 타입을 `TourItem[]`로 변경
+    - [x] `getDetailCommon()` 반환 타입을 `TourDetail[]`로 변경
+    - [x] `getDetailIntro()` 반환 타입을 `TourIntro[]`로 변경
+    - [x] `getDetailImage()` 반환 타입을 `TourImage[]`로 변경
+    - [x] `getDetailPetTour()` 반환 타입을 `PetTourInfo[]`로 변경
 - [ ] 레이아웃 구조
   - [ ] `app/layout.tsx` 업데이트
     - [ ] 메타데이터 설정
