@@ -19,6 +19,7 @@
 
 import { TourCard } from "@/components/tour-card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Loading } from "@/components/ui/loading";
 import type { TourItem } from "@/lib/types/tour";
 import { cn } from "@/lib/utils";
 
@@ -35,6 +36,10 @@ interface TourListProps {
   onTourSelect?: (contentId: string) => void;
   /** 관광지 호버 핸들러 (지도 연동용) */
   onTourHover?: (contentId: string | null) => void;
+  /** 추가 데이터 로딩 중 여부 (무한 스크롤) */
+  isLoadingMore?: boolean;
+  /** 더 불러올 데이터가 있는지 여부 */
+  hasMore?: boolean;
   /** 추가 클래스명 */
   className?: string;
 }
@@ -85,6 +90,8 @@ export function TourList({
   selectedContentId,
   onTourSelect,
   onTourHover,
+  isLoadingMore = false,
+  hasMore = false,
   className,
 }: TourListProps) {
   // 로딩 상태
@@ -114,22 +121,38 @@ export function TourList({
 
   // 목록 표시
   return (
-    <div
-      className={cn(
-        "grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3",
-        className
+    <>
+      <div
+        className={cn(
+          "grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3",
+          className
+        )}
+      >
+        {tours.map((tour) => (
+          <TourCard
+            key={tour.contentid}
+            tour={tour}
+            isSelected={selectedContentId === tour.contentid}
+            onSelect={onTourSelect}
+            onHover={onTourHover}
+          />
+        ))}
+      </div>
+
+      {/* 추가 데이터 로딩 인디케이터 */}
+      {isLoadingMore && (
+        <div className="mt-8 flex justify-center">
+          <Loading size="medium" text="더 많은 관광지를 불러오는 중..." />
+        </div>
       )}
-    >
-      {tours.map((tour) => (
-        <TourCard
-          key={tour.contentid}
-          tour={tour}
-          isSelected={selectedContentId === tour.contentid}
-          onSelect={onTourSelect}
-          onHover={onTourHover}
-        />
-      ))}
-    </div>
+
+      {/* 더 이상 불러올 데이터가 없을 때 */}
+      {!hasMore && tours.length > 0 && (
+        <div className="mt-8 text-center text-sm text-muted-foreground">
+          모든 관광지를 불러왔습니다.
+        </div>
+      )}
+    </>
   );
 }
 

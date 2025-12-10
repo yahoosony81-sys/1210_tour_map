@@ -356,12 +356,33 @@
     - [x] 홈페이지 레이아웃 수정
       - [x] `app/page.tsx`에서 `TourList` 대신 `TourMapLayout` 사용
       - [x] 리스트와 지도를 함께 표시하는 레이아웃으로 변경
-- [ ] 페이지네이션
-  - [ ] 무한 스크롤 구현
-    - [ ] Intersection Observer 사용
-    - [ ] 하단 로딩 인디케이터
-    - [ ] 페이지당 10-20개 항목
-  - [ ] 또는 페이지 번호 선택 방식
+- [x] 페이지네이션
+  - [x] 무한 스크롤 구현
+    - [x] Intersection Observer 사용
+    - [x] 하단 로딩 인디케이터
+    - [x] 페이지당 10-20개 항목
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] Server Action 생성 (`actions/tour-actions.ts`)
+      - [x] `loadMoreTours()` 함수 구현
+      - [x] `totalCount` 포함하여 API 응답 처리
+      - [x] `hasMore` 계산 로직 (`(pageNo * numOfRows) < totalCount`)
+      - [x] 검색/필터 옵션 지원
+      - [x] 정렬 옵션 적용
+    - [x] `TourMapLayout` 컴포넌트 수정
+      - [x] 페이지네이션 상태 추가 (`currentPage`, `isLoadingMore`, `hasMore`, `allTours`)
+      - [x] Intersection Observer 설정 (하단 100px 전에 미리 로드)
+      - [x] 하단 감지 요소 (`sentinelRef`) 추가
+      - [x] 필터/검색 변경 시 페이지 리셋 (`useEffect`)
+      - [x] `useSearchParams`로 필터 파라미터 추출
+    - [x] `TourList` 컴포넌트 수정
+      - [x] `isLoadingMore`, `hasMore` prop 추가
+      - [x] 추가 데이터 로딩 인디케이터 표시
+      - [x] 더 이상 불러올 데이터가 없을 때 메시지 표시
+    - [x] `app/page.tsx` 수정
+      - [x] `totalCount` 포함하여 API 응답 처리
+      - [x] `TourMapLayout`에 `initialTotalCount` prop 전달
+      - [x] 초기 데이터에 `totalCount` 정보 포함
 - [ ] 최종 통합 및 스타일링
   - [ ] 모든 기능 통합 테스트
   - [ ] 반응형 디자인 확인 (모바일/태블릿/데스크톱)
