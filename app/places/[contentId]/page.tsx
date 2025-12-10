@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { DetailInfo } from "@/components/tour-detail/detail-info";
 import { DetailIntro } from "@/components/tour-detail/detail-intro";
 import { DetailGallery } from "@/components/tour-detail/detail-gallery";
+import { DetailMap } from "@/components/tour-detail/detail-map";
 import { getDetailCommon } from "@/lib/api/tour-api";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -56,12 +57,34 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
     );
   }
 
-  // contentTypeId 획득을 위해 기본 정보 조회
+  // contentTypeId 및 지도 데이터 획득을 위해 기본 정보 조회
   let contentTypeId: string | null = null;
+  let detailData: {
+    title: string;
+    address: string;
+    mapx: string;
+    mapy: string;
+    contentTypeId?: string;
+  } | null = null;
+
   try {
     const details = await getDetailCommon(contentId);
     if (details && details.length > 0) {
-      contentTypeId = details[0].contenttypeid;
+      const detail = details[0];
+      contentTypeId = detail.contenttypeid;
+      
+      // 지도 데이터 준비
+      const address = detail.addr2
+        ? `${detail.addr1} ${detail.addr2}`
+        : detail.addr1;
+      
+      detailData = {
+        title: detail.title,
+        address: address,
+        mapx: detail.mapx,
+        mapy: detail.mapy,
+        contentTypeId: detail.contenttypeid,
+      };
     }
   } catch (error) {
     // 에러가 발생해도 기본 정보 섹션은 표시 (DetailInfo에서 에러 처리)
@@ -114,13 +137,24 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
       <DetailGallery contentId={contentId} />
 
       {/* 지도 섹션 */}
-      <section className="mb-8">
-        <h2 className="mb-4 text-xl font-semibold md:text-2xl">위치</h2>
-        <Skeleton className="h-64 w-full rounded-lg md:h-96" />
-        <div className="mt-4">
-          <Skeleton className="h-10 w-32" />
-        </div>
-      </section>
+      {detailData ? (
+        <DetailMap
+          contentId={contentId}
+          title={detailData.title}
+          address={detailData.address}
+          mapx={detailData.mapx}
+          mapy={detailData.mapy}
+          contentTypeId={detailData.contentTypeId}
+        />
+      ) : (
+        <section className="mb-8">
+          <h2 className="mb-4 text-xl font-semibold md:text-2xl">위치</h2>
+          <Skeleton className="h-64 w-full rounded-lg md:h-96" />
+          <div className="mt-4">
+            <Skeleton className="h-10 w-32" />
+          </div>
+        </section>
+      )}
 
       {/* 디버깅용: contentId 표시 (개발 중에만) */}
       {process.env.NODE_ENV === "development" && (

@@ -543,14 +543,66 @@
       - [x] `DetailGallery` 컴포넌트 import 및 사용
       - [x] 기존 스켈레톤 UI를 `DetailGallery` 컴포넌트로 교체
       - [x] 이미지 갤러리 섹션에 컴포넌트 배치
-- [ ] 지도 섹션 (MVP 2.4.4)
-  - [ ] `components/tour-detail/detail-map.tsx` 생성
-    - [ ] 해당 관광지 위치 표시
-    - [ ] 마커 1개 표시
-    - [ ] "길찾기" 버튼
-      - [ ] 네이버 지도 앱/웹 연동
-      - [ ] URL: `https://map.naver.com/v5/directions/{좌표}`
-    - [ ] 좌표 정보 표시 (선택 사항)
+- [x] 지도 섹션 (MVP 2.4.4)
+  - [x] `components/tour-detail/detail-map.tsx` 생성
+    - [x] 해당 관광지 위치 표시
+    - [x] 마커 1개 표시
+    - [x] "길찾기" 버튼
+      - [x] 네이버 지도 앱/웹 연동
+      - [x] URL: `https://map.naver.com/v5/directions/-/{lat},{lng}`
+    - [x] 좌표 정보 표시 (선택 사항)
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `components/tour-detail/detail-map.tsx` 생성 (Client Component)
+      - [x] Naver Maps API v3 (NCP) 스크립트 동적 로드
+      - [x] `ncpKeyId` 파라미터로 API 키 전달 (환경변수: `NEXT_PUBLIC_NAVER_MAP_CLIENT_ID`)
+      - [x] 지도 컨테이너 설정 (고정 높이: 모바일 400px, 데스크톱 500px)
+      - [x] 단일 관광지 좌표를 중심으로 지도 초기화 (줌 레벨 15)
+      - [x] 좌표 변환 (`convertKATECToWGS84()` 함수 사용)
+      - [x] 로딩 상태 처리 (Loading 컴포넌트)
+      - [x] 에러 처리 (스크립트 로드 실패, API 키 없음)
+    - [x] 마커 표시 기능 구현
+      - [x] 마커 1개만 표시 (해당 관광지)
+      - [x] `convertKATECToWGS84()` 함수 사용하여 좌표 변환
+      - [x] 마커 클릭 시 인포윈도우 표시 (관광지명, 주소)
+      - [x] 관광 타입별 마커 색상 구분 기능 구현
+        - [x] `MARKER_COLORS` 매핑 객체 재사용 (8가지 관광 타입별 색상)
+        - [x] `getMarkerColor()` 함수로 관광 타입에 따른 색상 가져오기
+        - [x] `createHTMLMarker()` 함수로 HTML 마커 생성 (커스텀 색상 원형 마커)
+        - [x] 네이버 지도 API `HtmlIcon` 사용하여 커스텀 마커 적용
+        - [x] 각 관광 타입별로 구분되는 색상의 마커 표시
+      - [x] 지도 로드 시 인포윈도우 자동 열기
+    - [x] 길찾기 버튼 구현
+      - [x] `lib/utils/naver-map.ts` 생성 (유틸리티 함수)
+      - [x] `getNaverMapDirectionsUrl()` 함수로 네이버 지도 길찾기 URL 생성
+      - [x] URL 형식: `https://map.naver.com/v5/directions/-/{lat},{lng}`
+      - [x] 새 탭에서 열기 (`target="_blank"`, `rel="noopener noreferrer"`)
+      - [x] shadcn/ui Button 컴포넌트 사용
+      - [x] Navigation 아이콘 사용 (lucide-react)
+      - [x] 반응형 디자인 (모바일 최소 44x44px 터치 영역)
+    - [x] 좌표 정보 표시 기능 구현
+      - [x] `formatCoordinates()` 함수로 WGS84 좌표 포맷팅 (예: "37.5665°N, 126.9780°E")
+      - [x] 좌표 표시 (MapPin 아이콘, monospace 폰트)
+      - [x] 좌표 복사 기능 (클립보드 API 사용)
+      - [x] 복사 완료 상태 표시 (Check 아이콘, 2초 후 자동 초기화)
+      - [x] 복사 완료 토스트 메시지 (toast.success)
+      - [x] HTTPS 환경 확인 및 fallback 처리 (구형 브라우저 지원)
+    - [x] 로딩 및 에러 처리 구현
+      - [x] 로딩 상태: Loading 컴포넌트 표시
+      - [x] 에러 상태: Error 컴포넌트 사용 (API 키 없음, 스크립트 로드 실패)
+      - [x] 좌표 정보 없을 때 처리 (빈 상태 메시지)
+      - [x] 지도 스크립트 중복 로드 방지 (이미 로드된 경우 재사용)
+    - [x] `app/places/[contentId]/page.tsx` 수정
+      - [x] `DetailMap` 컴포넌트 import 및 사용
+      - [x] `getDetailCommon()` API로 좌표 정보 가져오기 (이미 호출 중이므로 재사용)
+      - [x] 지도 데이터 준비 (title, address, mapx, mapy, contentTypeId)
+      - [x] 기존 스켈레톤 UI를 `DetailMap` 컴포넌트로 교체
+      - [x] 데이터 없을 때는 스켈레톤 UI 유지 (fallback)
+    - [x] 반응형 디자인 구현
+      - [x] 지도 높이: 모바일 400px, 데스크톱 500px
+      - [x] 길찾기 버튼 크기: 모바일 최소 44x44px (터치 영역)
+      - [x] 좌표 정보 영역: 모바일 세로 배치, 데스크톱 가로 배치
+      - [x] 반응형 레이아웃 (flex-col sm:flex-row)
 - [ ] 공유 기능 (MVP 2.4.5)
   - [ ] `components/tour-detail/share-button.tsx` 생성
     - [ ] URL 복사 기능
