@@ -417,12 +417,23 @@
 
 ## Phase 3: 상세페이지 (`/places/[contentId]`)
 
-- [ ] 페이지 기본 구조
-  - [ ] `app/places/[contentId]/page.tsx` 생성
-    - [ ] 동적 라우팅 설정
-    - [ ] 뒤로가기 버튼 (헤더)
-    - [ ] 기본 레이아웃 구조
-    - [ ] 라우팅 테스트
+- [x] 페이지 기본 구조
+  - [x] `app/places/[contentId]/page.tsx` 생성
+    - [x] 동적 라우팅 설정
+    - [x] 뒤로가기 버튼 (헤더)
+    - [x] 기본 레이아웃 구조
+    - [x] 라우팅 테스트
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] Next.js 15 App Router 동적 라우팅 구현 (`params`는 Promise로 받기)
+    - [x] `dynamic = 'force-dynamic'` 설정 (Clerk 사용)
+    - [x] contentId 파라미터 추출 및 유효성 검사
+    - [x] 뒤로가기 버튼 구현 (Link 컴포넌트 사용, ArrowLeft 아이콘)
+    - [x] 기본 레이아웃 구조 작성 (섹션별 구분: 기본 정보, 운영 정보, 이미지 갤러리, 지도)
+    - [x] 스켈레톤 UI로 placeholder 표시
+    - [x] 반응형 디자인 (모바일 우선)
+    - [x] 에러 처리 (잘못된 contentId 처리)
+    - [x] 개발 환경에서 contentId 디버깅 정보 표시
 - [ ] 기본 정보 섹션 (MVP 2.4.1)
   - [ ] `components/tour-detail/detail-info.tsx` 생성
     - [ ] `getDetailCommon()` API 연동
