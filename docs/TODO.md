@@ -190,26 +190,58 @@
     - [x] 반응형 그리드 레이아웃 (모바일 1열, 태블릿 2열, 데스크톱 3열)
     - [x] Next.js Image 컴포넌트 사용 (이미지 최적화, lazy loading)
     - [x] 접근성 개선 (alt 속성, ARIA 라벨)
-- [ ] 필터 기능
-  - [ ] `components/tour-filters.tsx` 생성
-    - [ ] 지역 필터 (시/도 선택)
-      - [ ] `getAreaCode()` API로 지역 목록 로드
-      - [ ] 드롭다운 또는 버튼 그룹
-      - [ ] "전체" 옵션
-    - [ ] 관광 타입 필터
-      - [ ] 관광지(12), 문화시설(14), 축제/행사(15), 여행코스(25), 레포츠(28), 숙박(32), 쇼핑(38), 음식점(39)
-      - [ ] 다중 선택 가능
-      - [ ] "전체" 옵션
-    - [ ] 반려동물 동반 가능 필터 (MVP 2.5)
-      - [ ] 토글 버튼
-      - [ ] 크기별 필터 (소형, 중형, 대형)
-    - [ ] 정렬 옵션
-      - [ ] 최신순 (modifiedtime)
-      - [ ] 이름순 (가나다)
-    - [ ] 필터 상태 관리 (URL 쿼리 파라미터 또는 상태)
-  - [ ] 필터 적용 로직
-    - [ ] 필터 변경 시 API 재호출
-    - [ ] 필터 조합 처리
+- [x] 필터 기능
+  - [x] `components/tour-filters.tsx` 생성
+    - [x] 지역 필터 (시/도 선택)
+      - [x] `getAreaCode()` API로 지역 목록 로드
+      - [x] 버튼 그룹
+      - [x] "전체" 옵션
+    - [x] 관광 타입 필터
+      - [x] 관광지(12), 문화시설(14), 축제/행사(15), 여행코스(25), 레포츠(28), 숙박(32), 쇼핑(38), 음식점(39)
+      - [x] 다중 선택 가능
+      - [x] "전체 해제" 옵션
+    - [x] 반려동물 동반 가능 필터 (MVP 2.5)
+      - [x] 토글 버튼
+      - [x] 크기별 필터 (소형, 중형, 대형)
+    - [x] 정렬 옵션
+      - [x] 최신순 (modifiedtime)
+      - [x] 이름순 (가나다)
+    - [x] 필터 상태 관리 (URL 쿼리 파라미터)
+  - [x] 필터 적용 로직
+    - [x] 필터 변경 시 API 재호출
+    - [x] 필터 조합 처리
+  ---
+  - [x] **필터 기능 계획 수립 완료 (plan 모드)**
+    - [x] `docs/PLAN-filter-feature.md` 생성 (상세 구현 계획 문서)
+    - [x] 필터 기능 구현 계획 수립
+      - [x] 지역 필터 설계
+      - [x] 관광 타입 필터 설계 (다중 선택)
+      - [x] 정렬 옵션 설계
+      - [x] URL 쿼리 파라미터 구조 설계
+    - [x] TODO.md에 추가 개발 내용 반영
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `components/tour-filters.tsx` 생성 (Client Component)
+      - [x] `useRouter`, `useSearchParams` 사용 (Next.js 15)
+      - [x] 지역 필터 UI (Button Group)
+      - [x] 관광 타입 필터 UI (다중 선택 Button Group)
+      - [x] 정렬 옵션 UI (Button Group)
+      - [x] URL 쿼리 파라미터로 상태 관리
+      - [x] 필터 변경 시 URL 업데이트 (replace 방식)
+      - [x] 지역 목록 로드 (getAreaCode API)
+      - [x] "전체" 옵션 및 "전체 해제" 기능
+    - [x] `app/page.tsx` 수정
+      - [x] `searchParams`를 props로 받기 (async)
+      - [x] 필터 파라미터 파싱 (areaCode, contentTypeId, sort)
+      - [x] `getAreaBasedList()`에 필터 적용
+      - [x] 정렬 로직 통합
+      - [x] TourFilters 컴포넌트 통합
+    - [x] 정렬 유틸리티 함수 생성
+      - [x] `sortTours()` 함수 생성 (lib/utils/tour-sort.ts)
+      - [x] 최신순 정렬 (modifiedtime 내림차순)
+      - [x] 이름순 정렬 (title 오름차순, 가나다순)
+      - [x] modifiedtime 파싱 함수 구현
+    - [x] shadcn/ui Select 컴포넌트 대체
+      - [x] Button Group으로 구현 (Select 설치 불필요)
 - [ ] 검색 기능 (MVP 2.3)
   - [ ] `components/tour-search.tsx` 생성
     - [ ] 검색창 UI (헤더 또는 메인 영역)
