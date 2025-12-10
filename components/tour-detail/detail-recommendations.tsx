@@ -156,7 +156,7 @@ export async function DetailRecommendations({
   // 에러 상태
   if (error) {
     return (
-      <section className="mb-8 border-b pb-8">
+      <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">추천 관광지</h2>
         <Error
           message={error.message}
@@ -170,7 +170,7 @@ export async function DetailRecommendations({
   // 추천 관광지 없음
   if (recommendedTours.length === 0) {
     return (
-      <section className="mb-8 border-b pb-8">
+      <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">추천 관광지</h2>
         <div className="mt-4 text-center text-muted-foreground">
           <p>이 지역의 다른 관광지가 없습니다</p>
@@ -180,7 +180,7 @@ export async function DetailRecommendations({
   }
 
   return (
-    <section className="mb-8 border-b pb-8">
+    <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
       <h2 className="mb-4 text-xl font-semibold md:text-2xl">추천 관광지</h2>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {recommendedTours.map((tour) => (
@@ -196,7 +196,7 @@ export async function DetailRecommendations({
  */
 export function DetailRecommendationsSkeleton() {
   return (
-    <section className="mb-8 border-b pb-8">
+    <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
       <h2 className="mb-4 text-xl font-semibold md:text-2xl">추천 관광지</h2>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: 6 }).map((_, index) => (

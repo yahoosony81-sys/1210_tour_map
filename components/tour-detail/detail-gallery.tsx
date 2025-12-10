@@ -67,7 +67,7 @@ export async function DetailGallery({ contentId }: DetailGalleryProps) {
   // 에러 상태
   if (error) {
     return (
-      <section className="mb-8 border-b pb-8">
+      <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">이미지 갤러리</h2>
         <Error message={error.message} size="medium" className="mt-4" />
       </section>
@@ -89,7 +89,7 @@ export async function DetailGallery({ contentId }: DetailGalleryProps) {
   // 이미지가 없는 경우
   if (processedImages.length === 0) {
     return (
-      <section className="mb-8 border-b pb-8">
+      <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">이미지 갤러리</h2>
         <div className="mt-4 text-center text-muted-foreground">
           <p>이미지가 없습니다</p>
@@ -99,7 +99,7 @@ export async function DetailGallery({ contentId }: DetailGalleryProps) {
   }
 
   return (
-    <section className="mb-8 border-b pb-8">
+    <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
       <h2 className="mb-4 text-xl font-semibold md:text-2xl">이미지 갤러리</h2>
       <ImageGalleryClient images={processedImages} />
     </section>

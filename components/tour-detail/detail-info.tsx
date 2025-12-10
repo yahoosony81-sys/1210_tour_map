@@ -69,7 +69,7 @@ export async function DetailInfo({ contentId }: DetailInfoProps) {
   // 에러 상태
   if (error) {
     return (
-      <section className="mb-8 border-b pb-8">
+      <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">기본 정보</h2>
         <Error
           message={error.message}
@@ -83,7 +83,7 @@ export async function DetailInfo({ contentId }: DetailInfoProps) {
   // 데이터 없음
   if (!detail) {
     return (
-      <section className="mb-8 border-b pb-8">
+      <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">기본 정보</h2>
         <div className="mt-4 text-center text-muted-foreground">
           <p>정보를 찾을 수 없습니다</p>
@@ -150,9 +150,10 @@ export async function DetailInfo({ contentId }: DetailInfoProps) {
               <h3 className="text-sm font-medium text-muted-foreground">전화번호</h3>
               <a
                 href={`tel:${detail.tel}`}
-                className="flex items-center gap-2 text-sm text-primary hover:underline"
+                className="flex items-center gap-2 text-sm text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+                aria-label={`전화번호: ${detail.tel}`}
               >
-                <Phone className="size-4" />
+                <Phone className="size-4" aria-hidden="true" />
                 <span>{detail.tel}</span>
               </a>
             </div>
@@ -166,9 +167,10 @@ export async function DetailInfo({ contentId }: DetailInfoProps) {
                 href={detail.homepage}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm text-primary hover:underline"
+                className="flex items-center gap-2 text-sm text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
+                aria-label={`홈페이지 열기: ${detail.homepage}`}
               >
-                <ExternalLink className="size-4" />
+                <ExternalLink className="size-4" aria-hidden="true" />
                 <span className="break-all">{detail.homepage}</span>
               </a>
             </div>

@@ -329,10 +329,10 @@ export function DetailMap({
   // 좌표 정보 없음 처리
   if (!mapx || !mapy) {
     return (
-      <section className={cn("mb-8", className)}>
+      <section className={cn("mb-6 md:mb-8", className)}>
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">위치</h2>
         <div className="flex flex-col items-center justify-center gap-2 rounded-lg border bg-muted p-8 text-center text-muted-foreground">
-          <MapPin className="size-8" />
+          <MapPin className="size-8" aria-hidden="true" />
           <p>위치 정보가 없습니다</p>
         </div>
       </section>
@@ -342,7 +342,7 @@ export function DetailMap({
   // 로딩 상태
   if (isLoading) {
     return (
-      <section className={cn("mb-8", className)}>
+      <section className={cn("mb-6 md:mb-8", className)}>
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">위치</h2>
         <div
           className={cn(
@@ -359,7 +359,7 @@ export function DetailMap({
   // 에러 상태 (스크립트 로드 실패 또는 API 키 없음)
   if (!isScriptLoaded || !process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID) {
     return (
-      <section className={cn("mb-8", className)}>
+      <section className={cn("mb-6 md:mb-8", className)}>
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">위치</h2>
         <Error
           message={
@@ -374,7 +374,7 @@ export function DetailMap({
   }
 
   return (
-    <section className={cn("mb-8", className)}>
+    <section className={cn("mb-6 md:mb-8", className)}>
       <h2 className="mb-4 text-xl font-semibold md:text-2xl">위치</h2>
 
       {/* 지도 컨테이너 */}
@@ -410,20 +410,20 @@ export function DetailMap({
         {/* 좌표 정보 */}
         {coordinates && (
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <MapPin className="size-4" />
+            <MapPin className="size-4" aria-hidden="true" />
             <span className="font-mono">{formatCoordinates(coordinates.lat, coordinates.lng)}</span>
             <Button
               variant="ghost"
               size="sm"
               onClick={handleCopyCoordinates}
-              className="h-8 w-8 p-0"
+              className="h-10 w-10 p-0 min-h-[44px] min-w-[44px]"
               aria-label="좌표 복사"
               title="좌표 복사"
             >
               {isCopied ? (
-                <Check className="size-4 text-green-600" />
+                <Check className="size-4 text-green-600" aria-hidden="true" />
               ) : (
-                <Copy className="size-4" />
+                <Copy className="size-4" aria-hidden="true" />
               )}
             </Button>
           </div>

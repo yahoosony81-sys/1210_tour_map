@@ -73,7 +73,7 @@ export async function DetailIntro({
   // 에러 상태
   if (error) {
     return (
-      <section className="mb-8 border-b pb-8">
+      <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">운영 정보</h2>
         <Error message={error.message} size="medium" className="mt-4" />
       </section>
@@ -83,7 +83,7 @@ export async function DetailIntro({
   // 데이터 없음
   if (!intro) {
     return (
-      <section className="mb-8 border-b pb-8">
+      <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">운영 정보</h2>
         <div className="mt-4 text-center text-muted-foreground">
           <p>운영 정보가 없습니다</p>
@@ -117,7 +117,7 @@ export async function DetailIntro({
 
   if (!hasInfo) {
     return (
-      <section className="mb-8 border-b pb-8">
+      <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">운영 정보</h2>
         <div className="mt-4 text-center text-muted-foreground">
           <p>운영 정보가 없습니다</p>
@@ -127,7 +127,7 @@ export async function DetailIntro({
   }
 
   return (
-    <section className="mb-8 border-b pb-8">
+    <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
       <h2 className="mb-4 text-xl font-semibold md:text-2xl">운영 정보</h2>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -135,7 +135,7 @@ export async function DetailIntro({
         {usetime && (
           <div className="space-y-2">
             <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <Clock className="size-4" />
+              <Clock className="size-4" aria-hidden="true" />
               <span>운영시간</span>
             </h3>
             <p className="whitespace-pre-line text-sm leading-relaxed text-foreground">
@@ -148,7 +148,7 @@ export async function DetailIntro({
         {restdate && (
           <div className="space-y-2">
             <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <Calendar className="size-4" />
+              <Calendar className="size-4" aria-hidden="true" />
               <span>휴무일</span>
             </h3>
             <p className="whitespace-pre-line text-sm leading-relaxed text-foreground">
@@ -161,7 +161,7 @@ export async function DetailIntro({
         {usefee && (
           <div className="space-y-2">
             <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <DollarSign className="size-4" />
+              <DollarSign className="size-4" aria-hidden="true" />
               <span>이용요금</span>
             </h3>
             <p className="whitespace-pre-line text-sm leading-relaxed text-foreground">
@@ -174,7 +174,7 @@ export async function DetailIntro({
         {parking && (
           <div className="space-y-2">
             <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <Car className="size-4" />
+              <Car className="size-4" aria-hidden="true" />
               <span>주차</span>
             </h3>
             <p className="whitespace-pre-line text-sm leading-relaxed text-foreground">
@@ -187,7 +187,7 @@ export async function DetailIntro({
         {accomcount && (
           <div className="space-y-2">
             <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <Users className="size-4" />
+              <Users className="size-4" aria-hidden="true" />
               <span>수용인원</span>
             </h3>
             <p className="whitespace-pre-line text-sm leading-relaxed text-foreground">
@@ -200,7 +200,7 @@ export async function DetailIntro({
         {expguide && (
           <div className="space-y-2 md:col-span-2">
             <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <Activity className="size-4" />
+              <Activity className="size-4" aria-hidden="true" />
               <span>체험 프로그램</span>
             </h3>
             <p className="whitespace-pre-line text-sm leading-relaxed text-foreground">
@@ -213,7 +213,7 @@ export async function DetailIntro({
         {chkbabycarriage && (
           <div className="space-y-2">
             <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <Baby className="size-4" />
+              <Baby className="size-4" aria-hidden="true" />
               <span>유모차 동반</span>
             </h3>
             <p className="whitespace-pre-line text-sm leading-relaxed text-foreground">
@@ -226,7 +226,7 @@ export async function DetailIntro({
         {chkpet && (
           <div className="space-y-2">
             <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <Dog className="size-4" />
+              <Dog className="size-4" aria-hidden="true" />
               <span>반려동물 동반</span>
             </h3>
             <p className="whitespace-pre-line text-sm leading-relaxed text-foreground">

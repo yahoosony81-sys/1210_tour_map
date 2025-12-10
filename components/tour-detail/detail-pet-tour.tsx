@@ -91,9 +91,9 @@ export async function DetailPetTour({ contentId }: DetailPetTourProps) {
   // 에러 상태
   if (error) {
     return (
-      <section className="mb-8 border-b pb-8">
+      <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
         <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold md:text-2xl">
-          <PawPrint className="size-5" />
+          <PawPrint className="size-5" aria-hidden="true" />
           <span>반려동물 동반 정보</span>
         </h2>
         <Error message={error.message} size="medium" className="mt-4" />
@@ -104,9 +104,9 @@ export async function DetailPetTour({ contentId }: DetailPetTourProps) {
   // 데이터 없음
   if (!petInfo) {
     return (
-      <section className="mb-8 border-b pb-8">
+      <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
         <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold md:text-2xl">
-          <PawPrint className="size-5" />
+          <PawPrint className="size-5" aria-hidden="true" />
           <span>반려동물 동반 정보</span>
         </h2>
         <div className="mt-4 text-center text-muted-foreground">
@@ -141,9 +141,9 @@ export async function DetailPetTour({ contentId }: DetailPetTourProps) {
 
   if (!hasInfo) {
     return (
-      <section className="mb-8 border-b pb-8">
+      <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
         <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold md:text-2xl">
-          <PawPrint className="size-5" />
+          <PawPrint className="size-5" aria-hidden="true" />
           <span>반려동물 동반 정보</span>
         </h2>
         <div className="mt-4 text-center text-muted-foreground">
@@ -154,9 +154,9 @@ export async function DetailPetTour({ contentId }: DetailPetTourProps) {
   }
 
   return (
-    <section className="mb-8 border-b pb-8">
+    <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
       <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold md:text-2xl">
-        <PawPrint className="size-5" />
+        <PawPrint className="size-5" aria-hidden="true" />
         <span>반려동물 동반 정보</span>
       </h2>
 
@@ -165,7 +165,7 @@ export async function DetailPetTour({ contentId }: DetailPetTourProps) {
         {chkpetleash && (
           <div className="space-y-2">
             <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <Dog className="size-4" />
+              <Dog className="size-4" aria-hidden="true" />
               <span>반려동물 동반 가능</span>
             </h3>
             <p className="whitespace-pre-line text-sm leading-relaxed text-foreground">
@@ -178,7 +178,7 @@ export async function DetailPetTour({ contentId }: DetailPetTourProps) {
         {chkpetsize && (
           <div className="space-y-2">
             <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <PawPrint className="size-4" />
+              <PawPrint className="size-4" aria-hidden="true" />
               <span>크기 제한</span>
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -201,7 +201,7 @@ export async function DetailPetTour({ contentId }: DetailPetTourProps) {
         {chkpetplace && (
           <div className="space-y-2">
             <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <MapPin className="size-4" />
+              <MapPin className="size-4" aria-hidden="true" />
               <span>입장 가능 장소</span>
             </h3>
             <p className="whitespace-pre-line text-sm leading-relaxed text-foreground">
@@ -214,7 +214,7 @@ export async function DetailPetTour({ contentId }: DetailPetTourProps) {
         {chkpetfee && (
           <div className="space-y-2">
             <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <DollarSign className="size-4" />
+              <DollarSign className="size-4" aria-hidden="true" />
               <span>추가 요금</span>
             </h3>
             <p className="whitespace-pre-line text-sm leading-relaxed text-foreground">
@@ -227,7 +227,7 @@ export async function DetailPetTour({ contentId }: DetailPetTourProps) {
         {parking && (
           <div className="space-y-2">
             <h3 className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <Car className="size-4" />
+              <Car className="size-4" aria-hidden="true" />
               <span>주차장 정보</span>
             </h3>
             <p className="whitespace-pre-line text-sm leading-relaxed text-foreground">
@@ -241,7 +241,7 @@ export async function DetailPetTour({ contentId }: DetailPetTourProps) {
       {petinfo && (
         <div className="mt-6 rounded-lg border border-yellow-200 bg-yellow-50 p-4 dark:border-yellow-800 dark:bg-yellow-900/20">
           <h3 className="mb-2 flex items-center gap-2 text-sm font-semibold text-yellow-900 dark:text-yellow-200">
-            <AlertCircle className="size-4" />
+            <AlertCircle className="size-4" aria-hidden="true" />
             <span>주의사항 및 추가 정보</span>
           </h3>
           <p className="whitespace-pre-line text-sm leading-relaxed text-yellow-800 dark:text-yellow-300">

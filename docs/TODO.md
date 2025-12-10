@@ -764,11 +764,46 @@
       - [x] `DetailRecommendations` 컴포넌트 import 및 사용
       - [x] 지도 섹션 다음에 배치 (페이지 하단)
       - [x] `contentTypeId`가 있을 때만 표시 (조건부 렌더링, `areaCode`는 optional)
-- [ ] 최종 통합 및 스타일링
-  - [ ] 모든 섹션 통합
-  - [ ] 반응형 디자인 확인
-  - [ ] 모바일 최적화
-  - [ ] 접근성 확인 (ARIA 라벨, 키보드 네비게이션)
+- [x] 최종 통합 및 스타일링
+  - [x] 모든 섹션 통합
+  - [x] 반응형 디자인 확인
+  - [x] 모바일 최적화
+  - [x] 접근성 확인 (ARIA 라벨, 키보드 네비게이션)
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `app/places/[contentId]/page.tsx` 메인 페이지 레이아웃 통합 및 개선
+      - [x] 컨테이너 최대 너비 설정 (`max-w-7xl`)
+      - [x] 섹션 간격 통일 (모바일 `mb-6`, 데스크톱 `md:mb-8`)
+      - [x] 헤더 영역 버튼 터치 영역 최소 44x44px 설정
+      - [x] 버튼 텍스트 반응형 크기 (`text-sm md:text-base`)
+      - [x] 접근성 개선 (aria-label, aria-hidden 추가)
+    - [x] 모든 섹션 컴포넌트 스타일 통일
+      - [x] `components/tour-detail/detail-info.tsx` - 기본 정보 섹션 스타일 개선
+      - [x] `components/tour-detail/detail-intro.tsx` - 운영 정보 섹션 스타일 개선
+      - [x] `components/tour-detail/detail-pet-tour.tsx` - 반려동물 정보 섹션 스타일 개선
+      - [x] `components/tour-detail/detail-gallery.tsx` - 이미지 갤러리 섹션 스타일 개선
+      - [x] `components/tour-detail/detail-map.tsx` - 지도 섹션 스타일 개선
+      - [x] `components/tour-detail/detail-recommendations.tsx` - 추천 관광지 섹션 스타일 개선
+      - [x] 섹션 간격 통일 (모바일 `mb-6 pb-6`, 데스크톱 `md:mb-8 md:pb-8`)
+      - [x] 섹션 제목 스타일 통일 (`text-xl font-semibold md:text-2xl`)
+    - [x] 반응형 디자인 개선
+      - [x] 모든 breakpoint 일관성 확인 (sm, md, lg)
+      - [x] 모바일 우선 디자인 원칙 준수
+      - [x] 텍스트 크기 반응형 (모바일 `text-sm`, 데스크톱 `md:text-base`)
+      - [x] 이미지 반응형 확인 (sizes 속성 최적화)
+    - [x] 모바일 최적화
+      - [x] 모든 버튼 터치 영역 최소 44x44px 설정 (`min-h-[44px] min-w-[44px]`)
+      - [x] 버튼 간격 최소 8px (`gap-2`)
+      - [x] 모바일 폰트 크기 최소 14px (`text-sm`)
+      - [x] 모바일 패딩/마진 최적화
+      - [x] 지도 높이 반응형 (모바일 `h-[400px]`, 데스크톱 `md:h-[500px]`)
+    - [x] 접근성 개선
+      - [x] 모든 버튼에 `aria-label` 추가
+      - [x] 아이콘에 `aria-hidden="true"` 추가
+      - [x] 링크에 `aria-label` 추가 (텍스트가 없는 경우)
+      - [x] 버튼 상태 표시 (`aria-pressed`, `aria-busy`)
+      - [x] 포커스 스타일 개선 (`focus:ring-2 focus:ring-primary`)
+      - [x] 시맨틱 HTML 확인 (heading 순서, section 태그)
 
 ## Phase 4: 통계 대시보드 페이지 (`/stats`)
 

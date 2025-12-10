@@ -87,16 +87,17 @@ export function ShareButton({
       onClick={handleShare}
       className={className}
       aria-label={copied ? "링크 복사 완료" : "링크 공유"}
+      aria-pressed={copied}
     >
       {copied ? (
         <>
-          <Check className="size-4" />
-          <span className="ml-2">복사됨</span>
+          <Check className="size-4" aria-hidden="true" />
+          <span className="ml-2 text-sm md:text-base">복사됨</span>
         </>
       ) : (
         <>
-          <Share2 className="size-4" />
-          <span className="ml-2">공유</span>
+          <Share2 className="size-4" aria-hidden="true" />
+          <span className="ml-2 text-sm md:text-base">공유</span>
         </>
       )}
     </Button>

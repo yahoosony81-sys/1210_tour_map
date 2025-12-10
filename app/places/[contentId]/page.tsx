@@ -236,18 +236,33 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
   const shareUrl = getAbsoluteUrl(`/places/${contentId}`, host);
 
   return (
-    <div className="container mx-auto px-4 py-4 md:px-4 md:py-8">
+    <div className="container mx-auto max-w-7xl px-4 py-4 md:px-6 md:py-8">
       {/* 뒤로가기 버튼 및 공유 버튼 */}
-      <div className="mb-4 flex items-center justify-between md:mb-6">
-        <Link href="/">
-          <Button variant="ghost" size="sm" className="gap-2">
-            <ArrowLeft className="size-4" />
-            <span>목록으로</span>
+      <div className="mb-6 flex items-center justify-between md:mb-8">
+        <Link href="/" aria-label="목록으로 돌아가기">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="gap-2 min-h-[44px] min-w-[44px]"
+            aria-label="목록으로 돌아가기"
+          >
+            <ArrowLeft className="size-4" aria-hidden="true" />
+            <span className="text-sm md:text-base">목록으로</span>
           </Button>
         </Link>
         <div className="flex items-center gap-2">
-          <BookmarkButton contentId={contentId} size="sm" variant="outline" />
-          <ShareButton url={shareUrl} size="sm" variant="outline" />
+          <BookmarkButton 
+            contentId={contentId} 
+            size="sm" 
+            variant="outline" 
+            className="min-h-[44px] min-w-[44px]"
+          />
+          <ShareButton 
+            url={shareUrl} 
+            size="sm" 
+            variant="outline" 
+            className="min-h-[44px] min-w-[44px]"
+          />
         </div>
       </div>
 
@@ -258,7 +273,7 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
       {contentTypeId ? (
         <DetailIntro contentId={contentId} contentTypeId={contentTypeId} />
       ) : (
-        <section className="mb-8 border-b pb-8">
+        <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
           <h2 className="mb-4 text-xl font-semibold md:text-2xl">운영 정보</h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="space-y-2">
@@ -298,11 +313,11 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
           contentTypeId={detailData.contentTypeId}
         />
       ) : (
-        <section className="mb-8">
+        <section className="mb-6 md:mb-8">
           <h2 className="mb-4 text-xl font-semibold md:text-2xl">위치</h2>
-          <Skeleton className="h-64 w-full rounded-lg md:h-96" />
+          <Skeleton className="h-[400px] w-full rounded-lg md:h-[500px]" />
           <div className="mt-4">
-            <Skeleton className="h-10 w-32" />
+            <Skeleton className="h-11 w-32 min-h-[44px]" />
           </div>
         </section>
       )}

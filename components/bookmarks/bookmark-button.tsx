@@ -131,9 +131,10 @@ export function BookmarkButton({
         disabled
         className={className}
         aria-label="북마크 처리 중"
+        aria-busy="true"
       >
-        <Loader2 className="size-4 animate-spin" />
-        {size !== "icon" && <span className="ml-2">처리 중...</span>}
+        <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+        {size !== "icon" && <span className="ml-2 text-sm md:text-base">처리 중...</span>}
       </Button>
     );
   }
@@ -150,9 +151,10 @@ export function BookmarkButton({
     >
       <Star
         className={`size-4 ${isBookmarked ? "fill-yellow-400 text-yellow-400" : ""}`}
+        aria-hidden="true"
       />
       {size !== "icon" && (
-        <span className="ml-2">
+        <span className="ml-2 text-sm md:text-base">
           {isBookmarked ? "북마크됨" : "북마크"}
         </span>
       )}
