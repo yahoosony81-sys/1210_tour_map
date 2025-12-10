@@ -434,19 +434,46 @@
     - [x] 반응형 디자인 (모바일 우선)
     - [x] 에러 처리 (잘못된 contentId 처리)
     - [x] 개발 환경에서 contentId 디버깅 정보 표시
-- [ ] 기본 정보 섹션 (MVP 2.4.1)
-  - [ ] `components/tour-detail/detail-info.tsx` 생성
-    - [ ] `getDetailCommon()` API 연동
-    - [ ] 관광지명 (대제목)
-    - [ ] 대표 이미지 (크게 표시)
-    - [ ] 주소 표시 및 복사 기능
-      - [ ] 클립보드 API 사용
-      - [ ] 복사 완료 토스트
-    - [ ] 전화번호 (클릭 시 전화 연결)
-    - [ ] 홈페이지 (링크)
-    - [ ] 개요 (긴 설명문)
-    - [ ] 관광 타입 및 카테고리 뱃지
-    - [ ] 정보 없는 항목 숨김 처리
+- [x] 기본 정보 섹션 (MVP 2.4.1)
+  - [x] `components/tour-detail/detail-info.tsx` 생성
+    - [x] `getDetailCommon()` API 연동
+    - [x] 관광지명 (대제목)
+    - [x] 대표 이미지 (크게 표시)
+    - [x] 주소 표시 및 복사 기능
+      - [x] 클립보드 API 사용
+      - [x] 복사 완료 토스트
+    - [x] 전화번호 (클릭 시 전화 연결)
+    - [x] 홈페이지 (링크)
+    - [x] 개요 (긴 설명문)
+    - [x] 관광 타입 및 카테고리 뱃지
+    - [x] 정보 없는 항목 숨김 처리
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `components/tour-detail/detail-info.tsx` 생성 (Server Component)
+      - [x] `getDetailCommon()` API 호출하여 관광지 상세 정보 조회
+      - [x] 관광지명 (h1, 큰 제목) 표시
+      - [x] 대표 이미지 표시 (Next.js Image 컴포넌트, aspect-[4/3], priority)
+      - [x] 주소 표시 및 복사 기능 (CopyAddressButton Client Component 사용)
+      - [x] 전화번호 표시 (tel: 링크, Phone 아이콘)
+      - [x] 홈페이지 표시 (외부 링크, 새 탭, ExternalLink 아이콘)
+      - [x] 개요 표시 (HTML 태그 제거, whitespace-pre-line)
+      - [x] 관광 타입 뱃지 표시 (getContentTypeName 함수 사용)
+      - [x] 정보 없는 항목 숨김 처리 (조건부 렌더링)
+      - [x] 에러 처리 (Error 컴포넌트 사용)
+      - [x] 데이터 없음 처리 (빈 상태 메시지)
+      - [x] 반응형 디자인 (모바일 우선, 그리드 레이아웃)
+    - [x] `components/tour-detail/copy-address-button.tsx` 생성 (Client Component)
+      - [x] 클립보드 API 사용 (navigator.clipboard.writeText)
+      - [x] HTTPS 환경 확인 및 fallback 처리
+      - [x] 복사 완료 상태 표시 (Check 아이콘, "복사됨" 텍스트)
+      - [x] 복사 완료 토스트 메시지 (toast.success)
+      - [x] 에러 처리 (toast.error)
+      - [x] 2초 후 복사 상태 자동 초기화
+    - [x] `app/places/[contentId]/page.tsx` 수정
+      - [x] DetailInfo 컴포넌트 import 및 사용
+      - [x] 기본 정보 섹션의 스켈레톤 UI 제거
+      - [x] 제목 영역 스켈레톤 제거 (DetailInfo 내부에 제목 포함)
+      - [x] contentId prop 전달
 - [ ] 운영 정보 섹션 (MVP 2.4.2)
   - [ ] `components/tour-detail/detail-intro.tsx` 생성
     - [ ] `getDetailIntro()` API 연동

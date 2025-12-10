@@ -20,6 +20,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DetailInfo } from "@/components/tour-detail/detail-info";
 
 export const dynamic = "force-dynamic";
 
@@ -64,26 +65,8 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
         </Link>
       </div>
 
-      {/* 제목 영역 (스켈레톤) */}
-      <div className="mb-6 md:mb-8">
-        <Skeleton className="mb-2 h-8 w-3/4 md:h-10" />
-        <Skeleton className="h-4 w-1/2" />
-      </div>
-
       {/* 기본 정보 섹션 */}
-      <section className="mb-8 border-b pb-8">
-        <h2 className="mb-4 text-xl font-semibold md:text-2xl">기본 정보</h2>
-        <div className="space-y-4">
-          <div>
-            <Skeleton className="mb-2 h-64 w-full rounded-lg md:h-96" />
-          </div>
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-5/6" />
-            <Skeleton className="h-4 w-4/6" />
-          </div>
-        </div>
-      </section>
+      <DetailInfo contentId={contentId} />
 
       {/* 운영 정보 섹션 */}
       <section className="mb-8 border-b pb-8">
