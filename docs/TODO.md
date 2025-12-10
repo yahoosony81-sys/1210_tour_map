@@ -676,6 +676,41 @@
       - [ ] `content_id` (한국관광공사 API contentid)
       - [ ] UNIQUE 제약 (user_id, content_id)
   - [ ] 상세페이지에 북마크 버튼 추가
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `lib/api/supabase-api.ts` 생성
+      - [x] `getSupabaseUserId()` 함수 구현 (Clerk ID로 Supabase user_id 조회)
+      - [x] `getBookmark()` 함수 구현 (특정 관광지 북마크 조회)
+      - [x] `addBookmark()` 함수 구현 (북마크 추가, UNIQUE 제약 에러 처리)
+      - [x] `removeBookmark()` 함수 구현 (북마크 제거)
+      - [x] `getUserBookmarks()` 함수 구현 (사용자 북마크 목록 조회, created_at 내림차순 정렬)
+      - [x] `Bookmark` 인터페이스 타입 정의
+      - [x] 에러 처리 (사용자 없음, 북마크 없음, 중복 북마크 등)
+    - [x] `actions/bookmark-actions.ts` 생성 (Server Actions)
+      - [x] `checkBookmark()` 함수 구현 (북마크 상태 확인, 인증되지 않으면 null 반환)
+      - [x] `toggleBookmark()` 함수 구현 (북마크 추가/제거 토글, 인증 확인)
+      - [x] `getUserBookmarksList()` 함수 구현 (사용자 북마크 목록 조회, 향후 북마크 페이지용)
+      - [x] Clerk 인증 확인 (`auth()` 함수 사용)
+      - [x] 에러 처리 (사용자 친화적 메시지)
+    - [x] `components/bookmarks/bookmark-button.tsx` 생성 (Client Component)
+      - [x] Clerk `useAuth()` 훅 사용 (인증 상태 확인)
+      - [x] Clerk `useClerk()` 훅 사용 (로그인 유도: `redirectToSignIn()`)
+      - [x] 북마크 상태 관리 (`isBookmarked`, `isLoading`, `isToggling`)
+      - [x] 초기 상태 로드 (`useEffect`로 `checkBookmark()` Server Action 호출)
+      - [x] 북마크 토글 핸들러 (`toggleBookmark()` Server Action 호출)
+      - [x] 로그인하지 않은 경우 로그인 유도 (토스트 메시지 + `redirectToSignIn()`)
+      - [x] 별 아이콘 사용 (lucide-react `Star` 아이콘)
+      - [x] 북마크 상태에 따라 채워진 별/빈 별 표시 (`fill` 속성)
+      - [x] 로딩 중 스피너 표시 (Loader2 아이콘)
+      - [x] shadcn/ui Button 컴포넌트 사용
+      - [x] 반응형 디자인 (모바일 최소 44x44px 터치 영역)
+      - [x] 접근성 개선 (aria-label, aria-pressed)
+      - [x] 토스트 메시지 표시 (성공/에러)
+    - [x] `app/places/[contentId]/page.tsx` 수정
+      - [x] `BookmarkButton` 컴포넌트 import 및 사용
+      - [x] 뒤로가기 버튼 옆에 북마크 버튼 배치 (공유 버튼과 함께)
+      - [x] `contentId` prop 전달
+      - [x] 레이아웃: 뒤로가기 버튼 (왼쪽) + 북마크 버튼 + 공유 버튼 (오른쪽)
 - [ ] 반려동물 정보 섹션 (MVP 2.5)
   - [ ] `components/tour-detail/detail-pet-tour.tsx` 생성
     - [ ] `getDetailPetTour()` API 연동

@@ -28,6 +28,7 @@ import { DetailIntro } from "@/components/tour-detail/detail-intro";
 import { DetailGallery } from "@/components/tour-detail/detail-gallery";
 import { DetailMap } from "@/components/tour-detail/detail-map";
 import { ShareButton } from "@/components/tour-detail/share-button";
+import { BookmarkButton } from "@/components/bookmarks/bookmark-button";
 import { getDetailCommon } from "@/lib/api/tour-api";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAbsoluteUrl, truncateText } from "@/lib/utils/url";
@@ -222,7 +223,10 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
             <span>목록으로</span>
           </Button>
         </Link>
-        <ShareButton url={shareUrl} size="sm" variant="outline" />
+        <div className="flex items-center gap-2">
+          <BookmarkButton contentId={contentId} size="sm" variant="outline" />
+          <ShareButton url={shareUrl} size="sm" variant="outline" />
+        </div>
       </div>
 
       {/* 기본 정보 섹션 */}
