@@ -19,8 +19,10 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { DetailInfo } from "@/components/tour-detail/detail-info";
+import { DetailIntro } from "@/components/tour-detail/detail-intro";
+import { getDetailCommon } from "@/lib/api/tour-api";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const dynamic = "force-dynamic";
 
@@ -53,6 +55,18 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
     );
   }
 
+  // contentTypeId 획득을 위해 기본 정보 조회
+  let contentTypeId: string | null = null;
+  try {
+    const details = await getDetailCommon(contentId);
+    if (details && details.length > 0) {
+      contentTypeId = details[0].contenttypeid;
+    }
+  } catch (error) {
+    // 에러가 발생해도 기본 정보 섹션은 표시 (DetailInfo에서 에러 처리)
+    console.error("Failed to fetch contentTypeId:", error);
+  }
+
   return (
     <div className="container mx-auto px-4 py-4 md:px-4 md:py-8">
       {/* 뒤로가기 버튼 */}
@@ -69,27 +83,31 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
       <DetailInfo contentId={contentId} />
 
       {/* 운영 정보 섹션 */}
-      <section className="mb-8 border-b pb-8">
-        <h2 className="mb-4 text-xl font-semibold md:text-2xl">운영 정보</h2>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-6 w-full" />
+      {contentTypeId ? (
+        <DetailIntro contentId={contentId} contentTypeId={contentTypeId} />
+      ) : (
+        <section className="mb-8 border-b pb-8">
+          <h2 className="mb-4 text-xl font-semibold md:text-2xl">운영 정보</h2>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-6 w-full" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-6 w-full" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-6 w-full" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-6 w-full" />
+            </div>
           </div>
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-6 w-full" />
-          </div>
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-6 w-full" />
-          </div>
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-6 w-full" />
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 이미지 갤러리 섹션 */}
       <section className="mb-8 border-b pb-8">

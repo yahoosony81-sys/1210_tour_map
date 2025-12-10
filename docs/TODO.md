@@ -474,17 +474,39 @@
       - [x] 기본 정보 섹션의 스켈레톤 UI 제거
       - [x] 제목 영역 스켈레톤 제거 (DetailInfo 내부에 제목 포함)
       - [x] contentId prop 전달
-- [ ] 운영 정보 섹션 (MVP 2.4.2)
-  - [ ] `components/tour-detail/detail-intro.tsx` 생성
-    - [ ] `getDetailIntro()` API 연동
-    - [ ] 운영시간/개장시간
-    - [ ] 휴무일
-    - [ ] 이용요금
-    - [ ] 주차 가능 여부
-    - [ ] 수용인원
-    - [ ] 체험 프로그램
-    - [ ] 유모차/반려동물 동반 가능 여부
-    - [ ] 정보 없는 항목 숨김 처리
+- [x] 운영 정보 섹션 (MVP 2.4.2)
+  - [x] `components/tour-detail/detail-intro.tsx` 생성
+    - [x] `getDetailIntro()` API 연동
+    - [x] 운영시간/개장시간
+    - [x] 휴무일
+    - [x] 이용요금
+    - [x] 주차 가능 여부
+    - [x] 수용인원
+    - [x] 체험 프로그램
+    - [x] 유모차/반려동물 동반 가능 여부
+    - [x] 정보 없는 항목 숨김 처리
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `components/tour-detail/detail-intro.tsx` 생성 (Server Component)
+      - [x] `getDetailIntro()` API 호출하여 관광지 운영 정보 조회
+      - [x] 운영시간 표시 (Clock 아이콘)
+      - [x] 휴무일 표시 (Calendar 아이콘)
+      - [x] 이용요금 표시 (DollarSign 아이콘)
+      - [x] 주차 가능 여부 표시 (Car 아이콘)
+      - [x] 수용인원 표시 (Users 아이콘)
+      - [x] 체험 프로그램 표시 (Activity 아이콘)
+      - [x] 유모차 동반 가능 여부 표시 (Baby 아이콘)
+      - [x] 반려동물 동반 가능 여부 표시 (Dog 아이콘)
+      - [x] HTML 태그 제거 처리 (stripHtmlTags 함수)
+      - [x] 정보 없는 항목 숨김 처리 (조건부 렌더링)
+      - [x] 에러 처리 (Error 컴포넌트 사용)
+      - [x] 데이터 없음 처리 (빈 상태 메시지)
+      - [x] 반응형 디자인 (모바일 1열, 데스크톱 2열 그리드)
+    - [x] `app/places/[contentId]/page.tsx` 수정
+      - [x] `getDetailCommon()`을 페이지 레벨에서 호출하여 `contentTypeId` 획득
+      - [x] `DetailIntro` 컴포넌트 import 및 사용
+      - [x] 운영 정보 섹션의 스켈레톤 UI를 `DetailIntro` 컴포넌트로 교체
+      - [x] `contentTypeId`가 없을 때는 스켈레톤 UI 유지 (fallback)
 - [ ] 이미지 갤러리 (MVP 2.4.3)
   - [ ] `components/tour-detail/detail-gallery.tsx` 생성
     - [ ] `getDetailImage()` API 연동
