@@ -1,50 +1,60 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { RiSupabaseFill } from "react-icons/ri";
+/**
+ * @file page.tsx
+ * @description 홈페이지 - 관광지 목록
+ *
+ * 한국관광공사 API를 사용하여 관광지 목록을 표시하는 페이지입니다.
+ *
+ * 주요 기능:
+ * 1. 관광지 목록 조회 및 표시
+ * 2. 로딩 상태 처리
+ * 3. 에러 처리
+ *
+ * @dependencies
+ * - @/components/tour-list: TourList 컴포넌트
+ * - @/components/ui/error: Error 컴포넌트
+ * - @/lib/api/tour-api: getAreaBasedList 함수
+ */
 
-export default function Home() {
-  return (
-    <main className="min-h-[calc(100vh-80px)] flex items-center px-8 py-16 lg:py-24">
-      <section className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start lg:items-center">
-        {/* 좌측: 환영 메시지 */}
-        <div className="flex flex-col gap-8">
-          <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-            SaaS 앱 템플릿에 오신 것을 환영합니다
-          </h1>
-          <p className="text-xl lg:text-2xl text-gray-600 dark:text-gray-400 leading-relaxed">
-            Next.js, Shadcn, Clerk, Supabase, TailwindCSS로 구동되는 완전한
-            기능의 템플릿으로 다음 프로젝트를 시작하세요.
+import { TourList } from "@/components/tour-list";
+import { Error } from "@/components/ui/error";
+import { getAreaBasedList } from "@/lib/api/tour-api";
+
+/**
+ * 홈페이지 - 관광지 목록
+ * Server Component로 구현하여 초기 데이터 로딩 최적화
+ */
+export default async function HomePage() {
+  try {
+    // 초기 데이터: 전체 지역, 전체 타입 (파라미터 없음)
+    // 기본값: numOfRows=10, pageNo=1
+    const tours = await getAreaBasedList({
+      numOfRows: 20, // 페이지당 20개 항목
+      pageNo: 1,
+    });
+
+    return (
+      <main className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">전국 관광지</h1>
+          <p className="mt-2 text-muted-foreground">
+            한국관광공사에서 제공하는 관광지 정보를 확인하세요
           </p>
         </div>
 
-        {/* 우측: 버튼 세 개 세로 정렬 */}
-        <div className="flex flex-col gap-6">
-          <Link href="/instruments" className="w-full">
-            <Button className="w-full h-28 flex items-center justify-center gap-4 text-xl shadow-lg hover:shadow-xl transition-shadow">
-              <RiSupabaseFill className="w-8 h-8" />
-              <span>Supabase 데이터 조회 예제</span>
-            </Button>
-          </Link>
-          <Link href="/storage-test" className="w-full">
-            <Button
-              className="w-full h-28 flex items-center justify-center gap-4 text-xl shadow-lg hover:shadow-xl transition-shadow"
-              variant="outline"
-            >
-              <RiSupabaseFill className="w-8 h-8" />
-              <span>Storage 파일 업로드 테스트</span>
-            </Button>
-          </Link>
-          <Link href="/auth-test" className="w-full">
-            <Button
-              className="w-full h-28 flex items-center justify-center gap-4 text-xl shadow-lg hover:shadow-xl transition-shadow"
-              variant="outline"
-            >
-              <RiSupabaseFill className="w-8 h-8" />
-              <span>Clerk + Supabase 인증 연동</span>
-            </Button>
-          </Link>
-        </div>
-      </section>
-    </main>
-  );
+        <TourList tours={tours} />
+      </main>
+    );
+  } catch (error) {
+    // 에러 처리
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "관광지 정보를 불러오는 중 오류가 발생했습니다.";
+
+    return (
+      <main className="container mx-auto px-4 py-8">
+        <Error message={errorMessage} />
+      </main>
+    );
+  }
 }
