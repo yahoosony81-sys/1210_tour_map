@@ -242,21 +242,46 @@
       - [x] modifiedtime 파싱 함수 구현
     - [x] shadcn/ui Select 컴포넌트 대체
       - [x] Button Group으로 구현 (Select 설치 불필요)
-- [ ] 검색 기능 (MVP 2.3)
-  - [ ] `components/tour-search.tsx` 생성
-    - [ ] 검색창 UI (헤더 또는 메인 영역)
-    - [ ] 검색 아이콘
-    - [ ] 엔터 또는 버튼 클릭으로 검색
-    - [ ] 검색 중 로딩 스피너
-  - [ ] 검색 API 연동
-    - [ ] `searchKeyword()` 호출
-    - [ ] 검색 결과 표시
-    - [ ] 검색 결과 개수 표시
-    - [ ] 결과 없음 메시지
-  - [ ] 검색 + 필터 조합
-    - [ ] 키워드 + 지역 필터
-    - [ ] 키워드 + 타입 필터
-    - [ ] 모든 필터 동시 적용
+- [x] 검색 기능 (MVP 2.3)
+  - [x] `components/tour-search.tsx` 생성
+    - [x] 검색창 UI (헤더 또는 메인 영역)
+    - [x] 검색 아이콘
+    - [x] 엔터 또는 버튼 클릭으로 검색
+    - [x] 검색 중 로딩 스피너
+  - [x] 검색 API 연동
+    - [x] `searchKeyword()` 호출
+    - [x] 검색 결과 표시
+    - [x] 검색 결과 개수 표시
+    - [x] 결과 없음 메시지
+  - [x] 검색 + 필터 조합
+    - [x] 키워드 + 지역 필터
+    - [x] 키워드 + 타입 필터
+    - [x] 모든 필터 동시 적용
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `components/tour-search.tsx` 생성 (Client Component)
+      - [x] shadcn/ui Input 컴포넌트 사용
+      - [x] 검색 아이콘 (lucide-react Search)
+      - [x] 검색어 초기화 버튼 (X 버튼)
+      - [x] URL 쿼리 파라미터로 검색 키워드 관리 (`keyword`)
+      - [x] 엔터 키 또는 검색 버튼 클릭으로 검색 실행
+      - [x] 검색 중 로딩 스피너 표시 (Loader2 아이콘)
+      - [x] 검색어가 URL에서 자동으로 읽혀서 표시됨
+    - [x] `app/page.tsx` 수정
+      - [x] `searchParams`에서 `keyword` 파라미터 읽기
+      - [x] 검색 키워드가 있으면 `searchKeyword()` API 호출 (필터와 조합)
+      - [x] 검색 키워드가 없으면 기존대로 `getAreaBasedList()` 호출
+      - [x] 검색 결과 개수 표시 ("검색 결과: N개 (검색어: "키워드")")
+      - [x] TourSearch 컴포넌트를 메인 영역 상단에 배치
+    - [x] `components/tour-list.tsx` 수정
+      - [x] `searchKeyword` prop 추가 (검색 결과 없음 메시지 개선용)
+      - [x] 검색 키워드가 있을 때 더 구체적인 빈 상태 메시지 표시
+    - [x] 검색 + 필터 조합 로직 구현
+      - [x] 검색 키워드와 지역 필터 동시 적용
+      - [x] 검색 키워드와 관광 타입 필터 동시 적용
+      - [x] 모든 필터(지역, 타입, 정렬)와 검색 키워드 동시 적용
+      - [x] 필터 변경 시 검색 키워드 유지
+      - [x] 검색 실행 시 필터 상태 유지
 - [ ] 네이버 지도 연동 (MVP 2.2)
   - [ ] `components/naver-map.tsx` 생성
     - [ ] Naver Maps API v3 초기화

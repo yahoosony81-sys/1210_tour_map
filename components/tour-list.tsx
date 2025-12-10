@@ -27,6 +27,8 @@ interface TourListProps {
   tours: TourItem[];
   /** 로딩 상태 */
   isLoading?: boolean;
+  /** 검색 키워드 (검색 결과 없음 메시지 개선용) */
+  searchKeyword?: string;
   /** 추가 클래스명 */
   className?: string;
 }
@@ -49,14 +51,22 @@ function TourCardSkeleton() {
 /**
  * 빈 상태 컴포넌트
  */
-function EmptyState() {
+function EmptyState({ searchKeyword }: { searchKeyword?: string }) {
   return (
     <div className="col-span-full flex flex-col items-center justify-center py-12 text-center">
       <p className="text-lg font-medium text-muted-foreground">
-        관광지를 찾을 수 없습니다
+        {searchKeyword ? (
+          <>
+            &quot;<span className="text-foreground">{searchKeyword}</span>&quot;에 대한 검색 결과가 없습니다
+          </>
+        ) : (
+          "관광지를 찾을 수 없습니다"
+        )}
       </p>
       <p className="mt-2 text-sm text-muted-foreground">
-        다른 검색 조건을 시도해보세요
+        {searchKeyword
+          ? "다른 검색어나 필터 조건을 시도해보세요"
+          : "다른 검색 조건을 시도해보세요"}
       </p>
     </div>
   );
@@ -65,6 +75,7 @@ function EmptyState() {
 export function TourList({
   tours,
   isLoading = false,
+  searchKeyword,
   className,
 }: TourListProps) {
   // 로딩 상태
@@ -87,7 +98,7 @@ export function TourList({
   if (tours.length === 0) {
     return (
       <div className={cn("grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3", className)}>
-        <EmptyState />
+        <EmptyState searchKeyword={searchKeyword} />
       </div>
     );
   }
