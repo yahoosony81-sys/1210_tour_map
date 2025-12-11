@@ -1023,34 +1023,107 @@
 
 ## Phase 5: 북마크 페이지 (`/bookmarks`) - 선택 사항
 
-- [ ] Supabase 설정 확인
-  - [ ] `bookmarks` 테이블 확인 (db.sql 참고)
-    - [ ] `users` 테이블과의 관계 확인
-    - [ ] 인덱스 확인 (user_id, content_id, created_at)
-    - [ ] RLS 비활성화 확인 (개발 환경)
-- [ ] 북마크 목록 페이지
-  - [ ] `app/bookmarks/page.tsx` 생성
-    - [ ] 인증된 사용자만 접근 가능
-    - [ ] 로그인하지 않은 경우 로그인 유도
-  - [ ] `components/bookmarks/bookmark-list.tsx` 생성
-    - [ ] 사용자 북마크 목록 조회 (`getUserBookmarks()`)
-    - [ ] 카드 레이아웃 (홈페이지와 동일한 tour-card 사용)
-    - [ ] 빈 상태 처리 (북마크 없을 때)
-    - [ ] 로딩 상태 (Skeleton UI)
-- [ ] 북마크 관리 기능
-  - [ ] 정렬 옵션
-    - [ ] 최신순 (created_at DESC)
-    - [ ] 이름순 (가나다순)
-    - [ ] 지역별
-  - [ ] 일괄 삭제 기능
-    - [ ] 체크박스 선택
-    - [ ] 선택 항목 삭제
-    - [ ] 확인 다이얼로그
-  - [ ] 개별 삭제 기능
-    - [ ] 각 카드에 삭제 버튼
-- [ ] 페이지 통합 및 스타일링
-  - [ ] 반응형 디자인 확인
-  - [ ] 최종 페이지 확인
+- [x] Supabase 설정 확인
+  - [x] `bookmarks` 테이블 확인 (db.sql 참고)
+    - [x] `users` 테이블과의 관계 확인
+    - [x] 인덱스 확인 (user_id, content_id, created_at)
+    - [x] RLS 비활성화 확인 (개발 환경)
+- [x] 북마크 목록 페이지
+  - [x] `app/bookmarks/page.tsx` 생성
+    - [x] 인증된 사용자만 접근 가능
+    - [x] 로그인하지 않은 경우 로그인 유도
+  - [x] `components/bookmarks/bookmark-list.tsx` 생성
+    - [x] 사용자 북마크 목록 조회 (`getUserBookmarksList()`)
+    - [x] 카드 레이아웃 (홈페이지와 동일한 tour-card 사용)
+    - [x] 빈 상태 처리 (북마크 없을 때)
+    - [x] 로딩 상태 (Skeleton UI)
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `app/bookmarks/page.tsx` 생성 (Server Component)
+      - [x] Next.js 15 App Router Server Component 패턴 구현
+      - [x] `dynamic = 'force-dynamic'` 설정 (Clerk 사용)
+      - [x] Clerk 인증 확인 (`auth()` 함수 사용)
+      - [x] 인증되지 않은 경우 로그인 페이지로 리다이렉트 (`redirect("/sign-in")`)
+      - [x] 기본 레이아웃 구조 작성 (제목, 정렬 옵션, 북마크 목록)
+      - [x] 정렬 옵션 파라미터 파싱 (`searchParams.sort`)
+      - [x] 에러 처리 (Error 컴포넌트 사용)
+    - [x] `components/bookmarks/bookmark-list.tsx` 생성 (Server Component)
+      - [x] `getUserBookmarksList()` Server Action 호출하여 북마크 목록 조회
+      - [x] 각 관광지 상세 정보 조회 (`getDetailCommon()` API 병렬 호출)
+      - [x] `TourDetail`을 `TourItem`으로 변환 함수 구현 (`convertDetailToItem`)
+      - [x] 북마크 정렬 함수 구현 (`sortBookmarkTours`)
+      - [x] 정렬 옵션 지원 (최신순, 이름순, 지역별)
+      - [x] 빈 상태 처리 (EmptyState 컴포넌트)
+      - [x] 에러 처리 (Error 컴포넌트 사용)
+      - [x] `BookmarkListClient` 컴포넌트로 클라이언트 사이드 기능 위임
+    - [x] `components/bookmarks/bookmark-list-client.tsx` 생성 (Client Component)
+      - [x] 일괄 삭제 기능 통합
+      - [x] 선택 상태 관리 (`selectedIds` Set)
+      - [x] 전체 선택/해제 기능
+      - [x] 개별 선택 기능
+      - [x] 일괄 삭제 실행 (`toggleBookmark` Server Action 병렬 호출)
+      - [x] 삭제 후 페이지 새로고침 (`router.refresh()`)
+      - [x] 토스트 메시지 표시 (성공/에러)
+- [x] 북마크 관리 기능
+  - [x] 정렬 옵션
+    - [x] 최신순 (created_at DESC)
+    - [x] 이름순 (가나다순)
+    - [x] 지역별
+  - [x] 일괄 삭제 기능
+    - [x] 체크박스 선택
+    - [x] 선택 항목 삭제
+    - [x] 확인 다이얼로그
+  - [x] 개별 삭제 기능
+    - [x] 각 카드에 삭제 버튼
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `components/bookmarks/bookmark-sort.tsx` 생성 (Client Component)
+      - [x] 정렬 옵션 UI (Button Group)
+      - [x] URL 쿼리 파라미터로 정렬 상태 관리 (`sort` 파라미터)
+      - [x] `useRouter`, `useSearchParams` 사용 (Next.js 15)
+      - [x] 정렬 변경 시 URL 업데이트 (replace 방식)
+      - [x] 활성 정렬 옵션 스타일링
+      - [x] 반응형 디자인 (모바일 최소 44x44px 터치 영역)
+    - [x] `components/bookmarks/bookmark-card.tsx` 생성 (Client Component)
+      - [x] `TourCard` 컴포넌트 재사용
+      - [x] 삭제 버튼 추가 (오른쪽 상단, 호버 시 표시)
+      - [x] 체크박스 추가 (왼쪽 상단, 일괄 삭제용)
+      - [x] 개별 삭제 기능 (`toggleBookmark` Server Action 호출)
+      - [x] 삭제 후 페이지 새로고침 (`router.refresh()`)
+      - [x] 토스트 메시지 표시 (성공/에러)
+      - [x] 로딩 상태 처리 (삭제 중 스피너)
+      - [x] 접근성 개선 (aria-label, aria-busy)
+    - [x] `components/bookmarks/bookmark-bulk-actions.tsx` 생성 (Client Component)
+      - [x] 전체 선택/해제 체크박스
+      - [x] 선택된 항목 개수 표시
+      - [x] 일괄 삭제 버튼 (선택된 항목이 있을 때만 표시)
+      - [x] 확인 다이얼로그 (shadcn/ui Dialog 사용)
+      - [x] 일괄 삭제 실행 (`toggleBookmark` Server Action 병렬 호출)
+      - [x] 삭제 후 선택 초기화 및 페이지 새로고침
+      - [x] 토스트 메시지 표시 (성공/에러)
+      - [x] 반응형 디자인 (모바일 최소 44x44px 터치 영역)
+    - [x] shadcn/ui Checkbox 컴포넌트 설치
+      - [x] `pnpx shadcn@latest add checkbox --yes`
+- [x] 페이지 통합 및 스타일링
+  - [x] 반응형 디자인 확인
+  - [x] 최종 페이지 확인
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] 페이지 레이아웃 통합
+      - [x] 제목 영역 ("내 북마크", 설명 텍스트)
+      - [x] 정렬 옵션 영역 (상단)
+      - [x] 일괄 삭제 영역 (정렬 옵션 아래)
+      - [x] 북마크 목록 영역 (그리드 레이아웃)
+      - [x] 반응형 디자인 (모바일 1열, 태블릿 2열, 데스크톱 3열)
+      - [x] 섹션 간격 통일 (모바일 `mb-4`, 데스크톱 `md:mb-6`)
+    - [x] 스타일링 개선
+      - [x] 기존 페이지와 일관된 스타일 (컨테이너, 패딩, 간격)
+      - [x] 버튼 터치 영역 최소 44x44px (모바일)
+      - [x] 접근성 개선 (ARIA 라벨, 키보드 네비게이션)
+    - [x] 네비게이션 링크 확인
+      - [x] `components/Navbar.tsx`에 북마크 링크 이미 추가됨 확인
+      - [x] 활성 링크 스타일링 적용 확인
+      - [x] 모바일에서 로그인한 사용자만 표시 확인
 
 ## Phase 6: 최적화 & 배포
 
