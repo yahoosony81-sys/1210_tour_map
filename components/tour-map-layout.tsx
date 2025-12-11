@@ -17,15 +17,25 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { List, Map as MapIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TourList } from "@/components/tour-list";
-import { NaverMap } from "@/components/naver-map";
 import { loadMoreTours } from "@/actions/tour-actions";
 import type { TourItem } from "@/lib/types/tour";
 import type { SortOption } from "@/lib/utils/tour-sort";
 import { cn } from "@/lib/utils";
+
+// NaverMap은 무거운 컴포넌트이므로 동적 import로 SSR 비활성화
+const NaverMap = dynamic(() => import("@/components/naver-map").then((mod) => ({ default: mod.NaverMap })), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-[400px] md:h-[600px] items-center justify-center rounded-lg border bg-muted">
+      <p className="text-sm text-muted-foreground">지도를 불러오는 중...</p>
+    </div>
+  ),
+});
 
 interface TourMapLayoutProps {
   /** 초기 관광지 목록 (첫 페이지) */

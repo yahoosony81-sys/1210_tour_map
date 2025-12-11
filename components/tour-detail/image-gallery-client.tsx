@@ -20,9 +20,14 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import type { TourImage } from "@/lib/types/tour";
-import { ImageModal } from "./image-modal";
 import { SafeImage } from "@/components/ui/safe-image";
+
+// ImageModal은 모달이므로 필요할 때만 로드
+const ImageModal = dynamic(() => import("./image-modal").then((mod) => ({ default: mod.ImageModal })), {
+  loading: () => null, // 모달은 로딩 상태가 필요 없음
+});
 
 interface ImageGalleryClientProps {
   /** 이미지 목록 (url 필드가 추가된 TourImage 배열) */

@@ -134,6 +134,12 @@ export class TourApiError extends Error {
 interface ApiCallOptions {
   retries?: number;
   timeout?: number;
+  /**
+   * Next.js 캐싱 설정 (초 단위)
+   * 예: 3600 = 1시간, 86400 = 24시간
+   * undefined인 경우 캐싱 없음
+   */
+  revalidate?: number;
 }
 
 // =====================================================
@@ -261,12 +267,22 @@ async function callApi<T>(
   const queryString = buildQueryParams(allParams);
   const url = `${BASE_URL}${endpoint}?${queryString}`;
 
-  const response = await fetchWithRetry(url, {
+  // Next.js fetch 옵션 준비 (캐싱 지원)
+  const fetchOptions: RequestInit & { next?: { revalidate?: number } } = {
     method: "GET",
     headers: {
       Accept: "application/json",
     },
-  });
+  };
+
+  // revalidate 옵션이 있으면 Next.js 캐싱 설정 추가
+  if (options.revalidate !== undefined) {
+    fetchOptions.next = {
+      revalidate: options.revalidate,
+    };
+  }
+
+  const response = await fetchWithRetry(url, fetchOptions);
 
   return parseApiResponse<T>(response);
 }
@@ -286,7 +302,8 @@ export async function getAreaCode(areaCode?: string): Promise<AreaCode[]> {
     params.areaCode = areaCode;
   }
 
-  return callApi<AreaCode[]>("/areaCode2", params);
+  // 지역 코드는 자주 변경되지 않으므로 24시간 캐싱
+  return callApi<AreaCode[]>("/areaCode2", params, { revalidate: 86400 });
 }
 
 /**
@@ -311,7 +328,8 @@ export async function getAreaBasedList(options: {
     pageNo: options.pageNo || DEFAULT_PAGE_NO,
   };
 
-  return callApi<TourItem[]>("/areaBasedList2", params);
+  // 관광지 목록은 1시간 캐싱
+  return callApi<TourItem[]>("/areaBasedList2", params, { revalidate: 3600 });
 }
 
 /**
@@ -345,7 +363,8 @@ export async function searchKeyword(
     pageNo: options.pageNo || DEFAULT_PAGE_NO,
   };
 
-  return callApi<TourItem[]>("/searchKeyword2", params);
+  // 검색 결과는 30분 캐싱 (검색어가 다양하므로 짧게 설정)
+  return callApi<TourItem[]>("/searchKeyword2", params, { revalidate: 1800 });
 }
 
 /**
@@ -362,7 +381,8 @@ export async function getDetailCommon(contentId: string): Promise<TourDetail[]> 
     contentId: contentId.trim(),
   };
 
-  return callApi<TourDetail[]>("/detailCommon2", params);
+  // 상세 정보는 1시간 캐싱
+  return callApi<TourDetail[]>("/detailCommon2", params, { revalidate: 3600 });
 }
 
 /**
@@ -387,7 +407,8 @@ export async function getDetailIntro(
     contentTypeId: contentTypeId.trim(),
   };
 
-  return callApi<TourIntro[]>("/detailIntro2", params);
+  // 운영 정보는 1시간 캐싱
+  return callApi<TourIntro[]>("/detailIntro2", params, { revalidate: 3600 });
 }
 
 /**
@@ -404,7 +425,8 @@ export async function getDetailImage(contentId: string): Promise<TourImage[]> {
     contentId: contentId.trim(),
   };
 
-  return callApi<TourImage[]>("/detailImage2", params);
+  // 이미지 목록은 자주 변경되지 않으므로 24시간 캐싱
+  return callApi<TourImage[]>("/detailImage2", params, { revalidate: 86400 });
 }
 
 /**
@@ -421,6 +443,7 @@ export async function getDetailPetTour(contentId: string): Promise<PetTourInfo[]
     contentId: contentId.trim(),
   };
 
-  return callApi<PetTourInfo[]>("/detailPetTour2", params);
+  // 반려동물 정보는 1시간 캐싱
+  return callApi<PetTourInfo[]>("/detailPetTour2", params, { revalidate: 3600 });
 }
 

@@ -20,15 +20,14 @@
 
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DetailInfo } from "@/components/tour-detail/detail-info";
 import { DetailIntro } from "@/components/tour-detail/detail-intro";
-import { DetailPetTour } from "@/components/tour-detail/detail-pet-tour";
 import { DetailGallery } from "@/components/tour-detail/detail-gallery";
 import { DetailMap } from "@/components/tour-detail/detail-map";
-import { DetailRecommendations } from "@/components/tour-detail/detail-recommendations";
 import { ShareButton } from "@/components/tour-detail/share-button";
 import { BookmarkButton } from "@/components/bookmarks/bookmark-button";
 import { getDetailCommon, getAreaBasedList } from "@/lib/api/tour-api";
@@ -36,6 +35,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getAbsoluteUrl, truncateText } from "@/lib/utils/url";
 import { ensureHttps } from "@/lib/utils/image";
 import { getErrorMessage } from "@/lib/utils/error-handler";
+
+// 반려동물 정보와 추천 관광지는 선택적이므로 동적 import
+const DetailPetTour = dynamic(() => import("@/components/tour-detail/detail-pet-tour").then((mod) => ({ default: mod.DetailPetTour })), {
+  loading: () => <Skeleton className="h-[200px] w-full" />,
+});
+
+const DetailRecommendations = dynamic(() => import("@/components/tour-detail/detail-recommendations").then((mod) => ({ default: mod.DetailRecommendations })), {
+  loading: () => <Skeleton className="h-[400px] w-full" />,
+});
 
 export const dynamic = "force-dynamic";
 

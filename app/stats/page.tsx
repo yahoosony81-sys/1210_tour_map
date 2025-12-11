@@ -18,11 +18,27 @@
  * - @/components/stats/type-chart: TypeChart 컴포넌트
  */
 
+import dynamic from "next/dynamic";
 import { Error } from "@/components/ui/error";
 import { StatsSummary } from "@/components/stats/stats-summary";
-import { RegionChart } from "@/components/stats/region-chart";
-import { TypeChart } from "@/components/stats/type-chart";
 import { getErrorMessage, shouldRetry } from "@/lib/utils/error-handler";
+
+// 차트 컴포넌트는 무거운 recharts 라이브러리를 사용하므로 동적 import
+const RegionChart = dynamic(() => import("@/components/stats/region-chart").then((mod) => ({ default: mod.RegionChart })), {
+  loading: () => (
+    <div className="flex h-[400px] items-center justify-center rounded-lg border bg-muted">
+      <p className="text-sm text-muted-foreground">차트를 불러오는 중...</p>
+    </div>
+  ),
+});
+
+const TypeChart = dynamic(() => import("@/components/stats/type-chart").then((mod) => ({ default: mod.TypeChart })), {
+  loading: () => (
+    <div className="flex h-[400px] items-center justify-center rounded-lg border bg-muted">
+      <p className="text-sm text-muted-foreground">차트를 불러오는 중...</p>
+    </div>
+  ),
+});
 
 export const dynamic = "force-dynamic";
 

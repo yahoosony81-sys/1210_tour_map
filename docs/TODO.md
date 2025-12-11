@@ -1272,14 +1272,41 @@
       - [x] `Sitemap` URL 포함 (`/sitemap.xml`)
       - [x] `getAbsoluteUrl()` 함수 사용하여 sitemap URL 생성
       - [x] `headers()`에서 host 정보 가져오기
-- [ ] 성능 최적화
-  - [ ] Lighthouse 점수 측정 (목표: > 80)
-  - [ ] 코드 분할 확인
-  - [ ] 불필요한 번들 제거
-  - [ ] API 응답 캐싱 전략 확인
+- [x] 성능 최적화
+  - [x] Lighthouse 점수 측정 (목표: > 80)
+    - [x] Lighthouse CLI 설치 및 설정
+    - [x] 성능 측정 스크립트 생성 (`scripts/measure-performance.ts`)
+    - [x] `package.json`에 측정 스크립트 추가 (`measure:perf`)
+  - [x] 코드 분할 확인
+    - [x] Bundle Analyzer 설정 (`@next/bundle-analyzer`)
+    - [x] `next.config.ts`에 Bundle Analyzer 설정 추가
+    - [x] `package.json`에 분석 스크립트 추가 (`analyze`)
+    - [x] 동적 import 적용
+      - [x] `NaverMap` 컴포넌트 동적 import (SSR 비활성화)
+      - [x] `RegionChart` 컴포넌트 동적 import
+      - [x] `TypeChart` 컴포넌트 동적 import
+      - [x] `ImageModal` 컴포넌트 동적 import
+      - [x] `DetailPetTour` 컴포넌트 동적 import (선택적)
+      - [x] `DetailRecommendations` 컴포넌트 동적 import (선택적)
+  - [x] 불필요한 번들 제거
+    - [x] Bundle Analyzer 설정 완료
+    - [x] 번들 분석 스크립트 추가 (`pnpm analyze`)
+  - [x] API 응답 캐싱 전략 확인
+    - [x] `lib/api/tour-api.ts`에 캐싱 옵션 추가
+    - [x] `ApiCallOptions` 인터페이스에 `revalidate` 옵션 추가
+    - [x] `fetchWithRetry()` 함수에 Next.js 캐싱 옵션 지원 추가
+    - [x] 각 API 함수에 캐싱 시간 설정
+      - [x] `getAreaCode()`: 24시간 (86400초)
+      - [x] `getAreaBasedList()`: 1시간 (3600초)
+      - [x] `searchKeyword()`: 30분 (1800초)
+      - [x] `getDetailCommon()`: 1시간 (3600초)
+      - [x] `getDetailIntro()`: 1시간 (3600초)
+      - [x] `getDetailImage()`: 24시간 (86400초)
+      - [x] `getDetailPetTour()`: 1시간 (3600초)
+    - [x] 성능 최적화 문서 작성 (`docs/PERFORMANCE.md`)
 - [ ] 환경변수 보안 검증
   - [ ] 모든 필수 환경변수 확인
-  - [ ] `.env.example` 업데이트
+  - [ ] `.env` 업데이트
   - [ ] 프로덕션 환경변수 설정 가이드 작성
 - [ ] 배포 준비
   - [ ] Vercel 배포 설정

@@ -1,5 +1,15 @@
 import type { NextConfig } from "next";
 
+// Bundle Analyzer 설정
+let withBundleAnalyzer: (config: NextConfig) => NextConfig = (config) => config;
+
+if (process.env.ANALYZE === "true") {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  withBundleAnalyzer = require("@next/bundle-analyzer")({
+    enabled: true,
+  });
+}
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -36,4 +46,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);
