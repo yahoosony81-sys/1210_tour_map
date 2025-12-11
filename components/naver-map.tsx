@@ -105,6 +105,7 @@ export function NaverMap({
   const [isLoading, setIsLoading] = useState(true);
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const [mapType, setMapType] = useState<"normal" | "satellite">("normal");
+  const [hasValidCoordinates, setHasValidCoordinates] = useState(true);
 
   // Naver Maps API 스크립트 로드
   useEffect(() => {
@@ -180,8 +181,12 @@ export function NaverMap({
 
     // 관광지가 없으면 지도 초기화하지 않음
     if (tours.length === 0) {
+      setHasValidCoordinates(true); // 빈 배열일 때는 기본 상태로 설정
       return;
     }
+
+    // tours가 변경될 때마다 유효 좌표 상태 초기화
+    setHasValidCoordinates(true);
 
     // 좌표 변환 및 중심 좌표 계산
     const positions = tours
@@ -204,21 +209,11 @@ export function NaverMap({
     // 유효한 좌표가 없을 때 처리
     if (positions.length === 0) {
       console.warn("유효한 좌표가 없어 지도를 표시할 수 없습니다.");
-      return (
-        <div
-          className={cn(
-            "flex flex-col items-center justify-center gap-2 bg-muted rounded-lg text-muted-foreground p-8",
-            "h-[400px] md:h-[600px]",
-            className
-          )}
-        >
-          <p className="text-center font-medium">좌표 정보가 없어 지도를 표시할 수 없습니다.</p>
-          <p className="text-xs text-center">
-            관광지의 위치 정보가 제공되지 않았습니다.
-          </p>
-        </div>
-      );
+      setHasValidCoordinates(false);
+      return;
     }
+
+    setHasValidCoordinates(true);
 
     // 중심 좌표 계산 (모든 마커의 평균)
     const centerLat = positions.reduce((sum, pos) => sum + pos.lat, 0) / positions.length;
@@ -513,6 +508,24 @@ export function NaverMap({
         </p>
         <p className="text-xs text-center">
           지도 기능을 사용하려면 네이버 지도 API 키가 필요합니다.
+        </p>
+      </div>
+    );
+  }
+
+  // 유효한 좌표가 없을 때 빈 상태 메시지 표시
+  if (!hasValidCoordinates && tours.length > 0) {
+    return (
+      <div
+        className={cn(
+          "flex flex-col items-center justify-center gap-2 bg-muted rounded-lg text-muted-foreground p-8",
+          "h-[400px] md:h-[600px]",
+          className
+        )}
+      >
+        <p className="text-center font-medium">좌표 정보가 없어 지도를 표시할 수 없습니다.</p>
+        <p className="text-xs text-center">
+          관광지의 위치 정보가 제공되지 않았습니다.
         </p>
       </div>
     );
