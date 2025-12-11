@@ -26,6 +26,7 @@ import type { TourItem, ContentTypeId } from "@/lib/types/tour";
 import { convertKATECToWGS84, CONTENT_TYPE_ID } from "@/lib/types/tour";
 import { Loading } from "@/components/ui/loading";
 import { cn } from "@/lib/utils";
+import { getNaverMapClientId } from "@/lib/utils/env";
 
 interface NaverMapProps {
   /** 관광지 목록 */
@@ -109,10 +110,14 @@ export function NaverMap({
 
   // Naver Maps API 스크립트 로드
   useEffect(() => {
-    const clientId = process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID;
+    const clientId = getNaverMapClientId();
 
     if (!clientId) {
-      console.error("NEXT_PUBLIC_NAVER_MAP_CLIENT_ID 환경변수가 설정되지 않았습니다.");
+      console.error(
+        "NEXT_PUBLIC_NAVER_MAP_CLIENT_ID 환경변수가 설정되지 않았습니다.\n" +
+          "지도 기능을 사용하려면 네이버 클라우드 플랫폼에서 Client ID를 발급받아 설정하세요.\n" +
+          "자세한 내용은 docs/ENV_SETUP.md를 참고하세요."
+      );
       setIsLoading(false);
       return;
     }

@@ -7,7 +7,12 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import { SyncUserProvider } from "@/components/providers/sync-user-provider";
+import { checkRequiredEnv } from "@/lib/utils/env";
 import "./globals.css";
+
+// 빌드 타임 환경변수 검증 (Server Component에서만 실행)
+const isProduction = process.env.NODE_ENV === "production";
+checkRequiredEnv(isProduction);
 
 /**
  * Clerk 한국어 로컬라이제이션 설정

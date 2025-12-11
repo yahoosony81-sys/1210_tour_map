@@ -31,16 +31,8 @@ const COMMON_PARAMS = {
 } as const;
 
 function getApiKey(): string {
-  const apiKey =
-    process.env.NEXT_PUBLIC_TOUR_API_KEY || process.env.TOUR_API_KEY;
-
-  if (!apiKey) {
-    throw new Error(
-      "API 키가 설정되지 않았습니다. NEXT_PUBLIC_TOUR_API_KEY 또는 TOUR_API_KEY 환경변수를 확인하세요."
-    );
-  }
-
-  return apiKey;
+  // 환경변수 검증 유틸리티 사용
+  return getTourApiKey();
 }
 
 function buildQueryParams(params: Record<string, string | number | undefined>): string {

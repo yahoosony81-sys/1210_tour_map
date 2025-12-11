@@ -30,6 +30,7 @@ import { convertKATECToWGS84, CONTENT_TYPE_ID, type ContentTypeId } from "@/lib/
 import { getNaverMapDirectionsUrl, formatCoordinates } from "@/lib/utils/naver-map";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { getNaverMapClientId } from "@/lib/utils/env";
 
 interface DetailMapProps {
   /** 관광지 콘텐츠 ID */
@@ -137,10 +138,14 @@ export function DetailMap({
 
   // Naver Maps API 스크립트 로드
   useEffect(() => {
-    const clientId = process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID;
+    const clientId = getNaverMapClientId();
 
     if (!clientId) {
-      console.error("NEXT_PUBLIC_NAVER_MAP_CLIENT_ID 환경변수가 설정되지 않았습니다.");
+      console.error(
+        "NEXT_PUBLIC_NAVER_MAP_CLIENT_ID 환경변수가 설정되지 않았습니다.\n" +
+          "지도 기능을 사용하려면 네이버 클라우드 플랫폼에서 Client ID를 발급받아 설정하세요.\n" +
+          "자세한 내용은 docs/ENV_SETUP.md를 참고하세요."
+      );
       setIsLoading(false);
       return;
     }
@@ -368,13 +373,14 @@ export function DetailMap({
   }
 
   // 에러 상태 (스크립트 로드 실패 또는 API 키 없음)
-  if (!isScriptLoaded || !process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID) {
+  const clientId = getNaverMapClientId();
+  if (!isScriptLoaded || !clientId) {
     return (
       <section className={cn("mb-6 md:mb-8", className)}>
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">위치</h2>
         <Error
           message={
-            !process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID
+            !clientId
               ? "지도 API 키가 설정되지 않았습니다."
               : "지도를 불러올 수 없습니다."
           }

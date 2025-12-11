@@ -38,6 +38,7 @@ import type {
   StatsSummary,
   TypeStats,
 } from "@/lib/types/stats";
+import { getTourApiKey } from "@/lib/utils/env";
 
 // =====================================================
 // 상수 정의
@@ -63,16 +64,8 @@ const RETRY_DELAYS = [1000, 2000, 4000]; // 1초, 2초, 4초
  * 환경변수에서 API 키 가져오기
  */
 function getApiKey(): string {
-  const apiKey =
-    process.env.NEXT_PUBLIC_TOUR_API_KEY || process.env.TOUR_API_KEY;
-
-  if (!apiKey) {
-    throw new TourApiError(
-      "API 키가 설정되지 않았습니다. NEXT_PUBLIC_TOUR_API_KEY 또는 TOUR_API_KEY 환경변수를 확인하세요."
-    );
-  }
-
-  return apiKey;
+  // 환경변수 검증 유틸리티 사용
+  return getTourApiKey();
 }
 
 /**

@@ -1304,10 +1304,45 @@
       - [x] `getDetailImage()`: 24시간 (86400초)
       - [x] `getDetailPetTour()`: 1시간 (3600초)
     - [x] 성능 최적화 문서 작성 (`docs/PERFORMANCE.md`)
-- [ ] 환경변수 보안 검증
-  - [ ] 모든 필수 환경변수 확인
-  - [ ] `.env` 업데이트
-  - [ ] 프로덕션 환경변수 설정 가이드 작성
+- [x] 환경변수 보안 검증
+  - [x] 모든 필수 환경변수 확인
+  - [x] `.env` 업데이트
+  - [x] 프로덕션 환경변수 설정 가이드 작성
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `lib/utils/env.ts` 생성 (환경변수 검증 유틸리티)
+      - [x] `EnvConfig` 인터페이스 정의
+      - [x] `REQUIRED_ENV_VARS` 상수 배열 정의
+      - [x] `OPTIONAL_ENV_VARS` 상수 배열 정의
+      - [x] `validateEnv()` 함수 구현 (런타임 검증)
+      - [x] `getEnvConfig()` 함수 구현 (타입 안전한 접근)
+      - [x] `checkRequiredEnv()` 함수 구현 (빌드 타임 검증)
+      - [x] 에러 메시지 개선 (누락된 환경변수 목록 표시)
+      - [x] `getTourApiKey()` 함수 구현
+      - [x] `getNaverMapClientId()` 함수 구현
+      - [x] `getSupabaseConfig()` 함수 구현
+      - [x] `getSupabaseServiceRoleKey()` 함수 구현
+    - [x] `.env.example` 파일 생성 (차단됨 - globalignore)
+      - [x] 모든 필수 환경변수 포함
+      - [x] 각 환경변수 설명 주석 추가
+      - [x] 보안 주의사항 추가
+      - [x] 예시 값 추가 (실제 키 제외)
+    - [x] `docs/ENV_SETUP.md` 생성 (프로덕션 환경변수 설정 가이드)
+      - [x] 각 환경변수 설명
+      - [x] Vercel 배포 시 설정 방법
+      - [x] 보안 모범 사례
+      - [x] 문제 해결 가이드
+    - [x] 빌드 타임 환경변수 검증 통합
+      - [x] `app/layout.tsx`에서 `checkRequiredEnv()` 호출
+      - [x] 개발 환경: 경고만 표시
+      - [x] 프로덕션 빌드: 에러로 처리
+    - [x] 기존 코드 개선
+      - [x] `lib/api/tour-api.ts` - `getTourApiKey()` 사용
+      - [x] `lib/api/stats-api.ts` - `getTourApiKey()` 사용
+      - [x] `actions/tour-actions.ts` - `getTourApiKey()` 사용
+      - [x] `components/naver-map.tsx` - `getNaverMapClientId()` 사용
+      - [x] `components/tour-detail/detail-map.tsx` - `getNaverMapClientId()` 사용
+      - [x] `lib/supabase/service-role.ts` - `getSupabaseConfig()`, `getSupabaseServiceRoleKey()` 사용
 - [ ] 배포 준비
   - [ ] Vercel 배포 설정
   - [ ] 환경변수 설정 (Vercel 대시보드)
