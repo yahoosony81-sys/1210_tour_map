@@ -23,7 +23,6 @@
  * - @/components/ui/error: 에러 상태
  */
 
-import Image from "next/image";
 import { Phone, ExternalLink } from "lucide-react";
 import { getDetailCommon } from "@/lib/api/tour-api";
 import type { TourDetail } from "@/lib/types/tour";
@@ -32,6 +31,7 @@ import { ensureHttps } from "@/lib/utils/image";
 import { CopyAddressButton } from "./copy-address-button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Error } from "@/components/ui/error";
+import { SafeImage } from "@/components/ui/safe-image";
 
 interface DetailInfoProps {
   /** 관광지 콘텐츠 ID */
@@ -40,8 +40,9 @@ interface DetailInfoProps {
 
 /**
  * 기본 이미지 URL (이미지가 없을 때 사용)
+ * 로컬 이미지 사용 (외부 서비스 의존성 제거)
  */
-const DEFAULT_IMAGE = "https://via.placeholder.com/800x600?text=No+Image";
+const DEFAULT_IMAGE = "/og-image.png";
 
 /**
  * HTML 태그 제거 함수
@@ -93,8 +94,13 @@ export async function DetailInfo({ contentId }: DetailInfoProps) {
   }
 
   // 데이터 파싱
-  const rawImageUrl = detail.firstimage || detail.firstimage2 || DEFAULT_IMAGE;
-  const imageUrl = ensureHttps(rawImageUrl);
+  const rawImageUrl = detail.firstimage || detail.firstimage2;
+  // 로컬 이미지 경로인지 확인 (절대 경로로 시작하는 경우)
+  const imageUrl = rawImageUrl
+    ? rawImageUrl.startsWith("/")
+      ? rawImageUrl
+      : ensureHttps(rawImageUrl)
+    : DEFAULT_IMAGE;
   const address = detail.addr2
     ? `${detail.addr1} ${detail.addr2}`
     : detail.addr1;
@@ -120,14 +126,15 @@ export async function DetailInfo({ contentId }: DetailInfoProps) {
         </div>
 
         {/* 대표 이미지 */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg">
-          <Image
+        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-muted">
+          <SafeImage
             src={imageUrl}
             alt={detail.title}
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 800px"
             priority
+            fallbackSrc={DEFAULT_IMAGE}
           />
         </div>
 

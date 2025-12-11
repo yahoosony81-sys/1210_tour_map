@@ -807,11 +807,25 @@
 
 ## Phase 4: 통계 대시보드 페이지 (`/stats`)
 
-- [ ] 페이지 기본 구조
-  - [ ] `app/stats/page.tsx` 생성
-    - [ ] 기본 레이아웃 구조
-    - [ ] 반응형 레이아웃 설정 (모바일 우선)
-    - [ ] Server Component로 구현
+- [x] 페이지 기본 구조
+  - [x] `app/stats/page.tsx` 생성
+    - [x] 기본 레이아웃 구조
+    - [x] 반응형 레이아웃 설정 (모바일 우선)
+    - [x] Server Component로 구현
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `app/stats/page.tsx` 생성 (Server Component)
+      - [x] Next.js 15 App Router Server Component 패턴 구현
+      - [x] `dynamic = 'force-dynamic'` 설정 (Clerk 사용)
+      - [x] 기본 레이아웃 구조 작성 (제목, 설명, 섹션 구분)
+      - [x] 제목 영역 구현 ("통계 대시보드", 설명 텍스트)
+      - [x] 통계 요약 카드 영역 스켈레톤 UI 구현 (4개 카드, 그리드 레이아웃)
+      - [x] 지역별 분포 차트 영역 스켈레톤 UI 구현 (Bar Chart 형태)
+      - [x] 타입별 분포 차트 영역 스켈레톤 UI 구현 (Donut Chart 형태)
+      - [x] 반응형 디자인 구현 (모바일 1열, 태블릿 2열, 데스크톱 4열 그리드)
+      - [x] 섹션 간격 통일 (모바일 `mb-6`, 데스크톱 `md:mb-8`)
+      - [x] 에러 처리 구현 (Error 컴포넌트 사용, 재시도 버튼 지원)
+      - [x] 스타일링 통일 (기존 페이지와 동일한 컨테이너 및 패딩)
 - [ ] 통계 데이터 수집
   - [ ] `lib/api/stats-api.ts` 생성
     - [ ] `getRegionStats()` - 지역별 관광지 개수 집계

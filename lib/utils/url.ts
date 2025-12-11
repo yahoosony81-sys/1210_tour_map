@@ -78,3 +78,4 @@ export function truncateText(text: string, maxLength: number = 100): string {
   return truncated + "...";
 }
 
+

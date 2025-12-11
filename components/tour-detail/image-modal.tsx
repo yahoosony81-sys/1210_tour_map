@@ -22,8 +22,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { SafeImage } from "@/components/ui/safe-image";
 import {
   Dialog,
   DialogContent,
@@ -137,13 +137,14 @@ export function ImageModal({
           {/* 이미지 */}
           <div className="relative w-full h-full flex items-center justify-center p-4 md:p-8">
             <div className="relative w-full h-full max-w-7xl max-h-[90vh]">
-              <Image
+              <SafeImage
                 src={currentImage.url}
                 alt={`관광지 이미지 ${currentIndex + 1}`}
                 fill
                 className="object-contain"
                 sizes="100vw"
                 priority
+                fallbackSrc="/og-image.png"
               />
             </div>
           </div>

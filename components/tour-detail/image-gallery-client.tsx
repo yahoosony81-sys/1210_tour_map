@@ -20,9 +20,9 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import type { TourImage } from "@/lib/types/tour";
 import { ImageModal } from "./image-modal";
+import { SafeImage } from "@/components/ui/safe-image";
 
 interface ImageGalleryClientProps {
   /** 이미지 목록 (url 필드가 추가된 TourImage 배열) */
@@ -53,13 +53,14 @@ export function ImageGalleryClient({ images }: ImageGalleryClientProps) {
             className="group relative aspect-square w-full overflow-hidden rounded-lg bg-muted transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
             aria-label={`이미지 ${index + 1} 보기`}
           >
-            <Image
+            <SafeImage
               src={image.url}
               alt={`관광지 이미지 ${index + 1}`}
               fill
               className="object-cover"
               sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
               loading="lazy"
+              fallbackSrc="/og-image.png"
             />
             {/* 호버 오버레이 */}
             <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/10" />

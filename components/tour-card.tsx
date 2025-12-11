@@ -16,12 +16,12 @@
  * - @/lib/types/tour: TourItem 타입, getContentTypeName 함수
  */
 
-import Image from "next/image";
 import Link from "next/link";
 import type { TourItem } from "@/lib/types/tour";
 import { getContentTypeName } from "@/lib/types/tour";
 import { cn } from "@/lib/utils";
 import { ensureHttps } from "@/lib/utils/image";
+import { SafeImage } from "@/components/ui/safe-image";
 
 interface TourCardProps {
   /** 관광지 정보 */
@@ -38,10 +38,9 @@ interface TourCardProps {
 
 /**
  * 기본 이미지 URL (이미지가 없을 때 사용)
- * placeholder 이미지 서비스 사용
+ * 로컬 이미지 사용 (외부 서비스 의존성 제거)
  */
-const DEFAULT_IMAGE =
-  "https://via.placeholder.com/400x300?text=No+Image";
+const DEFAULT_IMAGE = "/og-image.png";
 
 export function TourCard({
   tour,
@@ -50,8 +49,13 @@ export function TourCard({
   onHover,
   className,
 }: TourCardProps) {
-  const rawImageUrl = tour.firstimage || DEFAULT_IMAGE;
-  const imageUrl = ensureHttps(rawImageUrl);
+  const rawImageUrl = tour.firstimage;
+  // 로컬 이미지 경로인지 확인 (절대 경로로 시작하는 경우)
+  const imageUrl = rawImageUrl
+    ? rawImageUrl.startsWith("/")
+      ? rawImageUrl
+      : ensureHttps(rawImageUrl)
+    : DEFAULT_IMAGE;
   const contentTypeName = getContentTypeName(tour.contenttypeid);
   const address = tour.addr2 ? `${tour.addr1} ${tour.addr2}` : tour.addr1;
 
@@ -90,14 +94,15 @@ export function TourCard({
       )}
     >
       {/* 썸네일 이미지 */}
-      <div className="relative aspect-video w-full overflow-hidden rounded-t-lg">
-        <Image
+      <div className="relative aspect-video w-full overflow-hidden rounded-t-lg bg-muted">
+        <SafeImage
           src={imageUrl}
           alt={tour.title}
           fill
           className="object-cover transition-transform group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           priority={false}
+          fallbackSrc={DEFAULT_IMAGE}
         />
         {/* 관광 타입 뱃지 */}
         <div className="absolute top-2 right-2">
