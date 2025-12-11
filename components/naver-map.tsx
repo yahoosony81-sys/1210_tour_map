@@ -454,8 +454,11 @@ export function NaverMap({
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        // 콜백 내부에서 다시 null 체크 (TypeScript 타입 좁히기가 콜백에서 작동하지 않음)
+        if (!window.naver?.maps || !mapInstanceRef.current) return;
+        
         const { latitude, longitude } = position.coords;
-        const { maps } = window.naver;
+        const maps = window.naver.maps;
         const location = new maps.LatLng(latitude, longitude);
 
         // 지도 이동
@@ -475,7 +478,8 @@ export function NaverMap({
       return;
     }
 
-    const { maps } = window.naver;
+    // 이미 위에서 체크했으므로 non-null assertion 사용
+    const maps = window.naver!.maps;
     const mapTypeId = type === "satellite" ? maps.MapTypeId.SATELLITE : maps.MapTypeId.NORMAL;
     mapInstanceRef.current.setMapTypeId(mapTypeId);
     setMapType(type);
