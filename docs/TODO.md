@@ -1237,14 +1237,41 @@
       - [x] 버튼 터치 영역 최소 44x44px 설정 (size="lg")
       - [x] 접근성 개선 (aria-label, aria-hidden 속성 추가)
       - [x] 시맨틱 HTML 사용 (main, section 태그)
-- [ ] SEO 최적화
-  - [ ] 메타태그 설정 (`app/layout.tsx`)
-    - [ ] 기본 title, description
-    - [ ] Open Graph 태그
-    - [ ] Twitter Card 태그
-  - [ ] `app/sitemap.ts` 생성
-    - [ ] 동적 sitemap 생성 (관광지 상세페이지 포함)
-  - [ ] `app/robots.ts` 생성
+- [x] SEO 최적화
+  - [x] 메타태그 설정 (`app/layout.tsx`)
+    - [x] 기본 title, description
+    - [x] Open Graph 태그
+    - [x] Twitter Card 태그
+  - [x] `app/sitemap.ts` 생성
+    - [x] 동적 sitemap 생성 (관광지 상세페이지 포함)
+  - [x] `app/robots.ts` 생성
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] 메타태그 설정 개선 (`app/layout.tsx`)
+      - [x] canonical URL 추가 (`alternates.canonical`)
+      - [x] robots 메타태그 설정 (`index: true, follow: true`)
+      - [x] Google Bot 설정 추가 (`max-video-preview`, `max-image-preview`, `max-snippet`)
+      - [x] authors 메타태그 추가
+      - [x] Open Graph에 `url`, `siteName`, `locale` 추가
+      - [x] `metadataBase` 설정 (환경변수 `NEXT_PUBLIC_APP_URL` 사용)
+      - [x] 환경변수 기반 기본 URL 처리 (개발/프로덕션 환경 구분)
+    - [x] 동적 Sitemap 생성 (`app/sitemap.ts`)
+      - [x] Next.js 15의 `MetadataRoute.Sitemap` 타입 사용
+      - [x] 정적 페이지 포함 (`/`, `/stats`, `/bookmarks`)
+      - [x] 동적 페이지 포함 (관광지 상세페이지 `/places/[contentId]`)
+      - [x] `getAreaBasedList()` API 호출하여 최신 관광지 조회 (최대 1000개)
+      - [x] `modifiedtime` 기준으로 정렬하여 최신 관광지 우선 포함
+      - [x] 각 URL에 `lastModified`, `changeFrequency`, `priority` 설정
+      - [x] 정적 페이지는 높은 priority (1.0), 동적 페이지는 낮은 priority (0.8)
+      - [x] 에러 처리: API 호출 실패 시 정적 페이지만 포함
+      - [x] `getAbsoluteUrl()` 함수 사용하여 절대 URL 생성
+      - [x] `headers()`에서 host 정보 가져오기
+    - [x] Robots.txt 생성 (`app/robots.ts`)
+      - [x] Next.js 15의 `MetadataRoute.Robots` 타입 사용
+      - [x] `User-Agent: *`에 대해 `Allow: /` 설정 (모든 페이지 크롤링 허용)
+      - [x] `Sitemap` URL 포함 (`/sitemap.xml`)
+      - [x] `getAbsoluteUrl()` 함수 사용하여 sitemap URL 생성
+      - [x] `headers()`에서 host 정보 가져오기
 - [ ] 성능 최적화
   - [ ] Lighthouse 점수 측정 (목표: > 80)
   - [ ] 코드 분할 확인

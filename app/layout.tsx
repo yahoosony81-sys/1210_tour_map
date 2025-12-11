@@ -47,29 +47,67 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+/**
+ * 기본 URL 가져오기 (환경변수 또는 기본값)
+ */
+function getBaseUrl(): string {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+  if (baseUrl) {
+    return baseUrl;
+  }
+  // 개발 환경에서는 localhost 사용
+  if (process.env.NODE_ENV === "development") {
+    return "http://localhost:3000";
+  }
+  // 프로덕션에서는 빈 문자열 반환 (상대 경로 사용)
+  return "";
+}
+
+const baseUrl = getBaseUrl();
+const ogImageUrl = baseUrl ? `${baseUrl}/og-image.png` : "/og-image.png";
+
 export const metadata: Metadata = {
   title: "My Trip - 한국 관광지 정보 서비스",
   description: "전국 관광지 정보를 검색하고 지도에서 확인하세요",
   keywords: ["관광지", "여행", "한국", "관광정보", "여행지", "한국관광공사"],
+  authors: [{ name: "My Trip" }],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: baseUrl || "/",
+  },
   openGraph: {
     title: "My Trip - 한국 관광지 정보 서비스",
     description: "전국 관광지 정보를 검색하고 지도에서 확인하세요",
+    url: baseUrl || "/",
+    siteName: "My Trip",
     images: [
       {
-        url: "/og-image.png",
+        url: ogImageUrl,
         width: 1200,
         height: 630,
         alt: "My Trip",
       },
     ],
+    locale: "ko_KR",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "My Trip - 한국 관광지 정보 서비스",
     description: "전국 관광지 정보를 검색하고 지도에서 확인하세요",
-    images: ["/og-image.png"],
+    images: [ogImageUrl],
   },
+  ...(baseUrl && { metadataBase: new URL(baseUrl) }),
 };
 
 export const dynamic = "force-dynamic";
