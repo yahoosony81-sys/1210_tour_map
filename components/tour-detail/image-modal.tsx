@@ -21,7 +21,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { SafeImage } from "@/components/ui/safe-image";
 import {
@@ -61,6 +61,18 @@ export function ImageModal({
     }
   }, [initialIndex, open]);
 
+  const handlePrevious = useCallback(() => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  }, [currentIndex]);
+
+  const handleNext = useCallback(() => {
+    if (currentIndex < images.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  }, [currentIndex, images.length]);
+
   // 키보드 이벤트 핸들러
   useEffect(() => {
     if (!open) return;
@@ -82,19 +94,7 @@ export function ImageModal({
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [open, currentIndex, images.length]);
-
-  const handlePrevious = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
-  };
-
-  const handleNext = () => {
-    if (currentIndex < images.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    }
-  };
+  }, [open, handlePrevious, handleNext, onOpenChange]);
 
   const currentImage = images[currentIndex];
   const isFirst = currentIndex === 0;

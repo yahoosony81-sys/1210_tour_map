@@ -25,7 +25,7 @@ import { getDetailImage } from "@/lib/api/tour-api";
 import type { TourImage } from "@/lib/types/tour";
 import { ensureHttps, isValidImageUrl } from "@/lib/utils/image";
 import { ImageGalleryClient } from "./image-gallery-client";
-import { Error } from "@/components/ui/error";
+import { ErrorDisplay } from "@/components/ui/error";
 
 interface DetailGalleryProps {
   /** 관광지 콘텐츠 ID */
@@ -69,7 +69,7 @@ export async function DetailGallery({ contentId }: DetailGalleryProps) {
     return (
       <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">이미지 갤러리</h2>
-        <Error message={error.message} size="medium" className="mt-4" />
+        <ErrorDisplay message={error.message} size="medium" className="mt-4" />
       </section>
     );
   }

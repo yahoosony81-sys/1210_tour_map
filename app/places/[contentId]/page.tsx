@@ -20,7 +20,7 @@
 
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -37,11 +37,11 @@ import { ensureHttps } from "@/lib/utils/image";
 import { getErrorMessage } from "@/lib/utils/error-handler";
 
 // 반려동물 정보와 추천 관광지는 선택적이므로 동적 import
-const DetailPetTour = dynamic(() => import("@/components/tour-detail/detail-pet-tour").then((mod) => ({ default: mod.DetailPetTour })), {
+const DetailPetTour = dynamicImport(() => import("@/components/tour-detail/detail-pet-tour").then((mod) => ({ default: mod.DetailPetTour })), {
   loading: () => <Skeleton className="h-[200px] w-full" />,
 });
 
-const DetailRecommendations = dynamic(() => import("@/components/tour-detail/detail-recommendations").then((mod) => ({ default: mod.DetailRecommendations })), {
+const DetailRecommendations = dynamicImport(() => import("@/components/tour-detail/detail-recommendations").then((mod) => ({ default: mod.DetailRecommendations })), {
   loading: () => <Skeleton className="h-[400px] w-full" />,
 });
 

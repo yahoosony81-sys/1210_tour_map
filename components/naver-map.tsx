@@ -268,7 +268,7 @@ export function NaverMap({
     infoWindowsRef.current = [];
 
     // 마커 및 인포윈도우 생성
-    tours.forEach((tour, index) => {
+    tours.forEach((tour) => {
       try {
         const coords = convertKATECToWGS84(tour.mapx, tour.mapy);
         
@@ -582,32 +582,5 @@ export function NaverMap({
       />
     </div>
   );
-}
-
-// Naver Maps API 타입 선언
-declare global {
-  interface Window {
-    naver?: {
-      maps: {
-        Map: new (element: HTMLElement | string, options?: any) => any;
-        LatLng: new (lat: number, lng: number) => any;
-        LatLngBounds: new () => any;
-        Marker: new (options?: any) => any;
-        InfoWindow: new (options?: any) => any;
-        HtmlIcon: new (options?: any) => any;
-        Point: new (x: number, y: number) => any;
-        Event: {
-          addListener: (target: any, type: string, listener: () => void) => void;
-        };
-        Position: {
-          TOP_RIGHT: any;
-        };
-        MapTypeId: {
-          NORMAL: string;
-          SATELLITE: string;
-        };
-      };
-    };
-  }
 }
 

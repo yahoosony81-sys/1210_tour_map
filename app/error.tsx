@@ -25,7 +25,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { Home, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Error } from "@/components/ui/error";
+import { ErrorDisplay } from "@/components/ui/error";
 import {
   getErrorMessage,
   shouldRetry,
@@ -52,7 +52,7 @@ export default function ErrorBoundary({ error, reset }: ErrorProps) {
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="mx-auto max-w-2xl">
-        <Error
+        <ErrorDisplay
           message={errorMessage}
           onRetry={canRetry ? reset : undefined}
           retryText="다시 시도"

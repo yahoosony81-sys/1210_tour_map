@@ -26,7 +26,6 @@
 
 import type { ApiResponse } from "@/lib/api/tour-api";
 import { TourApiError, getAreaCode } from "@/lib/api/tour-api";
-import type { AreaCode } from "@/lib/types/tour";
 import {
   CONTENT_TYPE_ID,
   CONTENT_TYPE_NAME,

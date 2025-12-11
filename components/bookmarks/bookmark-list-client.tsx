@@ -97,7 +97,6 @@ export function BookmarkListClient({ tours }: BookmarkListClientProps) {
       <BookmarkBulkActions
         tours={tours}
         selectedIds={selectedIds}
-        onSelectChange={handleSelectChange}
         onSelectAll={handleSelectAll}
         onBulkDelete={handleBulkDelete}
         isDeleting={isDeleting}

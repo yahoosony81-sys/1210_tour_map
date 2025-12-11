@@ -16,7 +16,7 @@
 
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { List, Map as MapIcon } from "lucide-react";
@@ -71,7 +71,8 @@ export function TourMapLayout({
   const [hasMore, setHasMore] = useState(
     initialTotalCount ? initialTours.length < initialTotalCount : initialTours.length >= 20
   );
-  const [totalCount, setTotalCount] = useState(initialTotalCount || 0);
+  // totalCount는 추후 UI 표시용으로 사용 예정
+  const [, setTotalCount] = useState(initialTotalCount || 0);
 
   // Intersection Observer를 위한 ref
   const sentinelRef = useRef<HTMLDivElement>(null);
@@ -93,34 +94,8 @@ export function TourMapLayout({
     setTotalCount(initialTotalCount || 0);
   }, [initialTours, initialTotalCount, areaCode, contentTypeId, keyword, sort]);
 
-  // Intersection Observer 설정
-  useEffect(() => {
-    const sentinel = sentinelRef.current;
-    if (!sentinel) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry.isIntersecting && !isLoadingMore && hasMore) {
-          handleLoadMore();
-        }
-      },
-      {
-        root: null,
-        rootMargin: "100px", // 하단 100px 전에 미리 로드
-        threshold: 0.1,
-      }
-    );
-
-    observer.observe(sentinel);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [isLoadingMore, hasMore, areaCode, contentTypeId, keyword, sort]);
-
   // 추가 데이터 로드
-  const handleLoadMore = async () => {
+  const handleLoadMore = useCallback(async () => {
     if (isLoadingMore || !hasMore) return;
 
     setIsLoadingMore(true);
@@ -147,7 +122,33 @@ export function TourMapLayout({
     } finally {
       setIsLoadingMore(false);
     }
-  };
+  }, [isLoadingMore, hasMore, currentPage, areaCode, contentTypeId, keyword, sort]);
+
+  // Intersection Observer 설정
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting && !isLoadingMore && hasMore) {
+          handleLoadMore();
+        }
+      },
+      {
+        root: null,
+        rootMargin: "100px", // 하단 100px 전에 미리 로드
+        threshold: 0.1,
+      }
+    );
+
+    observer.observe(sentinel);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [isLoadingMore, hasMore, handleLoadMore]);
 
   const handleTourSelect = (contentId: string) => {
     setSelectedContentId(contentId);

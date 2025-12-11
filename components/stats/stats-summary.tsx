@@ -29,7 +29,7 @@
 import { Globe, TrendingUp, Award, Clock } from "lucide-react";
 import { getStatsSummary } from "@/lib/api/stats-api";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Error } from "@/components/ui/error";
+import { ErrorDisplay } from "@/components/ui/error";
 import { cn } from "@/lib/utils";
 
 /**
@@ -169,7 +169,7 @@ export async function StatsSummary() {
         : "통계 요약 정보를 불러오는 중 오류가 발생했습니다.";
 
     return (
-      <Error
+      <ErrorDisplay
         message={errorMessage}
         size="medium"
         className="min-h-[200px]"

@@ -42,8 +42,6 @@ interface BookmarkBulkActionsProps {
   tours: TourItem[];
   /** 선택된 항목 ID 목록 */
   selectedIds: Set<string>;
-  /** 선택 변경 핸들러 */
-  onSelectChange: (contentId: string, checked: boolean) => void;
   /** 전체 선택 핸들러 */
   onSelectAll: (checked: boolean) => void;
   /** 일괄 삭제 핸들러 */
@@ -58,7 +56,6 @@ interface BookmarkBulkActionsProps {
 export function BookmarkBulkActions({
   tours,
   selectedIds,
-  onSelectChange,
   onSelectAll,
   onBulkDelete,
   isDeleting,
@@ -72,7 +69,6 @@ export function BookmarkBulkActions({
   };
 
   const isAllSelected = selectedIds.size === tours.length && tours.length > 0;
-  const isIndeterminate = selectedIds.size > 0 && selectedIds.size < tours.length;
 
   if (tours.length === 0) {
     return null;

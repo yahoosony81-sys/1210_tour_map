@@ -30,7 +30,7 @@ import { getContentTypeName } from "@/lib/types/tour";
 import { ensureHttps } from "@/lib/utils/image";
 import { CopyAddressButton } from "./copy-address-button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Error } from "@/components/ui/error";
+import { ErrorDisplay } from "@/components/ui/error";
 import { SafeImage } from "@/components/ui/safe-image";
 
 interface DetailInfoProps {
@@ -72,7 +72,7 @@ export async function DetailInfo({ contentId }: DetailInfoProps) {
     return (
       <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">기본 정보</h2>
-        <Error
+        <ErrorDisplay
           message={error.message}
           size="medium"
           className="mt-4"

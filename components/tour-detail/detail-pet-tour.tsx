@@ -28,12 +28,11 @@ import {
   MapPin,
   DollarSign,
   Car,
-  Info,
   AlertCircle,
 } from "lucide-react";
 import { getDetailPetTour } from "@/lib/api/tour-api";
 import type { PetTourInfo } from "@/lib/types/tour";
-import { Error } from "@/components/ui/error";
+import { ErrorDisplay } from "@/components/ui/error";
 import { cn } from "@/lib/utils";
 
 interface DetailPetTourProps {
@@ -96,7 +95,7 @@ export async function DetailPetTour({ contentId }: DetailPetTourProps) {
           <PawPrint className="size-5" aria-hidden="true" />
           <span>반려동물 동반 정보</span>
         </h2>
-        <Error message={error.message} size="medium" className="mt-4" />
+        <ErrorDisplay message={error.message} size="medium" className="mt-4" />
       </section>
     );
   }

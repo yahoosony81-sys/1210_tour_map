@@ -18,13 +18,13 @@
  * - @/components/stats/type-chart: TypeChart 컴포넌트
  */
 
-import dynamic from "next/dynamic";
-import { Error } from "@/components/ui/error";
+import dynamicImport from "next/dynamic";
+import { ErrorDisplay } from "@/components/ui/error";
 import { StatsSummary } from "@/components/stats/stats-summary";
 import { getErrorMessage, shouldRetry } from "@/lib/utils/error-handler";
 
 // 차트 컴포넌트는 무거운 recharts 라이브러리를 사용하므로 동적 import
-const RegionChart = dynamic(() => import("@/components/stats/region-chart").then((mod) => ({ default: mod.RegionChart })), {
+const RegionChart = dynamicImport(() => import("@/components/stats/region-chart").then((mod) => ({ default: mod.RegionChart })), {
   loading: () => (
     <div className="flex h-[400px] items-center justify-center rounded-lg border bg-muted">
       <p className="text-sm text-muted-foreground">차트를 불러오는 중...</p>
@@ -32,7 +32,7 @@ const RegionChart = dynamic(() => import("@/components/stats/region-chart").then
   ),
 });
 
-const TypeChart = dynamic(() => import("@/components/stats/type-chart").then((mod) => ({ default: mod.TypeChart })), {
+const TypeChart = dynamicImport(() => import("@/components/stats/type-chart").then((mod) => ({ default: mod.TypeChart })), {
   loading: () => (
     <div className="flex h-[400px] items-center justify-center rounded-lg border bg-muted">
       <p className="text-sm text-muted-foreground">차트를 불러오는 중...</p>
@@ -87,7 +87,7 @@ export default async function StatsPage() {
 
     return (
       <main className="container mx-auto px-4 py-8">
-        <Error
+        <ErrorDisplay
           message={errorMessage}
           onRetry={canRetry ? () => window.location.reload() : undefined}
           retryText="다시 시도"

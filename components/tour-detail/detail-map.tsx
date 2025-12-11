@@ -25,7 +25,7 @@ import { useEffect, useRef, useState } from "react";
 import { Navigation, MapPin, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/ui/loading";
-import { Error } from "@/components/ui/error";
+import { ErrorDisplay } from "@/components/ui/error";
 import { convertKATECToWGS84, CONTENT_TYPE_ID, type ContentTypeId } from "@/lib/types/tour";
 import { getNaverMapDirectionsUrl, formatCoordinates } from "@/lib/utils/naver-map";
 import { cn } from "@/lib/utils";
@@ -378,7 +378,7 @@ export function DetailMap({
     return (
       <section className={cn("mb-6 md:mb-8", className)}>
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">위치</h2>
-        <Error
+        <ErrorDisplay
           message={
             !clientId
               ? "지도 API 키가 설정되지 않았습니다."
@@ -448,27 +448,5 @@ export function DetailMap({
       </div>
     </section>
   );
-}
-
-// Naver Maps API 타입 선언
-declare global {
-  interface Window {
-    naver?: {
-      maps: {
-        Map: new (element: HTMLElement | string, options?: any) => any;
-        LatLng: new (lat: number, lng: number) => any;
-        Marker: new (options?: any) => any;
-        InfoWindow: new (options?: any) => any;
-        HtmlIcon: new (options?: any) => any;
-        Point: new (x: number, y: number) => any;
-        Event: {
-          addListener: (target: any, type: string, listener: () => void) => void;
-        };
-        Position: {
-          TOP_RIGHT: any;
-        };
-      };
-    };
-  }
 }
 

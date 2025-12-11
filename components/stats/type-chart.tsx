@@ -27,7 +27,7 @@
  */
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { Error } from "@/components/ui/error";
+import { ErrorDisplay } from "@/components/ui/error";
 import { getTypeStats } from "@/lib/api/stats-api";
 import { TypeChartClient } from "./type-chart-client";
 
@@ -74,7 +74,7 @@ export async function TypeChart() {
 
     return (
       <div className="h-[300px] md:h-[400px] lg:h-[500px] rounded-lg border bg-card p-4 md:p-6">
-        <Error message={errorMessage} size="medium" />
+        <ErrorDisplay message={errorMessage} size="medium" />
       </div>
     );
   }

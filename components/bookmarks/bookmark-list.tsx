@@ -25,8 +25,7 @@ import { getDetailCommon } from "@/lib/api/tour-api";
 import type { TourItem, TourDetail } from "@/lib/types/tour";
 import type { Bookmark } from "@/lib/api/supabase-api";
 import { BookmarkListClient } from "@/components/bookmarks/bookmark-list-client";
-import { Error } from "@/components/ui/error";
-import { Skeleton } from "@/components/ui/skeleton";
+import { ErrorDisplay } from "@/components/ui/error";
 
 /**
  * TourDetail을 TourItem으로 변환
@@ -72,7 +71,6 @@ function sortBookmarkTours(
   sortOption: "latest" | "name" | "region" = "latest"
 ): TourItem[] {
   // 북마크와 관광지를 content_id로 매핑
-  const bookmarkMap = new Map(bookmarks.map((b) => [b.content_id, b]));
   const tourMap = new Map(tours.map((t) => [t.contentid, t]));
 
   if (sortOption === "latest") {
@@ -94,25 +92,6 @@ function sortBookmarkTours(
   }
 
   return tours;
-}
-
-/**
- * 북마크 목록 스켈레톤 UI
- */
-function BookmarkListSkeleton() {
-  return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {Array.from({ length: 6 }).map((_, index) => (
-        <div key={index} className="rounded-lg border bg-card shadow-sm">
-          <Skeleton className="aspect-video w-full rounded-t-lg" />
-          <div className="p-4">
-            <Skeleton className="mb-2 h-6 w-3/4" />
-            <Skeleton className="h-4 w-1/2" />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
 }
 
 /**
@@ -191,7 +170,7 @@ export async function BookmarkList({
       errorMessage = error.message;
     }
 
-    return <Error message={errorMessage} />;
+    return <ErrorDisplay message={errorMessage} />;
   }
 }
 

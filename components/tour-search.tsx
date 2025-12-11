@@ -27,7 +27,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Search, X, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loading } from "@/components/ui/loading";
 import { cn } from "@/lib/utils";
 
 interface TourSearchProps {

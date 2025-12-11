@@ -24,10 +24,8 @@
 import { TourMapLayout } from "@/components/tour-map-layout";
 import { TourFilters } from "@/components/tour-filters";
 import { TourSearch } from "@/components/tour-search";
-import { Error } from "@/components/ui/error";
-import { Skeleton } from "@/components/ui/skeleton";
+import { ErrorDisplay } from "@/components/ui/error";
 import type { ApiResponse } from "@/lib/api/tour-api";
-import { getAreaBasedList, searchKeyword } from "@/lib/api/tour-api";
 import { sortTours } from "@/lib/utils/tour-sort";
 import { getErrorMessage, shouldRetry } from "@/lib/utils/error-handler";
 import type { TourItem } from "@/lib/types/tour";
@@ -187,7 +185,7 @@ export default async function HomePage({
 
     return (
       <main className="container mx-auto px-4 py-8">
-        <Error 
+        <ErrorDisplay 
           message={errorMessage} 
           onRetry={canRetry ? () => window.location.reload() : undefined}
           retryText="다시 시도"

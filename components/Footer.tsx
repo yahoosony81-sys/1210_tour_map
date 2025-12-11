@@ -6,8 +6,6 @@
  * 저작권 정보, 링크, API 제공 표시를 포함합니다.
  */
 
-import Link from "next/link";
-
 export default function Footer() {
   return (
     <footer className="border-t bg-background">

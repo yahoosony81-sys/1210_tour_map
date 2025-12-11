@@ -25,7 +25,7 @@ import { getAreaBasedList } from "@/lib/api/tour-api";
 import type { TourItem } from "@/lib/types/tour";
 import { TourCard } from "@/components/tour-card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Error } from "@/components/ui/error";
+import { ErrorDisplay } from "@/components/ui/error";
 
 interface DetailRecommendationsProps {
   /** 현재 관광지 ID (제외용) */
@@ -158,7 +158,7 @@ export async function DetailRecommendations({
     return (
       <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">추천 관광지</h2>
-        <Error
+        <ErrorDisplay
           message={error.message}
           size="medium"
           className="mt-4"

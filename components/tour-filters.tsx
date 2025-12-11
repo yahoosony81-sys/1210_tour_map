@@ -30,7 +30,6 @@ import {
   type AreaCode,
   type ContentTypeId,
 } from "@/lib/types/tour";
-import { cn } from "@/lib/utils";
 
 /**
  * 관광 타입 옵션

@@ -18,7 +18,7 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { Error } from "@/components/ui/error";
+import { ErrorDisplay } from "@/components/ui/error";
 import { BookmarkList } from "@/components/bookmarks/bookmark-list";
 import { BookmarkSort } from "@/components/bookmarks/bookmark-sort";
 import { getErrorMessage, shouldRetry } from "@/lib/utils/error-handler";
@@ -75,7 +75,7 @@ export default async function BookmarksPage({
 
     return (
       <main className="container mx-auto px-4 py-8">
-        <Error
+        <ErrorDisplay
           message={errorMessage}
           onRetry={canRetry ? () => window.location.reload() : undefined}
           retryText="다시 시도"

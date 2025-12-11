@@ -29,7 +29,7 @@ const sizeClasses = {
   large: "text-lg",
 };
 
-export function Error({
+export function ErrorDisplay({
   message,
   onRetry,
   retryText = "재시도",

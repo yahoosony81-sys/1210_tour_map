@@ -32,7 +32,7 @@ import {
 } from "lucide-react";
 import { getDetailIntro } from "@/lib/api/tour-api";
 import type { TourIntro } from "@/lib/types/tour";
-import { Error } from "@/components/ui/error";
+import { ErrorDisplay } from "@/components/ui/error";
 
 interface DetailIntroProps {
   /** 관광지 콘텐츠 ID */
@@ -75,7 +75,7 @@ export async function DetailIntro({
     return (
       <section className="mb-6 border-b pb-6 md:mb-8 md:pb-8">
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">운영 정보</h2>
-        <Error message={error.message} size="medium" className="mt-4" />
+        <ErrorDisplay message={error.message} size="medium" className="mt-4" />
       </section>
     );
   }
