@@ -187,25 +187,64 @@ export function NaverMap({
     const positions = tours
       .map((tour) => {
         try {
-          return convertKATECToWGS84(tour.mapx, tour.mapy);
-        } catch {
+          const pos = convertKATECToWGS84(tour.mapx, tour.mapy);
+          if (!pos) {
+            console.warn(
+              `좌표 변환 실패: ${tour.title} (mapx: ${tour.mapx}, mapy: ${tour.mapy})`
+            );
+          }
+          return pos;
+        } catch (error) {
+          console.error(`좌표 변환 에러: ${tour.title}`, error);
           return null;
         }
       })
       .filter((pos): pos is { lng: number; lat: number } => pos !== null);
 
+    // 유효한 좌표가 없을 때 처리
     if (positions.length === 0) {
-      return;
+      console.warn("유효한 좌표가 없어 지도를 표시할 수 없습니다.");
+      return (
+        <div
+          className={cn(
+            "flex flex-col items-center justify-center gap-2 bg-muted rounded-lg text-muted-foreground p-8",
+            "h-[400px] md:h-[600px]",
+            className
+          )}
+        >
+          <p className="text-center font-medium">좌표 정보가 없어 지도를 표시할 수 없습니다.</p>
+          <p className="text-xs text-center">
+            관광지의 위치 정보가 제공되지 않았습니다.
+          </p>
+        </div>
+      );
     }
 
     // 중심 좌표 계산 (모든 마커의 평균)
     const centerLat = positions.reduce((sum, pos) => sum + pos.lat, 0) / positions.length;
     const centerLng = positions.reduce((sum, pos) => sum + pos.lng, 0) / positions.length;
 
+    // 중심 좌표 검증 (한국 범위 내인지 확인)
+    const isValidCenter =
+      centerLat >= 32.5 &&
+      centerLat <= 43.5 &&
+      centerLng >= 123.5 &&
+      centerLng <= 132.5;
+
+    // 유효하지 않은 중심 좌표면 서울 중심으로 설정
+    const finalCenterLat = isValidCenter ? centerLat : 37.5665; // 서울 위도
+    const finalCenterLng = isValidCenter ? centerLng : 126.9780; // 서울 경도
+
+    if (!isValidCenter) {
+      console.warn(
+        `계산된 중심 좌표가 유효하지 않아 서울 중심으로 설정합니다. (${centerLat.toFixed(6)}, ${centerLng.toFixed(6)})`
+      );
+    }
+
     // 지도 초기화
     if (!mapInstanceRef.current) {
       const map = new maps.Map(mapRef.current, {
-        center: new maps.LatLng(centerLat, centerLng),
+        center: new maps.LatLng(finalCenterLat, finalCenterLng),
         zoom: 13,
         zoomControl: true,
         zoomControlOptions: {
@@ -231,7 +270,14 @@ export function NaverMap({
     // 마커 및 인포윈도우 생성
     tours.forEach((tour, index) => {
       try {
-        const { lat, lng } = convertKATECToWGS84(tour.mapx, tour.mapy);
+        const coords = convertKATECToWGS84(tour.mapx, tour.mapy);
+        
+        // 좌표가 유효하지 않으면 마커 생성하지 않음
+        if (!coords) {
+          return;
+        }
+
+        const { lat, lng } = coords;
         const position = new maps.LatLng(lat, lng);
 
         // 관광 타입별 마커 색상 가져오기
@@ -322,7 +368,17 @@ export function NaverMap({
     }
 
     try {
-      const { lat, lng } = convertKATECToWGS84(tour.mapx, tour.mapy);
+      const coords = convertKATECToWGS84(tour.mapx, tour.mapy);
+      
+      // 좌표가 유효하지 않으면 이동하지 않음
+      if (!coords) {
+        console.warn(
+          `선택된 관광지의 좌표가 유효하지 않습니다: ${tour.title} (mapx: ${tour.mapx}, mapy: ${tour.mapy})`
+        );
+        return;
+      }
+
+      const { lat, lng } = coords;
       const position = new window.naver.maps.LatLng(lat, lng);
 
       // 지도 이동

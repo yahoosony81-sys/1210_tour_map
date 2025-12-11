@@ -236,20 +236,42 @@ export interface PetTourInfo {
 /**
  * 좌표 변환 유틸리티
  * KATEC 좌표계를 WGS84로 변환
+ * 
+ * 유효성 검증:
+ * - 좌표가 0이거나 NaN인 경우 null 반환
+ * - 한국 좌표 범위를 벗어나면 null 반환 (위도: 33~43°N, 경도: 124~132°E)
+ * 
  * @param mapx - 경도 (KATEC, 정수형)
  * @param mapy - 위도 (KATEC, 정수형)
- * @returns WGS84 좌표 { lng: number, lat: number }
+ * @returns WGS84 좌표 { lng: number, lat: number } 또는 null (유효하지 않은 좌표)
  */
 export function convertKATECToWGS84(
   mapx: string | number,
   mapy: string | number
-): { lng: number; lat: number } {
+): { lng: number; lat: number } | null {
   const x = typeof mapx === "string" ? parseFloat(mapx) : mapx;
   const y = typeof mapy === "string" ? parseFloat(mapy) : mapy;
 
+  // 좌표가 0이거나 NaN인 경우 null 반환
+  if (!x || !y || isNaN(x) || isNaN(y) || x === 0 || y === 0) {
+    return null;
+  }
+
+  const lng = x / 10000000;
+  const lat = y / 10000000;
+
+  // 한국 좌표 범위 검증 (위도: 33~43°N, 경도: 124~132°E)
+  // 약간의 여유를 두고 검증 (위도: 32.5~43.5°N, 경도: 123.5~132.5°E)
+  if (lat < 32.5 || lat > 43.5 || lng < 123.5 || lng > 132.5) {
+    console.warn(
+      `좌표가 한국 범위를 벗어남: (${lat.toFixed(6)}°N, ${lng.toFixed(6)}°E), 원본: (mapx: ${mapx}, mapy: ${mapy})`
+    );
+    return null;
+  }
+
   return {
-    lng: x / 10000000,
-    lat: y / 10000000,
+    lng,
+    lat,
   };
 }
 

@@ -123,11 +123,17 @@ export function DetailMap({
   useEffect(() => {
     try {
       const coords = convertKATECToWGS84(mapx, mapy);
+      if (!coords) {
+        console.warn(
+          `좌표 변환 실패: ${title} (mapx: ${mapx}, mapy: ${mapy})`
+        );
+      }
       setCoordinates(coords);
     } catch (error) {
-      console.error("좌표 변환 실패:", error);
+      console.error("좌표 변환 에러:", error);
+      setCoordinates(null);
     }
-  }, [mapx, mapy]);
+  }, [mapx, mapy, title]);
 
   // Naver Maps API 스크립트 로드
   useEffect(() => {
@@ -326,14 +332,19 @@ export function DetailMap({
     ? getNaverMapDirectionsUrl(coordinates.lat, coordinates.lng)
     : null;
 
-  // 좌표 정보 없음 처리
-  if (!mapx || !mapy) {
+  // 좌표 정보 없음 처리 (원본 좌표가 없거나 변환 실패)
+  if (!mapx || !mapy || (isScriptLoaded && !isLoading && !coordinates)) {
     return (
       <section className={cn("mb-6 md:mb-8", className)}>
         <h2 className="mb-4 text-xl font-semibold md:text-2xl">위치</h2>
         <div className="flex flex-col items-center justify-center gap-2 rounded-lg border bg-muted p-8 text-center text-muted-foreground">
           <MapPin className="size-8" aria-hidden="true" />
-          <p>위치 정보가 없습니다</p>
+          <p className="font-medium">위치 정보가 없습니다</p>
+          <p className="text-xs">
+            {!mapx || !mapy
+              ? "이 관광지의 위치 정보가 제공되지 않았습니다."
+              : "좌표 정보가 유효하지 않아 지도를 표시할 수 없습니다."}
+          </p>
         </div>
       </section>
     );
