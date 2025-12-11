@@ -927,19 +927,43 @@
       - [x] 기존 스켈레톤 UI 제거
       - [x] `StatsSummary` 컴포넌트 통합
       - [x] 주석 업데이트 (의존성 정보 수정)
-- [ ] 지역별 분포 차트 (Bar Chart)
-  - [ ] `components/stats/region-chart.tsx` 생성
-    - [ ] shadcn/ui Chart 컴포넌트 설치 (Bar)
-    - [ ] recharts 기반 Bar Chart 구현
-    - [ ] X축: 지역명 (서울, 부산, 제주 등)
-    - [ ] Y축: 관광지 개수
-    - [ ] 상위 10개 지역 표시 (또는 전체)
-    - [ ] 바 클릭 시 해당 지역 목록 페이지로 이동
-    - [ ] 호버 시 정확한 개수 표시
-    - [ ] 다크/라이트 모드 지원
-    - [ ] 반응형 디자인
-    - [ ] 로딩 상태
-    - [ ] 접근성 (ARIA 라벨, 키보드 네비게이션)
+- [x] 지역별 분포 차트 (Bar Chart)
+  - [x] `components/stats/region-chart.tsx` 생성
+    - [x] shadcn/ui Chart 컴포넌트 설치 (Bar)
+    - [x] recharts 기반 Bar Chart 구현
+    - [x] X축: 지역명 (서울, 부산, 제주 등)
+    - [x] Y축: 관광지 개수
+    - [x] 상위 10개 지역 표시 (또는 전체)
+    - [x] 바 클릭 시 해당 지역 목록 페이지로 이동
+    - [x] 호버 시 정확한 개수 표시
+    - [x] 다크/라이트 모드 지원
+    - [x] 반응형 디자인
+    - [x] 로딩 상태
+    - [x] 접근성 (ARIA 라벨, 키보드 네비게이션)
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `components/stats/region-chart.tsx` 생성 (Server Component)
+      - [x] `getRegionStats()` API 호출하여 지역별 통계 데이터 수집
+      - [x] `RegionChartClient` Client Component로 차트 렌더링 위임
+      - [x] 에러 처리 구현 (Error 컴포넌트 사용)
+      - [x] 데이터 없음 처리 (빈 상태 메시지)
+      - [x] `RegionChartSkeleton` 컴포넌트 구현 (로딩 상태용)
+    - [x] `components/stats/region-chart-client.tsx` 생성 (Client Component)
+      - [x] shadcn/ui Chart 컴포넌트 사용 (ChartContainer, ChartTooltip, ChartTooltipContent)
+      - [x] recharts의 BarChart, Bar, XAxis, YAxis, CartesianGrid 사용
+      - [x] X축: 지역명 (`regionName`), 45도 각도로 표시
+      - [x] Y축: 관광지 개수 (`count`), 천 단위 콤마 포맷팅
+      - [x] 상위 10개 지역만 표시 (`data.slice(0, 10)`)
+      - [x] 바 클릭 시 해당 지역 목록 페이지로 이동 (`useRouter` 사용, `/?areaCode={areaCode}`)
+      - [x] 호버 시 Tooltip으로 정확한 개수 표시 (지역명, 관광지 개수, 천 단위 콤마)
+      - [x] 다크/라이트 모드 지원 (shadcn/ui Chart 자동 지원)
+      - [x] 반응형 디자인 (모바일 300px, 태블릿 400px, 데스크톱 500px)
+      - [x] 접근성 개선 (aria-label, role="img")
+      - [x] 바 호버 효과 (opacity 변경)
+    - [x] `app/stats/page.tsx` 수정
+      - [x] `RegionChart` 컴포넌트 import
+      - [x] 기존 스켈레톤 UI를 `RegionChart` 컴포넌트로 교체
+      - [x] 주석 업데이트 (의존성 정보에 RegionChart 추가)
 - [ ] 타입별 분포 차트 (Donut Chart)
   - [ ] `components/stats/type-chart.tsx` 생성
     - [ ] shadcn/ui Chart 컴포넌트 설치 (Pie/Donut)
