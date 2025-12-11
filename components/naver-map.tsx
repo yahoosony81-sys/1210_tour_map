@@ -19,14 +19,24 @@
 
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Map as MapIcon, Satellite, Navigation } from "lucide-react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { Map as MapIcon, Satellite, Navigation, AlertTriangle, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { TourItem, ContentTypeId } from "@/lib/types/tour";
 import { convertKATECToWGS84, CONTENT_TYPE_ID } from "@/lib/types/tour";
 import { Loading } from "@/components/ui/loading";
 import { cn } from "@/lib/utils";
 import { getNaverMapClientId } from "@/lib/utils/env";
+
+/**
+ * 지도 에러 타입 정의
+ */
+type MapErrorType = 
+  | "NO_API_KEY"      // API 키가 설정되지 않음
+  | "SCRIPT_LOAD_FAILED" // 스크립트 로드 실패
+  | "API_ERROR"       // API 에러 (도메인 미등록 등)
+  | "TIMEOUT"         // 로드 시간 초과
+  | null;
 
 interface NaverMapProps {
   /** 관광지 목록 */
@@ -107,9 +117,11 @@ export function NaverMap({
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const [mapType, setMapType] = useState<"normal" | "satellite">("normal");
   const [hasValidCoordinates, setHasValidCoordinates] = useState(true);
+  const [mapError, setMapError] = useState<MapErrorType>(null);
+  const [retryCount, setRetryCount] = useState(0);
 
-  // Naver Maps API 스크립트 로드
-  useEffect(() => {
+  // 스크립트 로드 함수 (재시도 가능하도록 분리)
+  const loadMapScript = useCallback(() => {
     const clientId = getNaverMapClientId();
 
     if (!clientId) {
@@ -118,62 +130,81 @@ export function NaverMap({
           "지도 기능을 사용하려면 네이버 클라우드 플랫폼에서 Client ID를 발급받아 설정하세요.\n" +
           "자세한 내용은 docs/ENV_SETUP.md를 참고하세요."
       );
+      setMapError("NO_API_KEY");
       setIsLoading(false);
       return;
     }
 
+    setIsLoading(true);
+    setMapError(null);
+
     // 이미 스크립트가 로드되어 있는지 확인
-    if (window.naver && window.naver.maps) {
+    if (window.naver && window.naver.maps && window.naver.maps.Map) {
       setIsScriptLoaded(true);
       setIsLoading(false);
       return;
     }
 
-    // 스크립트가 이미 로드 중인지 확인
+    // 기존 스크립트 제거 (재시도 시)
     const existingScript = document.querySelector(
       `script[src*="oapi.map.naver.com"]`
     );
-    if (existingScript) {
-      // 스크립트가 이미 있으면 로드 완료를 기다림
-      const checkInterval = setInterval(() => {
-        if (window.naver && window.naver.maps) {
-          setIsScriptLoaded(true);
-          setIsLoading(false);
-          clearInterval(checkInterval);
-        }
-      }, 100);
-
-      // 최대 5초 대기
-      setTimeout(() => {
-        clearInterval(checkInterval);
-        if (!window.naver || !window.naver.maps) {
-          console.error("네이버 지도 API 스크립트 로드 시간 초과");
-          setIsLoading(false);
-        }
-      }, 5000);
-
-      return () => clearInterval(checkInterval);
+    if (existingScript && retryCount > 0) {
+      existingScript.remove();
     }
 
     // 스크립트 동적 로드
     const script = document.createElement("script");
     script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${clientId}`;
     script.async = true;
+    
+    // API 로드 완료 확인 (Map 객체가 있는지까지 체크)
     script.onload = () => {
-      setIsScriptLoaded(true);
-      setIsLoading(false);
+      // API가 실제로 사용 가능한지 확인 (500 에러 등으로 실패할 수 있음)
+      const checkApiReady = setInterval(() => {
+        if (window.naver?.maps?.Map) {
+          clearInterval(checkApiReady);
+          setIsScriptLoaded(true);
+          setMapError(null);
+          setIsLoading(false);
+        }
+      }, 100);
+
+      // 3초 후에도 API가 준비되지 않으면 에러 처리
+      setTimeout(() => {
+        clearInterval(checkApiReady);
+        if (!window.naver?.maps?.Map) {
+          console.error(
+            "네이버 지도 API 초기화 실패\n" +
+            "가능한 원인:\n" +
+            "1. 네이버 클라우드 플랫폼에서 도메인이 등록되지 않음\n" +
+            "2. API 키가 올바르지 않음\n" +
+            "3. 네트워크 문제"
+          );
+          setMapError("API_ERROR");
+          setIsLoading(false);
+        }
+      }, 3000);
     };
+    
     script.onerror = () => {
       console.error("네이버 지도 API 스크립트 로드 실패");
+      setMapError("SCRIPT_LOAD_FAILED");
       setIsLoading(false);
     };
 
     document.head.appendChild(script);
+  }, [retryCount]);
 
-    return () => {
-      // 컴포넌트 언마운트 시 스크립트 제거하지 않음 (다른 컴포넌트에서도 사용 가능)
-    };
+  // 재시도 핸들러
+  const handleRetry = useCallback(() => {
+    setRetryCount((prev) => prev + 1);
   }, []);
+
+  // Naver Maps API 스크립트 로드
+  useEffect(() => {
+    loadMapScript();
+  }, [loadMapScript]);
 
   // 지도 초기화 및 마커 표시
   useEffect(() => {
@@ -500,24 +531,71 @@ export function NaverMap({
     );
   }
 
-  // 에러 상태 (스크립트 로드 실패 또는 API 키 없음)
-  if (!isScriptLoaded || !process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID) {
+  // 에러 상태 (각 에러 타입별로 다른 메시지 표시)
+  if (mapError || (!isScriptLoaded && !isLoading)) {
+    const errorMessages: Record<NonNullable<MapErrorType>, { title: string; description: string; canRetry: boolean }> = {
+      NO_API_KEY: {
+        title: "지도 API 키가 설정되지 않았습니다",
+        description: "환경변수 NEXT_PUBLIC_NAVER_MAP_CLIENT_ID를 설정해주세요.",
+        canRetry: false,
+      },
+      SCRIPT_LOAD_FAILED: {
+        title: "지도 스크립트 로드 실패",
+        description: "네트워크 연결을 확인하고 다시 시도해주세요.",
+        canRetry: true,
+      },
+      API_ERROR: {
+        title: "지도 API 초기화 실패",
+        description: "네이버 클라우드 플랫폼에서 이 도메인이 등록되어 있는지 확인해주세요.",
+        canRetry: true,
+      },
+      TIMEOUT: {
+        title: "지도 로드 시간 초과",
+        description: "네트워크 연결을 확인하고 다시 시도해주세요.",
+        canRetry: true,
+      },
+    };
+
+    const errorType = mapError || "SCRIPT_LOAD_FAILED";
+    const errorInfo = errorMessages[errorType];
+
     return (
       <div
         className={cn(
-          "flex flex-col items-center justify-center gap-2 bg-muted rounded-lg text-muted-foreground p-8",
+          "flex flex-col items-center justify-center gap-4 bg-muted rounded-lg text-muted-foreground p-8",
           "h-[400px] md:h-[600px]",
           className
         )}
       >
-        <p className="text-center">
-          {!process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID
-            ? "지도 API 키가 설정되지 않았습니다."
-            : "지도를 불러올 수 없습니다."}
-        </p>
-        <p className="text-xs text-center">
-          지도 기능을 사용하려면 네이버 지도 API 키가 필요합니다.
-        </p>
+        <AlertTriangle className="h-12 w-12 text-amber-500" />
+        <div className="text-center space-y-2">
+          <p className="font-medium text-foreground">{errorInfo.title}</p>
+          <p className="text-sm">{errorInfo.description}</p>
+          {errorType === "API_ERROR" && (
+            <div className="mt-4 p-4 bg-amber-50 dark:bg-amber-950/30 rounded-lg text-left text-xs space-y-1">
+              <p className="font-medium text-amber-800 dark:text-amber-200">해결 방법:</p>
+              <ol className="list-decimal list-inside text-amber-700 dark:text-amber-300 space-y-1">
+                <li>네이버 클라우드 플랫폼 콘솔에 로그인</li>
+                <li>AI·NAVER API → Maps → 애플리케이션 선택</li>
+                <li>Web 서비스 URL에 현재 도메인 추가</li>
+                <li className="font-mono bg-amber-100 dark:bg-amber-900/50 px-1 rounded">
+                  {typeof window !== "undefined" ? window.location.origin : "https://your-domain.vercel.app"}
+                </li>
+              </ol>
+            </div>
+          )}
+        </div>
+        {errorInfo.canRetry && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRetry}
+            className="mt-2"
+          >
+            <RefreshCw className="h-4 w-4 mr-2" />
+            다시 시도
+          </Button>
+        )}
       </div>
     );
   }
