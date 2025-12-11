@@ -32,6 +32,8 @@ interface TourCardProps {
   onSelect?: (contentId: string) => void;
   /** 관광지 호버 핸들러 (지도 연동용) */
   onHover?: (contentId: string | null) => void;
+  /** 이미지 priority 설정 (above-the-fold 최적화) */
+  priority?: boolean;
   /** 추가 클래스명 */
   className?: string;
 }
@@ -47,6 +49,7 @@ export function TourCard({
   isSelected = false,
   onSelect,
   onHover,
+  priority = false,
   className,
 }: TourCardProps) {
   const rawImageUrl = tour.firstimage;
@@ -101,7 +104,7 @@ export function TourCard({
           fill
           className="object-cover transition-transform group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          priority={false}
+          priority={priority}
           fallbackSrc={DEFAULT_IMAGE}
         />
         {/* 관광 타입 뱃지 */}

@@ -1149,18 +1149,75 @@
 
 ## Phase 6: 최적화 & 배포
 
-- [ ] 이미지 최적화
-  - [ ] `next.config.ts` 외부 도메인 설정
-    - [ ] 한국관광공사 이미지 도메인 추가
-    - [ ] 네이버 지도 이미지 도메인 추가
-  - [ ] Next.js Image 컴포넌트 사용 확인
-    - [ ] priority 속성 (above-the-fold)
-    - [ ] lazy loading (below-the-fold)
-    - [ ] responsive sizes 설정
-- [ ] 전역 에러 핸들링
-  - [ ] `app/error.tsx` 생성
-  - [ ] `app/global-error.tsx` 생성
-  - [ ] API 에러 처리 개선
+- [x] 이미지 최적화
+  - [x] `next.config.ts` 외부 도메인 설정
+    - [x] 한국관광공사 이미지 도메인 추가
+    - [x] 네이버 지도 이미지 도메인 추가 (일반적으로 필요 없음, JavaScript API만 사용)
+  - [x] Next.js Image 컴포넌트 사용 확인
+    - [x] priority 속성 (above-the-fold)
+    - [x] lazy loading (below-the-fold)
+    - [x] responsive sizes 설정
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `next.config.ts` 외부 도메인 설정 개선
+      - [x] 한국관광공사 이미지 도메인 확인 및 주석 정리
+      - [x] 네이버 지도 이미지 도메인 확인 (일반적으로 필요 없음)
+      - [x] HTTP/HTTPS 프로토콜 설정 최적화 (일부 이미지가 HTTP로 제공되므로 유지)
+    - [x] `components/tour-card.tsx` priority 속성 최적화
+      - [x] `priority` prop 추가 (기본값 false)
+      - [x] 첫 번째 관광지 카드에만 `priority={true}` 적용 (above-the-fold 최적화)
+    - [x] `components/tour-list.tsx` 수정
+      - [x] 첫 번째 카드에만 `priority={true}` 전달 (index 기반)
+    - [x] `components/tour-detail/detail-info.tsx` 확인
+      - [x] 상세페이지 대표 이미지 `priority={true}` 유지 확인
+      - [x] sizes 속성 최적화 확인 (`(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 800px`)
+    - [x] `components/tour-detail/image-gallery-client.tsx` 최적화
+      - [x] 첫 번째 이미지에만 `priority={true}` 적용
+      - [x] 나머지 이미지는 `loading="lazy"` 적용
+      - [x] sizes 속성 최적화 확인 (`(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw`)
+    - [x] `components/tour-detail/image-modal.tsx` 최적화
+      - [x] 모달 이미지 `priority={true}` 유지 확인
+      - [x] sizes 속성 최적화 (`(max-width: 1280px) 100vw, 1280px` - max-w-7xl 고려)
+- [x] 전역 에러 핸들링
+  - [x] `app/error.tsx` 생성
+  - [x] `app/global-error.tsx` 생성
+  - [x] API 에러 처리 개선
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `lib/utils/error-handler.ts` 생성 (에러 유틸리티)
+      - [x] `getErrorMessage()` 함수 구현 (에러 객체를 사용자 친화적 메시지로 변환)
+      - [x] `isNetworkError()` 함수 구현 (네트워크 에러 여부 확인)
+      - [x] `isApiError()` 함수 구현 (API 에러 여부 확인)
+      - [x] `shouldRetry()` 함수 구현 (재시도 가능 여부 확인)
+      - [x] `getErrorDetails()` 함수 구현 (개발 환경에서만 상세 에러 정보 반환)
+    - [x] `lib/api/tour-api.ts` 개선
+      - [x] `TourApiError` 클래스에 에러 코드별 메시지 매핑 추가 (`API_ERROR_MESSAGES`)
+      - [x] 한국관광공사 API 에러 코드별 사용자 친화적 메시지 제공
+      - [x] 에러 로깅 개선 (개발 환경에서만 상세 로그 출력)
+      - [x] `parseApiResponse()` 함수 개선 (에러 코드별 메시지 사용)
+    - [x] `app/error.tsx` 생성 (에러 바운더리)
+      - [x] Next.js 15 App Router의 에러 바운더리 패턴 구현 (Client Component)
+      - [x] `ErrorProps` 타입 사용 (`error`, `reset` prop)
+      - [x] 기존 `Error` 컴포넌트 재사용 (`components/ui/error.tsx`)
+      - [x] 에러 타입별 메시지 분류 (`getErrorMessage` 사용)
+      - [x] 재시도 기능 (`reset()` 함수 호출, `shouldRetry` 사용)
+      - [x] 홈으로 돌아가기 버튼 (Link 컴포넌트)
+      - [x] 개발 환경에서만 상세 에러 정보 표시 (`getErrorDetails` 사용)
+      - [x] 반응형 디자인 (모바일 우선)
+      - [x] 접근성 개선 (ARIA 라벨)
+    - [x] `app/global-error.tsx` 생성 (루트 에러 바운더리)
+      - [x] Next.js 15 App Router의 전역 에러 바운더리 패턴 구현 (Client Component)
+      - [x] 루트 레이아웃 에러만 처리 (ClerkProvider, SyncUserProvider 등)
+      - [x] `html`, `body` 태그 포함 (루트 레이아웃이 렌더링되지 않으므로)
+      - [x] 최소한의 스타일링 (Tailwind CSS 기본 클래스)
+      - [x] 에러 메시지 및 재시도 버튼
+      - [x] 개발 환경에서만 상세 에러 정보 표시
+      - [x] 최소한의 의존성만 사용 (ClerkProvider 등이 작동하지 않을 수 있음)
+    - [x] 기존 페이지 에러 처리 개선
+      - [x] `app/page.tsx`: 에러 처리 로직을 `getErrorMessage()`, `shouldRetry()` 사용하도록 개선
+      - [x] `app/stats/page.tsx`: 에러 처리 로직을 `getErrorMessage()`, `shouldRetry()` 사용하도록 개선
+      - [x] `app/bookmarks/page.tsx`: 에러 처리 로직을 `getErrorMessage()`, `shouldRetry()` 사용하도록 개선
+      - [x] `app/places/[contentId]/page.tsx`: 에러 로깅 개선 (`getErrorMessage` 사용, 개발 환경에서만)
 - [ ] 404 페이지
   - [ ] `app/not-found.tsx` 생성
     - [ ] 사용자 친화적인 메시지

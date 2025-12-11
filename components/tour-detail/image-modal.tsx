@@ -142,7 +142,7 @@ export function ImageModal({
                 alt={`관광지 이미지 ${currentIndex + 1}`}
                 fill
                 className="object-contain"
-                sizes="100vw"
+                sizes="(max-width: 1280px) 100vw, 1280px"
                 priority
                 fallbackSrc="/og-image.png"
               />

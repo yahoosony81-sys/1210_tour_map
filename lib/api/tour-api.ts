@@ -78,6 +78,27 @@ export interface ApiResponse<T> {
 }
 
 /**
+ * 한국관광공사 API 에러 코드별 메시지 매핑
+ */
+const API_ERROR_MESSAGES: Record<string, string> = {
+  "0000": "정상 처리되었습니다.",
+  "01": "어플리케이션 에러",
+  "02": "데이터베이스 에러",
+  "03": "데이터 없음",
+  "04": "HTTP 에러",
+  "05": "서비스 연결 실패",
+  "10": "잘못된 요청 파라미터",
+  "11": "필수 요청 파라미터가 없음",
+  "12": "해당 오퍼레이션이 없음",
+  "20": "서비스 접근 거부",
+  "21": "일시적으로 사용할 수 없음",
+  "22": "등록되지 않은 서비스키",
+  "30": "사용한도 초과",
+  "31": "등록되지 않은 도메인",
+  "32": "등록되지 않은 IP",
+};
+
+/**
  * API 에러 타입
  */
 export class TourApiError extends Error {
@@ -86,8 +107,24 @@ export class TourApiError extends Error {
     public code?: string,
     public statusCode?: number
   ) {
-    super(message);
+    // 에러 코드가 있고 매핑된 메시지가 있으면 사용
+    const userMessage =
+      code && API_ERROR_MESSAGES[code]
+        ? `${API_ERROR_MESSAGES[code]} (코드: ${code})`
+        : message;
+
+    super(userMessage);
     this.name = "TourApiError";
+
+    // 개발 환경에서만 상세 로그 출력
+    if (process.env.NODE_ENV === "development") {
+      console.error("[TourApiError]", {
+        message,
+        code,
+        statusCode,
+        userMessage,
+      });
+    }
   }
 }
 
@@ -188,10 +225,11 @@ async function parseApiResponse<T>(response: Response): Promise<T> {
 
   // API 응답 헤더에서 에러 확인
   if (data.response.header.resultCode !== "0000") {
-    throw new TourApiError(
-      data.response.header.resultMsg || "API 오류가 발생했습니다.",
-      data.response.header.resultCode
-    );
+    const errorCode = data.response.header.resultCode;
+    const errorMsg = data.response.header.resultMsg || "API 오류가 발생했습니다.";
+    
+    // 에러 코드별 사용자 친화적 메시지 사용
+    throw new TourApiError(errorMsg, errorCode);
   }
 
   // items.item가 배열이 아닌 경우 배열로 변환

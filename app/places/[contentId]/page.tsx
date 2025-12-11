@@ -35,6 +35,7 @@ import { getDetailCommon, getAreaBasedList } from "@/lib/api/tour-api";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAbsoluteUrl, truncateText } from "@/lib/utils/url";
 import { ensureHttps } from "@/lib/utils/image";
+import { getErrorMessage } from "@/lib/utils/error-handler";
 
 export const dynamic = "force-dynamic";
 
@@ -209,7 +210,9 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
       } catch (error) {
         // areaCode 조회 실패해도 계속 진행 (추천 섹션은 선택적)
         // areaCode가 없어도 같은 타입만으로 추천 가능
-        console.error("Failed to fetch areaCode:", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("Failed to fetch areaCode:", getErrorMessage(error));
+        }
       }
       
       // 지도 데이터 준비
@@ -227,7 +230,9 @@ export default async function PlaceDetailPage({ params }: PlaceDetailPageProps) 
     }
   } catch (error) {
     // 에러가 발생해도 기본 정보 섹션은 표시 (DetailInfo에서 에러 처리)
-    console.error("Failed to fetch contentTypeId:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Failed to fetch contentTypeId:", getErrorMessage(error));
+    }
   }
 
   // 공유 URL 생성 (headers() 사용)

@@ -59,7 +59,8 @@ export function ImageGalleryClient({ images }: ImageGalleryClientProps) {
               fill
               className="object-cover"
               sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              loading="lazy"
+              priority={index === 0}
+              loading={index === 0 ? undefined : "lazy"}
               fallbackSrc="/og-image.png"
             />
             {/* 호버 오버레이 */}

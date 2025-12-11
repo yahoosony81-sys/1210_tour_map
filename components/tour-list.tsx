@@ -128,13 +128,14 @@ export function TourList({
           className
         )}
       >
-        {tours.map((tour) => (
+        {tours.map((tour, index) => (
           <TourCard
             key={tour.contentid}
             tour={tour}
             isSelected={selectedContentId === tour.contentid}
             onSelect={onTourSelect}
             onHover={onTourHover}
+            priority={index === 0}
           />
         ))}
       </div>

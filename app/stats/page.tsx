@@ -22,6 +22,7 @@ import { Error } from "@/components/ui/error";
 import { StatsSummary } from "@/components/stats/stats-summary";
 import { RegionChart } from "@/components/stats/region-chart";
 import { TypeChart } from "@/components/stats/type-chart";
+import { getErrorMessage, shouldRetry } from "@/lib/utils/error-handler";
 
 export const dynamic = "force-dynamic";
 
@@ -64,33 +65,15 @@ export default async function StatsPage() {
       </main>
     );
   } catch (error) {
-    // 에러 처리 - 사용자 친화적 메시지로 변환
-    let errorMessage = "통계 정보를 불러오는 중 오류가 발생했습니다.";
-    let showRetry = false;
-
-    if (error instanceof Error) {
-      const message = error.message;
-
-      // 네트워크 에러
-      if (
-        message.includes("네트워크") ||
-        message.includes("fetch") ||
-        message.includes("Failed to fetch")
-      ) {
-        errorMessage = "네트워크 연결을 확인해주세요. 인터넷 연결이 불안정할 수 있습니다.";
-        showRetry = true;
-      }
-      // 기타 에러
-      else {
-        errorMessage = message;
-      }
-    }
+    // 에러 처리 - getErrorMessage 유틸리티 사용
+    const errorMessage = getErrorMessage(error);
+    const canRetry = shouldRetry(error);
 
     return (
       <main className="container mx-auto px-4 py-8">
         <Error
           message={errorMessage}
-          onRetry={showRetry ? () => window.location.reload() : undefined}
+          onRetry={canRetry ? () => window.location.reload() : undefined}
           retryText="다시 시도"
         />
       </main>
