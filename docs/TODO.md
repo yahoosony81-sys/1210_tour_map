@@ -1218,10 +1218,25 @@
       - [x] `app/stats/page.tsx`: 에러 처리 로직을 `getErrorMessage()`, `shouldRetry()` 사용하도록 개선
       - [x] `app/bookmarks/page.tsx`: 에러 처리 로직을 `getErrorMessage()`, `shouldRetry()` 사용하도록 개선
       - [x] `app/places/[contentId]/page.tsx`: 에러 로깅 개선 (`getErrorMessage` 사용, 개발 환경에서만)
-- [ ] 404 페이지
-  - [ ] `app/not-found.tsx` 생성
-    - [ ] 사용자 친화적인 메시지
-    - [ ] 홈으로 돌아가기 버튼
+- [x] 404 페이지
+  - [x] `app/not-found.tsx` 생성
+    - [x] 사용자 친화적인 메시지
+    - [x] 홈으로 돌아가기 버튼
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `app/not-found.tsx` 생성 (Server Component)
+      - [x] Next.js 15 App Router의 not-found.tsx 패턴 구현
+      - [x] FileQuestion 아이콘 사용 (lucide-react)
+      - [x] 사용자 친화적인 404 메시지 표시 ("404 - 페이지를 찾을 수 없습니다")
+      - [x] 설명 텍스트 추가 (요청하신 페이지가 존재하지 않거나 이동되었을 수 있습니다)
+      - [x] 홈으로 돌아가기 버튼 (Home 아이콘, Link 컴포넌트)
+      - [x] 검색하기 버튼 (Search 아이콘, Link 컴포넌트)
+      - [x] 기존 페이지와 일관된 컨테이너 스타일 (container mx-auto px-4 py-16)
+      - [x] max-w-2xl 중앙 정렬
+      - [x] 반응형 디자인 구현 (모바일 세로 배치, 데스크톱 가로 배치)
+      - [x] 버튼 터치 영역 최소 44x44px 설정 (size="lg")
+      - [x] 접근성 개선 (aria-label, aria-hidden 속성 추가)
+      - [x] 시맨틱 HTML 사용 (main, section 태그)
 - [ ] SEO 최적화
   - [ ] 메타태그 설정 (`app/layout.tsx`)
     - [ ] 기본 title, description
