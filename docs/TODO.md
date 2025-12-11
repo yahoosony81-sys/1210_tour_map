@@ -899,14 +899,34 @@
       - [x] 모든 함수 반환 타입 검증 (RegionStats[], TypeStats[], StatsSummary, StatsData)
       - [x] 파라미터 타입 검증 (AreaCode, ContentTypeId)
       - [x] 타입 매핑 확인 (AreaCode → RegionStats, CONTENT_TYPE_ID → TypeStats)
-- [ ] 통계 요약 카드
-  - [ ] `components/stats/stats-summary.tsx` 생성
-    - [ ] 전체 관광지 수 표시
-    - [ ] Top 3 지역 표시 (카드 형태)
-    - [ ] Top 3 타입 표시 (카드 형태)
-    - [ ] 마지막 업데이트 시간 표시
-    - [ ] 로딩 상태 (Skeleton UI)
-    - [ ] 카드 레이아웃 디자인
+- [x] 통계 요약 카드
+  - [x] `components/stats/stats-summary.tsx` 생성
+    - [x] 전체 관광지 수 표시
+    - [x] Top 3 지역 표시 (카드 형태)
+    - [x] Top 3 타입 표시 (카드 형태)
+    - [x] 마지막 업데이트 시간 표시
+    - [x] 로딩 상태 (Skeleton UI)
+    - [x] 카드 레이아웃 디자인
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `components/stats/stats-summary.tsx` 생성 (Server Component)
+      - [x] `getStatsSummary()` API 호출하여 통계 요약 데이터 수집
+      - [x] 전체 관광지 수 카드 구현 (Globe 아이콘, 천 단위 콤마 포맷팅)
+      - [x] Top 3 지역 카드 구현 (TrendingUp 아이콘, 순위 뱃지, 지역명 및 개수 표시)
+      - [x] Top 3 타입 카드 구현 (Award 아이콘, 순위 뱃지, 타입명 및 개수 표시)
+      - [x] 마지막 업데이트 시간 카드 구현 (Clock 아이콘, 한국 시간 포맷팅)
+      - [x] 숫자 포맷팅 함수 구현 (`formatNumber()` - 천 단위 콤마)
+      - [x] 날짜 포맷팅 함수 구현 (`formatDate()` - 한국 시간 변환)
+      - [x] 순위 뱃지 스타일링 (1위: 노란색, 2위: 회색, 3위: 갈색)
+      - [x] 반응형 그리드 레이아웃 구현 (모바일 1열, 태블릿 2열, 데스크톱 4열)
+      - [x] 에러 처리 구현 (Error 컴포넌트 사용)
+      - [x] `StatsSummarySkeleton` 컴포넌트 구현 (로딩 상태용)
+      - [x] 접근성 개선 (aria-label, aria-hidden 속성 추가)
+    - [x] `app/stats/page.tsx` 수정
+      - [x] `StatsSummary` 컴포넌트 import
+      - [x] 기존 스켈레톤 UI 제거
+      - [x] `StatsSummary` 컴포넌트 통합
+      - [x] 주석 업데이트 (의존성 정보 수정)
 - [ ] 지역별 분포 차트 (Bar Chart)
   - [ ] `components/stats/region-chart.tsx` 생성
     - [ ] shadcn/ui Chart 컴포넌트 설치 (Bar)

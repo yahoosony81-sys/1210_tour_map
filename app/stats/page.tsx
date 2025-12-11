@@ -9,16 +9,16 @@
  * 2. 지역별 관광지 분포 차트 (Bar Chart)
  * 3. 관광 타입별 분포 차트 (Donut Chart)
  *
- * 현재 단계: 기본 구조 및 스켈레톤 UI만 구현
- * 향후 구현: 실제 통계 데이터 수집 및 차트 컴포넌트
+ * 현재 단계: 통계 요약 카드 구현 완료
+ * 향후 구현: 지역별/타입별 분포 차트 컴포넌트
  *
  * @dependencies
  * - @/components/ui/error: Error 컴포넌트
- * - @/components/ui/skeleton: Skeleton UI 컴포넌트
+ * - @/components/stats/stats-summary: StatsSummary 컴포넌트
  */
 
 import { Error } from "@/components/ui/error";
-import { Skeleton } from "@/components/ui/skeleton";
+import { StatsSummary } from "@/components/stats/stats-summary";
 
 export const dynamic = "force-dynamic";
 
@@ -40,32 +40,7 @@ export default async function StatsPage() {
 
         {/* 통계 요약 카드 영역 */}
         <section className="mb-6 md:mb-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {/* 전체 관광지 수 카드 */}
-            <div className="h-32 rounded-lg border bg-card p-4">
-              <Skeleton className="h-4 w-20 mb-2" />
-              <Skeleton className="h-8 w-24" />
-            </div>
-            {/* Top 3 지역 카드 */}
-            <div className="h-32 rounded-lg border bg-card p-4">
-              <Skeleton className="h-4 w-24 mb-2" />
-              <Skeleton className="h-6 w-32 mb-1" />
-              <Skeleton className="h-6 w-28 mb-1" />
-              <Skeleton className="h-6 w-24" />
-            </div>
-            {/* Top 3 타입 카드 */}
-            <div className="h-32 rounded-lg border bg-card p-4">
-              <Skeleton className="h-4 w-24 mb-2" />
-              <Skeleton className="h-6 w-32 mb-1" />
-              <Skeleton className="h-6 w-28 mb-1" />
-              <Skeleton className="h-6 w-24" />
-            </div>
-            {/* 마지막 업데이트 시간 카드 */}
-            <div className="h-32 rounded-lg border bg-card p-4">
-              <Skeleton className="h-4 w-28 mb-2" />
-              <Skeleton className="h-6 w-36" />
-            </div>
-          </div>
+          <StatsSummary />
         </section>
 
         {/* 지역별 분포 차트 영역 */}
