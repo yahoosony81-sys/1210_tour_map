@@ -9,18 +9,19 @@
  * 2. 지역별 관광지 분포 차트 (Bar Chart)
  * 3. 관광 타입별 분포 차트 (Donut Chart)
  *
- * 현재 단계: 통계 요약 카드 및 지역별 분포 차트 구현 완료
- * 향후 구현: 타입별 분포 차트 컴포넌트
+ * 현재 단계: 통계 요약 카드, 지역별 분포 차트, 타입별 분포 차트 구현 완료
  *
  * @dependencies
  * - @/components/ui/error: Error 컴포넌트
  * - @/components/stats/stats-summary: StatsSummary 컴포넌트
  * - @/components/stats/region-chart: RegionChart 컴포넌트
+ * - @/components/stats/type-chart: TypeChart 컴포넌트
  */
 
 import { Error } from "@/components/ui/error";
 import { StatsSummary } from "@/components/stats/stats-summary";
 import { RegionChart } from "@/components/stats/region-chart";
+import { TypeChart } from "@/components/stats/type-chart";
 
 export const dynamic = "force-dynamic";
 
@@ -58,9 +59,7 @@ export default async function StatsPage() {
           <h2 className="text-xl md:text-2xl font-semibold mb-4 md:mb-6">
             관광 타입별 분포
           </h2>
-          <div className="h-64 md:h-96 rounded-lg border bg-card p-4 md:p-6">
-            <Skeleton className="h-full w-full rounded-full" />
-          </div>
+          <TypeChart />
         </section>
       </main>
     );

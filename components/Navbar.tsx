@@ -59,11 +59,29 @@ const Navbar = () => {
               <Search className="h-5 w-5" />
             </button>
 
+            {/* 통계 링크 (모바일, 인증 없이 접근 가능) */}
+            <Link
+              href="/stats"
+              className={cn(
+                "md:hidden text-sm font-medium transition-colors",
+                pathname === "/stats"
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              통계
+            </Link>
+
             {/* 북마크 링크 (모바일, 로그인한 사용자만) */}
             <SignedIn>
               <Link
                 href="/bookmarks"
-                className="md:hidden text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                className={cn(
+                  "md:hidden text-sm font-medium transition-colors",
+                  pathname === "/bookmarks"
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
               >
                 북마크
               </Link>

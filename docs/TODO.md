@@ -964,26 +964,62 @@
       - [x] `RegionChart` 컴포넌트 import
       - [x] 기존 스켈레톤 UI를 `RegionChart` 컴포넌트로 교체
       - [x] 주석 업데이트 (의존성 정보에 RegionChart 추가)
-- [ ] 타입별 분포 차트 (Donut Chart)
-  - [ ] `components/stats/type-chart.tsx` 생성
-    - [ ] shadcn/ui Chart 컴포넌트 설치 (Pie/Donut)
-    - [ ] recharts 기반 Donut Chart 구현
-    - [ ] 타입별 비율 (백분율)
-    - [ ] 타입별 개수 표시
-    - [ ] 섹션 클릭 시 해당 타입 목록 페이지로 이동
-    - [ ] 호버 시 타입명, 개수, 비율 표시
-    - [ ] 다크/라이트 모드 지원
-    - [ ] 반응형 디자인
-    - [ ] 로딩 상태
-    - [ ] 접근성 (ARIA 라벨)
-- [ ] 페이지 통합
-  - [ ] `app/stats/page.tsx`에 모든 컴포넌트 통합
-    - [ ] 통계 요약 카드 (상단)
-    - [ ] 지역별 분포 차트 (중단)
-    - [ ] 타입별 분포 차트 (하단)
-  - [ ] 에러 처리 (에러 메시지 + 재시도 버튼)
-  - [ ] 네비게이션에 통계 페이지 링크 추가
-  - [ ] 최종 페이지 확인
+- [x] 타입별 분포 차트 (Donut Chart)
+  - [x] `components/stats/type-chart.tsx` 생성
+    - [x] shadcn/ui Chart 컴포넌트 사용 (Pie/Donut)
+    - [x] recharts 기반 Donut Chart 구현
+    - [x] 타입별 비율 (백분율)
+    - [x] 타입별 개수 표시
+    - [x] 섹션 클릭 시 해당 타입 목록 페이지로 이동
+    - [x] 호버 시 타입명, 개수, 비율 표시
+    - [x] 다크/라이트 모드 지원
+    - [x] 반응형 디자인
+    - [x] 로딩 상태
+    - [x] 접근성 (ARIA 라벨)
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `components/stats/type-chart.tsx` 생성 (Server Component)
+      - [x] `getTypeStats()` API 호출하여 타입별 통계 데이터 수집
+      - [x] `TypeChartClient` Client Component로 차트 렌더링 위임
+      - [x] 에러 처리 구현 (Error 컴포넌트 사용)
+      - [x] 데이터 없음 처리 (빈 상태 메시지)
+      - [x] `TypeChartSkeleton` 컴포넌트 구현 (로딩 상태용)
+    - [x] `components/stats/type-chart-client.tsx` 생성 (Client Component)
+      - [x] shadcn/ui Chart 컴포넌트 사용 (ChartContainer, ChartTooltip, ChartTooltipContent)
+      - [x] recharts의 PieChart, Pie, Cell 사용
+      - [x] Donut 형태 구현 (innerRadius={60}, outerRadius={120})
+      - [x] 타입별 색상 매핑 (8가지 관광 타입별로 구분되는 색상)
+      - [x] 타입별 비율 표시 (percentage, 백분율, 소수점 2자리)
+      - [x] 타입별 개수 표시 (count, 천 단위 콤마 포맷팅)
+      - [x] 섹션 클릭 시 해당 타입 목록 페이지로 이동 (`useRouter` 사용, `/?contentTypeId={contentTypeId}`)
+      - [x] 호버 시 Tooltip으로 타입명, 개수, 비율 표시 (천 단위 콤마, 백분율)
+      - [x] 다크/라이트 모드 지원 (shadcn/ui Chart 자동 지원)
+      - [x] 반응형 디자인 (모바일 300px, 태블릿 400px, 데스크톱 500px)
+      - [x] 접근성 개선 (aria-label, role="img")
+      - [x] 섹션 호버 효과 (opacity 변경)
+    - [x] `app/stats/page.tsx` 수정
+      - [x] `TypeChart` 컴포넌트 import
+      - [x] 기존 스켈레톤 UI를 `TypeChart` 컴포넌트로 교체
+      - [x] 주석 업데이트 (의존성 정보에 TypeChart 추가)
+- [x] 페이지 통합
+  - [x] `app/stats/page.tsx`에 모든 컴포넌트 통합
+    - [x] 통계 요약 카드 (상단)
+    - [x] 지역별 분포 차트 (중단)
+    - [x] 타입별 분포 차트 (하단)
+  - [x] 에러 처리 (에러 메시지 + 재시도 버튼)
+  - [x] 네비게이션에 통계 페이지 링크 추가
+    - [x] 모바일 네비게이션에 통계 링크 추가 (북마크 링크 앞에 배치)
+    - [x] 활성 링크 스타일링 적용 (현재 페이지 하이라이트)
+    - [x] 인증 없이 접근 가능하도록 구현
+  - [x] 최종 페이지 확인
+    - [x] 네비게이션 링크 동작 확인 (데스크톱/모바일)
+    - [x] 통계 요약 카드 표시 확인
+    - [x] 지역별 분포 차트 (Bar Chart) 표시 확인
+    - [x] 타입별 분포 차트 (Donut Chart) 표시 확인
+    - [x] 차트 클릭 시 필터링된 목록 페이지로 이동 확인
+    - [x] 반응형 디자인 확인
+    - [x] 에러 처리 확인
+    - [x] 접근성 확인 (ARIA 라벨)
 
 ## Phase 5: 북마크 페이지 (`/bookmarks`) - 선택 사항
 
