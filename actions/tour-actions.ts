@@ -19,6 +19,7 @@
 
 import type { ApiResponse } from "@/lib/api/tour-api";
 import { getAreaBasedList, searchKeyword } from "@/lib/api/tour-api";
+import { getTourApiKey } from "@/lib/utils/env";
 import { sortTours, type SortOption } from "@/lib/utils/tour-sort";
 import type { TourItem } from "@/lib/types/tour";
 

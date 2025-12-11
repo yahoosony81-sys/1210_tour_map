@@ -215,6 +215,42 @@ NODE_ENV=production pnpm build
 
 ## 문제 해결 가이드
 
+### 프로젝트 이름 충돌
+
+**증상**: "Project '1210-tour-map' already exists, please use a new name" 에러
+
+**원인**: Vercel에 이미 같은 이름의 프로젝트가 존재하거나, 로컬에 `.vercel` 디렉토리가 기존 프로젝트와 연결되어 있습니다.
+
+**해결 방법**:
+
+#### 방법 1: 기존 프로젝트 사용 (권장)
+
+1. Vercel 대시보드 접속: https://vercel.com/dashboard
+2. 기존 프로젝트 "1210-tour-map" 선택
+3. Settings > General에서 Git Repository 연결 확인
+4. Git push 시 자동으로 해당 프로젝트에 배포됩니다
+
+#### 방법 2: 새 프로젝트 이름 사용
+
+1. Vercel CLI를 사용하는 경우:
+   ```bash
+   # .vercel 디렉토리 삭제 (로컬 연결 해제)
+   rm -rf .vercel
+   
+   # 새 프로젝트 이름으로 배포
+   vercel --name my-trip-new
+   ```
+
+2. Vercel 대시보드에서:
+   - 새 프로젝트 생성 시 다른 이름 사용 (예: "my-trip", "tour-map-app" 등)
+
+#### 방법 3: 기존 프로젝트 삭제 후 재생성
+
+1. Vercel 대시보드에서 기존 프로젝트 삭제
+2. 새로 배포
+
+**참고**: `.vercel` 디렉토리는 `.gitignore`에 포함되어 있어 Git에 커밋되지 않습니다. 로컬에서만 관리됩니다.
+
 ### 빌드 실패 시
 
 #### 환경변수 누락
