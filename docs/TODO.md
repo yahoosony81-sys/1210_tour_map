@@ -826,22 +826,79 @@
       - [x] 섹션 간격 통일 (모바일 `mb-6`, 데스크톱 `md:mb-8`)
       - [x] 에러 처리 구현 (Error 컴포넌트 사용, 재시도 버튼 지원)
       - [x] 스타일링 통일 (기존 페이지와 동일한 컨테이너 및 패딩)
-- [ ] 통계 데이터 수집
-  - [ ] `lib/api/stats-api.ts` 생성
-    - [ ] `getRegionStats()` - 지역별 관광지 개수 집계
-      - [ ] `areaBasedList2` API로 각 지역별 totalCount 조회
-      - [ ] 지역 코드별로 API 호출
-    - [ ] `getTypeStats()` - 타입별 관광지 개수 집계
-      - [ ] `areaBasedList2` API로 각 타입별 totalCount 조회
-      - [ ] contentTypeId별로 API 호출
-    - [ ] `getStatsSummary()` - 전체 통계 요약
-      - [ ] 전체 관광지 수
-      - [ ] Top 3 지역
-      - [ ] Top 3 타입
-      - [ ] 마지막 업데이트 시간
-    - [ ] 병렬 API 호출로 성능 최적화
-    - [ ] 에러 처리 및 재시도 로직
-    - [ ] 데이터 캐싱 (revalidate: 3600)
+- [x] 통계 데이터 수집
+  - [x] `lib/api/stats-api.ts` 생성
+    - [x] `getRegionStats()` - 지역별 관광지 개수 집계
+      - [x] `areaBasedList2` API로 각 지역별 totalCount 조회
+      - [x] 지역 코드별로 API 호출
+    - [x] `getTypeStats()` - 타입별 관광지 개수 집계
+      - [x] `areaBasedList2` API로 각 타입별 totalCount 조회
+      - [x] contentTypeId별로 API 호출
+    - [x] `getStatsSummary()` - 전체 통계 요약
+      - [x] 전체 관광지 수
+      - [x] Top 3 지역
+      - [x] Top 3 타입
+      - [x] 마지막 업데이트 시간
+    - [x] 병렬 API 호출로 성능 최적화
+    - [x] 에러 처리 및 재시도 로직
+    - [x] 데이터 캐싱 (revalidate: 3600)
+  ---
+  - [x] **추가 개발 내용 (plan 모드 build)**
+    - [x] `lib/api/stats-api.ts` 파일 생성 및 기본 구조 작성
+      - [x] 파일 헤더 주석 및 의존성 import
+      - [x] 상수 정의 (BASE_URL, COMMON_PARAMS, 재시도 설정)
+      - [x] 유틸리티 함수 구현 (getApiKey, buildQueryParams, fetchWithRetry)
+    - [x] `fetchTotalCountOnly()` 유틸리티 함수 구현
+      - [x] totalCount만 가져오기 (numOfRows=1, 성능 최적화)
+      - [x] `ApiResponse<T>` 파싱 및 totalCount 반환
+      - [x] 에러 처리 (TourApiError 사용)
+      - [x] Next.js 캐싱 설정 (revalidate: 3600)
+    - [x] `getRegionStats()` 함수 구현
+      - [x] `getAreaCode()` 호출하여 전체 지역 코드 목록 가져오기
+      - [x] 각 지역 코드별로 `fetchTotalCountOnly()` 병렬 호출
+      - [x] `Promise.allSettled()` 사용하여 부분 실패 처리
+      - [x] 결과를 `RegionStats[]` 형태로 변환 (areaCode, regionName, count)
+      - [x] count 기준 내림차순 정렬
+      - [x] 에러 처리 (일부 지역 실패 시에도 성공한 지역만 반환)
+    - [x] `getTypeStats()` 함수 구현
+      - [x] `CONTENT_TYPE_ID` 상수에서 모든 타입 ID 가져오기 (8개)
+      - [x] 각 contentTypeId별로 `fetchTotalCountOnly()` 병렬 호출
+      - [x] `Promise.allSettled()` 사용하여 부분 실패 처리
+      - [x] 결과를 `TypeStats[]` 형태로 변환 (contentTypeId, typeName, count)
+      - [x] count 기준 내림차순 정렬
+      - [x] 전체 개수 계산 후 각 타입의 percentage 계산 (백분율, 소수점 2자리)
+      - [x] 에러 처리 (일부 타입 실패 시에도 성공한 타입만 반환)
+    - [x] `getStatsSummary()` 함수 구현
+      - [x] 전체 관광지 수 조회 (`fetchTotalCountOnly()`)
+      - [x] 지역별 통계 수집 (`getRegionStats()`)
+      - [x] 타입별 통계 수집 (`getTypeStats()`)
+      - [x] 병렬로 모든 데이터 수집 (`Promise.all()`)
+      - [x] Top 3 지역 추출 (count 기준 상위 3개)
+      - [x] Top 3 타입 추출 (count 기준 상위 3개)
+      - [x] 마지막 업데이트 시간 생성 (`new Date().toISOString()`)
+      - [x] `StatsSummary` 객체 반환
+      - [x] 에러 처리 (일부 데이터 실패 시에도 가능한 데이터만 반환)
+    - [x] `getStatsData()` 통합 함수 구현
+      - [x] `getRegionStats()`, `getTypeStats()`, `getStatsSummary()` 병렬 호출
+      - [x] `Promise.all()` 사용하여 모든 통계 데이터 수집
+      - [x] `StatsData` 객체 반환
+      - [x] 에러 처리
+    - [x] 성능 최적화
+      - [x] 병렬 API 호출 (Promise.all, Promise.allSettled)
+      - [x] 최소 데이터 조회 (numOfRows=1)
+      - [x] 에러 복원력 개선 (Promise.allSettled로 부분 실패 처리)
+    - [x] 에러 처리 개선
+      - [x] TourApiError 클래스 사용 (기존 패턴)
+      - [x] 부분 실패 처리 (일부 지역/타입 실패 시에도 성공한 데이터 반환)
+      - [x] 사용자 친화적 에러 메시지
+      - [x] 재시도 로직 (지수 백오프, 최대 3회)
+    - [x] 데이터 캐싱 설정
+      - [x] Next.js fetch의 `next: { revalidate: 3600 }` 옵션 사용 (1시간 캐싱)
+      - [x] `fetchWithRetry()` 함수에 Next.js fetch 옵션 지원 추가
+    - [x] 타입 안전성 확인
+      - [x] 모든 함수 반환 타입 검증 (RegionStats[], TypeStats[], StatsSummary, StatsData)
+      - [x] 파라미터 타입 검증 (AreaCode, ContentTypeId)
+      - [x] 타입 매핑 확인 (AreaCode → RegionStats, CONTENT_TYPE_ID → TypeStats)
 - [ ] 통계 요약 카드
   - [ ] `components/stats/stats-summary.tsx` 생성
     - [ ] 전체 관광지 수 표시
